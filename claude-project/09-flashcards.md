@@ -1,0 +1,66 @@
+# Flashcard deck (62 cards)
+
+Spaced-repetition deck (SM-2) from progress/cards.jsonl. Terms marked 'Define:' are the 44 background terms CS2680 assumes. Use these for retrieval practice: ask the front, wait for the student's answer, compare with the back, grade 0-5.
+
+- **Define: latency** Time for one request to complete.
+- **Define: throughput** Work completed per unit time (requests/s, tokens/s).
+- **Define: tail latency** The slow end of the latency distribution (p99, p99.9); dominates long request chains.
+- **Define: scalability** How performance changes as you add resources or load.
+- **Define: Amdahl's law** Speedup = 1 / (s + (1-s)/N); the serial fraction s caps speedup at 1/s.
+- **Define: IOPS** I/O operations per second a device can sustain.
+- **Define: batching** Grouping requests so fixed costs (e.g. reading weights) are shared; raises throughput, can raise latency.
+- **Define: pipelining** Overlapping stages of work so different items are in different stages at once.
+- **Define: load balancing** Spreading requests across servers to avoid hot spots.
+- **Define: process** A running program with its own virtual address space and resources.
+- **Define: thread** A unit of execution inside a process; threads share memory, have separate stacks and registers.
+- **Define: coroutine** A function that can pause and resume cooperatively (async/await) on one thread.
+- **Define: concurrency** Structuring work as overlapping tasks; not necessarily simultaneous execution.
+- **Define: asynchronous execution** Start an operation and continue; get the result later via callback, future or await.
+- **Define: mutex** A lock allowing one thread at a time into a critical section.
+- **Define: atomic operation** An operation that appears indivisible to other threads (e.g. atomic fetch-add).
+- **Define: race condition** Result depends on unlucky timing of unsynchronized accesses to shared state.
+- **Define: deadlock** Tasks wait on each other's locks forever; none can proceed.
+- **Define: starvation** A task is perpetually denied a resource while others proceed.
+- **Define: context switch** Saving one thread's CPU state and loading another's; costs time and cache warmth.
+- **Define: cache coherence** Hardware protocol keeping each core's cached copies of a memory location consistent.
+- **Define: false sharing** Independent variables on the same cache line cause cores to invalidate each other's cache needlessly.
+- **Define: virtual memory** Per-process address space mapped to physical memory via page tables.
+- **Define: page fault** Access to a page not currently mapped/resident; the OS must handle it (e.g. load or allocate).
+- **Define: copy-on-write** Share pages read-only after fork; copy a page only when someone writes to it.
+- **Define: NUMA** Non-uniform memory access: memory attached to a different CPU socket is slower to reach.
+- **Define: DMA** Direct memory access: a device moves data to/from RAM without the CPU copying each byte.
+- **Define: interrupt** A hardware signal that makes the CPU pause and run a handler.
+- **Define: NIC** Network interface card.
+- **Define: RDMA** Remote DMA: read/write a remote machine's memory over the network, bypassing its CPU and kernel on the data path.
+- **Define: locality** Tendency to reuse nearby (spatial) or recently used (temporal) data; what caches exploit.
+- **Define: working set** The data a program actively needs over a window of time; should fit in the cache level you care about.
+- **Define: LRU** Evict the least recently used item.
+- **Define: system call** A request from a user program to the kernel (read, write, mmap, fork).
+- **Define: write-ahead log** Append the intended change to a durable log before applying it, so crashes can be recovered.
+- **Define: durability** Once committed, data survives crashes.
+- **Define: transaction** A group of operations treated as one unit: all happen or none.
+- **Define: ACID** Atomicity, Consistency, Isolation, Durability.
+- **Define: serializability** Concurrent transactions behave as if run one at a time in some order.
+- **Define: B-tree** Balanced, high-fanout search tree designed for block storage; few disk reads per lookup.
+- **Define: partitioning** Splitting data across machines or files by key or range (sharding).
+- **Define: RPC** Remote procedure call: invoking a function on another machine as if local.
+- **Define: fault tolerance** Continuing to work correctly despite component failures.
+- **Define: congestion control** Sender-side logic that slows down when the network is overloaded (e.g. TCP).
+- **KV cache bytes per token?** 2 x layers x kv_heads x head_dim x dtype_bytes. 32L/32H/128d/fp16 = 524,288 B.
+- **Decode tokens/s ceiling at batch 1?** bandwidth / bytes of weights. 2 TB/s over 14 GB = ~143 tok/s.
+- **Arithmetic intensity of an n x n x n matmul (fp16)?** ~ n/3 FLOP/byte. 4096 -> ~1365. Compute-bound on a GPU with ridge ~300.
+- **Ridge point?** Peak FLOP/s divided by memory bandwidth. Above it: compute-bound; below: memory-bound.
+- **Why is decode memory-bound?** One token per step re-reads all weights and the KV cache; attention intensity is ~1 FLOP/byte.
+- **Why is prefill compute-bound?** Whole prompt processed in parallel: matrix x matrix, high reuse of each weight byte.
+- **Self-attention formula?** softmax(Q K^T / sqrt(d_k)) V, with a causal mask in decoders.
+- **Agent loop in one line?** Model proposes an action; harness executes; observation goes back into context; repeat to a stop condition.
+- **Why does an agent's input-token bill grow quadratically?** Each turn resends the whole history; sum of 1..n turns.
+- **Cost of 10k in / 1k out at $3 / $15 per M?** $0.030 + $0.015 = $0.045.
+- **P(at least one of 50 calls hits p99 tail)?** 1 - 0.99^50 = 0.395.
+- **Prompt caching works when...?** A long, stable prefix is identical across calls; any early change invalidates everything after it.
+- **view vs reshape?** view needs compatible strides and never copies; reshape copies only if it must.
+- **Why zero_grad each step?** backward() accumulates into .grad; without clearing you sum stale gradients.
+- **eval() vs no_grad()?** eval switches dropout/batchnorm behavior; no_grad stops autograd recording.
+- **Undo last commit, keep changes staged?** git reset --soft HEAD~1
+- **Interactive GPU shell on Slurm?** srun --partition=P --gres=gpu:1 --time=HH:MM:SS --pty bash
+- **Reach a remote server's port from your laptop?** ssh -L local:localhost:remote user@host

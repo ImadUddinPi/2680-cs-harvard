@@ -1,0 +1,211 @@
+<title>Industry Outlook Q4 2026</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column. Thesis, evidence grade, shifts, demand map, workflows, forecast table, implications for the course. */
+:root{
+  --bg:#f5f6f4; --surface:#ffffff; --ink:#1b2321; --muted:#5b6662; --line:#d9dedb;
+  --accent:#0b6b5c; --soft:#e3efec;
+  --hi:#1b6e3a; --hi-bg:#e0f1e5; --mid:#8a5a00; --mid-bg:#fbf0d6; --lo:#b3261e; --lo-bg:#fbe9e7;
+  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#101614; --surface:#18201d; --ink:#e6ece9; --muted:#9aa7a2; --line:#2b3733; --accent:#4fc4ad; --soft:#1b2c28;
+  --hi:#7fd49a; --hi-bg:#173222; --mid:#f0b84d; --mid-bg:#3a2d10; --lo:#ff8a80; --lo-bg:#3a1c19; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101614; --surface:#18201d; --ink:#e6ece9; --muted:#9aa7a2; --line:#2b3733; --accent:#4fc4ad; --soft:#1b2c28;
+  --hi:#7fd49a; --hi-bg:#173222; --mid:#f0b84d; --mid-bg:#3a2d10; --lo:#ff8a80; --lo-bg:#3a1c19; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.58;padding-inline:16px;padding-block:0 80px}
+.wrap{max-width:820px;margin:0 auto}
+header{padding-block:32px 8px}
+h1{font-size:clamp(1.7rem,4vw,2.3rem);line-height:1.15;margin:0 0 8px;text-wrap:balance}
+h2{font-size:1.4rem;margin:48px 0 6px;text-wrap:balance}
+h3{font-size:1.05rem;margin:0 0 4px}
+p{margin:0 0 10px}
+.lede,.muted{color:var(--muted)} .lede{max-width:65ch}
+.tag{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px;display:inline-block}
+a{color:var(--accent)} a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+code{font-family:var(--f-mono);font-size:.86em}
+.thesis{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px;margin-top:14px}
+.thesis p{margin:0 0 8px} .thesis p:last-child{margin:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px;min-width:0}
+.ch{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}
+.pill{font-family:var(--f-mono);font-size:.7rem;padding:1px 8px;border-radius:99px;white-space:nowrap}
+.hi{background:var(--hi-bg);color:var(--hi)} .mid{background:var(--mid-bg);color:var(--mid)} .lo{background:var(--lo-bg);color:var(--lo)}
+.why{color:var(--muted);font-size:.92rem}
+ul{margin:4px 0 8px;padding-left:20px} li{margin-bottom:5px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.92rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}
+.flow span{background:var(--soft);border-radius:6px;padding:4px 10px;font-size:.88rem}
+.flow i{color:var(--muted);font-style:normal}
+.mind{border-left:3px solid var(--accent);padding:2px 12px;margin:8px 0}
+.src li{font-size:.9rem}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="tag">RESEARCH · 14 OCT 2026 · HORIZON: OCT 2026 TO JAN 2027</span>
+  <h1>Industry Outlook Q4 2026</h1>
+  <p class="lede">Where AI is heading, what is in demand, the workflows that earn money, and what the next two to three months likely look like. Written for someone starting CS2680 and planning an AI career.</p>
+  <div class="thesis">
+    <p><b>Thesis.</b> Producing code, text and plans is now cheap and getting cheaper. The scarce skill is making autonomous systems <b>reliable, verifiable, affordable and safe</b>. Every durable role in the data below sits on one of those four words.</p>
+    <p><b>For you.</b> CS2680 is aimed at the right target. Its five assignments map to four in-demand abilities: directing agents (A1), building and evaluating them (A2), cost and latency engineering (A3, A5), and serving open models (A4). Two things the market is asking for are thin in the course: <b>security architecture</b> and <b>production evaluation</b>. I recommend adding both early (section 7).</p>
+  </div>
+</header>
+
+<h2>1. How much to trust this</h2>
+<p class="muted">Web search returned mostly vendor blogs and aggregators. I fetched primary pages for the three claims I lean on most. Everything else is graded.</p>
+<div class="card">
+  <div class="ch"><span class="pill hi">Verified, primary</span></div>
+  <ul>
+    <li>Entry-level employment gap and its mechanism: <a href="https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recen" target="_blank" rel="noopener">Stanford Digital Economy Lab, revised 12 Aug 2026</a>.</li>
+    <li>Context engineering techniques: <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">Anthropic engineering</a>.</li>
+    <li>Agent security picture: summary of the OWASP agentic report in <a href="https://www.helpnetsecurity.com/2026/06/11/owasp-prompt-injection-ai-security-failures" target="_blank" rel="noopener">Help Net Security</a>. I read the article, not the OWASP report itself.</li>
+  </ul>
+  <div class="ch" style="margin-top:8px"><span class="pill mid">Secondary, consistent across sources</span></div>
+  <p class="why" style="margin:0">Agent adoption, falling token prices, disaggregated serving, MCP and A2A governance, harness engineering patterns, observability tooling.</p>
+  <div class="ch" style="margin-top:8px"><span class="pill lo">Single-source or conflicting. Do not rely on it</span></div>
+  <p class="why" style="margin:0">Model release lists and rankings (aggregators disagree, for example on a GPT-6.1 launch), METR numbers above 16 hours, market-size figures ($9B to $206B depending on definition), "dynamic workflows" announced 28 May, Agent Plugins 1.0. Check official pages before acting on any of these.</p>
+</div>
+
+<h2>2. Where the industry is heading</h2>
+<div id="shifts"></div>
+
+<h2>3. What is in demand</h2>
+<p class="muted">Ranked by how consistently sources agree, not by hype. "Commodity" means widely taught and quickly automated. "Scarce" means few people do it well.</p>
+<div class="tbl"><table>
+<thead><tr><th>Layer</th><th>Tools and skills employers name</th><th>Supply</th><th>Evidence</th></tr></thead>
+<tbody>
+<tr><td>Agent building</td><td>Python, tool calling and schemas, structured output, orchestration (LangGraph, Agent SDKs), retries and checkpointing, MCP servers</td><td>Commodity at the basic level, scarce when reliable</td><td><span class="pill mid">secondary</span></td></tr>
+<tr><td>Evaluation</td><td>Eval suites, graders, LLM-as-judge with human spot checks, regression sets built from production traces</td><td>Scarce</td><td><span class="pill mid">secondary</span></td></tr>
+<tr><td>Observability</td><td>OpenTelemetry GenAI traces, Langfuse, LangSmith, MLflow, Braintrust, Datadog; cost and latency per task</td><td>Scarce. Appears in about 40% of AI engineering postings in one analysis</td><td><span class="pill mid">secondary</span></td></tr>
+<tr><td>Context engineering</td><td>Compaction, tool-result clearing, note files, sub-agents with clean contexts, just-in-time retrieval, prompt caching</td><td>Scarce, quickly becoming standard</td><td><span class="pill hi">primary</span></td></tr>
+<tr><td>Agent security</td><td>Permission design, sandboxing, trifecta checks, supply-chain hygiene for skills and MCP servers, audit logging</td><td>Very scarce</td><td><span class="pill hi">primary + secondary</span></td></tr>
+<tr><td>Inference and serving</td><td>vLLM, SGLang, TensorRT-LLM, prefix caching, speculative decoding, FP4/FP8 quantization, prefill/decode disaggregation, GPU profiling</td><td>Scarce. One analysis of 1,800 postings calls it the highest-signal skill</td><td><span class="pill mid">secondary</span></td></tr>
+<tr><td>Platform</td><td>Docker, Kubernetes, CI/CD (about a third of postings), cloud GPUs, cost control</td><td>Moderate</td><td><span class="pill mid">secondary</span></td></tr>
+<tr><td>Prompt writing alone</td><td>Table stakes, no longer a differentiator</td><td>Commodity</td><td><span class="pill mid">secondary</span></td></tr>
+</tbody></table></div>
+
+<h2>4. The workflows, and the thinking behind them</h2>
+<p class="muted">Three workflows recur across the sources. The same mindset sits under all three.</p>
+
+<div class="card">
+  <h3>A. Agentic engineering: how people ship software with agents</h3>
+  <div class="flow"><span>Write spec</span><i>→</i><span>Split into small tasks</span><i>→</i><span>Fresh agent per task in its own worktree</span><i>→</i><span>Tests first, run gates</span><i>→</i><span>Independent reviewer agent</span><i>→</i><span>Human merges</span></div>
+  <ul>
+    <li>The spec is the main artifact. Code is an output you can regenerate.</li>
+    <li>Parallel workers get isolated copies of the repo. Sources suggest sub-agents for tasks of about 15 minutes and 3 to 5 teammates in agent-team modes.</li>
+    <li>A reviewer with its own context beats an agent reviewing itself. One source reports about 75% useful suggestions from a multi-agent review versus under 50% for single-agent review. Treat that figure as anecdotal.</li>
+    <li>Counterweight: one cited study found 89% of firms reporting no productivity change from AI. Measure results instead of assuming gains.</li>
+  </ul>
+  <div class="mind"><b>Thinking.</b> Writing is cheap, so the bottleneck is verification. Invest in specs, tests and review instead of typing speed.</div>
+</div>
+
+<div class="card">
+  <h3>B. Building a production agent: the improvement loop</h3>
+  <div class="flow"><span>Define task and success check</span><i>→</i><span>Minimal loop and tools</span><i>→</i><span>Trace every step</span><i>→</i><span>Turn failures into eval cases</span><i>→</i><span>Cut tokens, calls, model size</span><i>→</i><span>Harden permissions</span></div>
+  <ul>
+    <li>Start simple. Anthropic's guidance is to use the simplest thing that works and add structure after observed failures.</li>
+    <li>Manage context as a budget: compact near the limit (recall first, precision second), clear stale tool results, keep progress in a notes file, send exploration to sub-agents that return about 1,000 to 2,000 tokens, load data just in time.</li>
+    <li>Record each model call, tool call and retrieval as a span in one trace. OpenTelemetry conventions make traces portable. Eval suites are the part that locks you into a vendor.</li>
+    <li>Track cost per completed task, not per token. Token prices fall, but usage grows faster, so bills still rise.</li>
+  </ul>
+  <div class="mind"><b>Thinking.</b> Treat the agent as a system under test. Every failure is a test case you have not written yet.</div>
+</div>
+
+<div class="card">
+  <h3>C. Serving and optimizing inference</h3>
+  <div class="flow"><span>Write hypothesis with a number</span><i>→</i><span>Profile: time, tokens, bytes</span><i>→</i><span>Change one layer</span><i>→</i><span>Re-run same workload</span><i>→</i><span>Keep what moved the metric</span></div>
+  <ul>
+    <li>Decode is memory-bound, so the levers are fewer bytes (quantization, FP4), fewer passes (speculative decoding), reuse (prefix caching) and better packing (continuous batching, paged KV).</li>
+    <li>Prefill/decode disaggregation is now supported by the main engines. Setups differ per engine and misconfiguration can fail silently, for example a router that never transfers KV.</li>
+    <li>Agent workloads reuse long prefixes, which is why scheduling and prefix caching are in the course syllabus.</li>
+  </ul>
+  <div class="mind"><b>Thinking.</b> Performance work is empirical. Predict, measure, attribute. It is the same loop as A5 in the course.</div>
+</div>
+
+<div class="card">
+  <h3>D. Securing agents: design so one injection cannot hurt you</h3>
+  <div class="flow"><span>List what the agent can read, see and send</span><i>→</i><span>Check the trifecta</span><i>→</i><span>Remove one leg or add a human gate</span><i>→</i><span>Least-privilege tools</span><i>→</i><span>Log and audit</span></div>
+  <ul>
+    <li>The lethal trifecta is private data, untrusted content and external communication in one agent. The "Rule of Two" says an unsupervised agent should have at most two.</li>
+    <li>OWASP's 2026 report maps prompt injection to six of its ten agentic risk categories and lists real CVEs in coding agents, including allowlist and sandbox flaws, plus malicious MCP servers and package compromises.</li>
+    <li>Auto-approval allowlists and sandboxes that the agent's own output can modify deserve scrutiny. This is my inference from the cited CVEs.</li>
+  </ul>
+  <div class="mind"><b>Thinking.</b> You cannot make the model immune. Limit the damage by architecture.</div>
+</div>
+
+<h2>5. Underlying thinking, in four rules</h2>
+<div class="card"><ul>
+  <li><b>Verification is the bottleneck.</b> If you cannot check the output cheaply, you cannot scale the agent.</li>
+  <li><b>Context is a budget.</b> More tokens is not better. The smallest set of high-signal tokens wins.</li>
+  <li><b>Measure outcomes at the task level.</b> Cost, latency and success per task, with variance, on a fixed workload.</li>
+  <li><b>Least authority.</b> Assume injection will happen, then cap what it can touch.</li>
+</ul></div>
+
+<h2>6. Forecast: now to about January 2027</h2>
+<p class="muted">These are my projections from the evidence, not reported facts. Confidence is my own judgment. Each row has something you can check.</p>
+<div class="tbl"><table>
+<thead><tr><th>Expect</th><th>Why I think so</th><th>Confidence</th><th>How you will know</th></tr></thead>
+<tbody>
+<tr><td>Cost per token keeps falling, total spend keeps rising</td><td>Goldman expects 60 to 70% yearly decline in inference cost per token and a 24x rise in token use by 2030. Blackwell generation cuts cost sharply versus Hopper per vendor-fed analyses</td><td><span class="pill hi">high</span></td><td>Price pages of the three main API vendors; your own A3 cost table</td></tr>
+<tr><td>Rubin-class hardware does not change your costs yet</td><td>Sources describe access ramping through 2027</td><td><span class="pill mid">medium</span></td><td>Cloud GPU listings and spot prices</td></tr>
+<tr><td>More open-weight releases close part of the gap but stay behind the best closed models</td><td>One index puts the best open model at 46 versus 58 for the best closed, and a 1T-parameter open-weight model was promised for end of October</td><td><span class="pill mid">medium</span></td><td>Weights actually published; independent index scores</td></tr>
+<tr><td>Agent task length keeps growing, and benchmarks saturate</td><td>METR doubling estimates range from about 3 to 7 months, and the suite is near its ceiling</td><td><span class="pill mid">medium</span></td><td>New METR suite or a retired one</td></tr>
+<tr><td>More published exploits against coding agents and skill or MCP registries</td><td>OWASP lists 22 advisories for Claude Code alone and a large malicious-skill incident; release cadence is daily for many tools</td><td><span class="pill hi">high</span></td><td>CVE feeds, OWASP updates</td></tr>
+<tr><td>Standards consolidate: MCP, A2A and skills under neutral foundation governance</td><td>Several sources report shared Linux Foundation hosting</td><td><span class="pill mid">medium</span></td><td>Foundation announcements, spec versions</td></tr>
+<tr><td>Observability and eval tools converge: traces become test cases</td><td>Every vendor positions this way; OpenTelemetry is the shared format</td><td><span class="pill hi">high</span></td><td>OTEL GenAI spec; vendor releases</td></tr>
+<tr><td>Prefill/decode disaggregation, FP4 and speculative decoding become default options in serving stacks</td><td>Already supported across vLLM, SGLang, TensorRT-LLM per secondary sources</td><td><span class="pill mid">medium</span></td><td>Release notes of your engine</td></tr>
+<tr><td>Enterprise pullback on weak projects</td><td>Gartner projects over 40% of agentic projects cancelled by end of 2027, citing cost and unclear value</td><td><span class="pill mid">medium</span></td><td>Budget cycles in Q4 and Q1; demand for ROI and eval evidence</td></tr>
+<tr><td>The young-worker hiring gap persists</td><td>The gap grew from 13 to 15% to 19% over a year, driven by reduced hiring, concentrated where AI substitutes for tasks</td><td><span class="pill hi">high</span></td><td>Stanford's Canaries dashboard</td></tr>
+<tr><td>Compliance work grows around logging and risk controls</td><td>EU AI Act is fully applicable from August 2026, and OWASP tracks 42 instruments across 10 jurisdictions</td><td><span class="pill mid">medium</span></td><td>Postings that mention audit, governance, DORA or the AI Act</td></tr>
+</tbody></table></div>
+<div class="card" style="margin-top:12px"><b>What would change my mind.</b> A sharp fall in agent reliability evidence, a large public failure that triggers regulation, or a step change in open models that makes self-hosting the default. I would also revise the hiring row if the dashboard gap narrows for two consecutive updates.</div>
+
+<h2>7. What to do with this</h2>
+<p>The data favors people who can show measured results on the four scarce abilities. A 12-week plan, aligned with CS2680, which gives you something to publish every three to four weeks:</p>
+<div class="card"><ul>
+  <li><b>Weeks 1 to 3 (M00 to M01).</b> Finish the lesson plan. Add one item: a trace viewer. Assignment A1 is a web UI that streams agent trajectories, which is the same idea as observability.</li>
+  <li><b>Weeks 4 to 6 (A2 style).</b> Build your agent loop with tracing from day one, and an eval set of 20 tasks that grows from failures. Publish the eval set and the failure analysis.</li>
+  <li><b>Weeks 7 to 9 (A3 style).</b> Cost study: same success rate, lower dollars and latency. Show a before and after table with variance. Blog post.</li>
+  <li><b>Weeks 10 to 12 (A4 and A5 style).</b> Serve an open 7 to 8B model on a rented GPU, measure quality loss against an API model, then profile and test one hypothesis per layer. Blog post.</li>
+</ul></div>
+<h3>Proposed changes to our curriculum (I will not apply these until you approve)</h3>
+<ul>
+  <li><b>Add a security lab to M02.</b> A trifecta checklist applied to your own agent, plus an injection test against it. It costs about two hours and addresses the scarcest skill.</li>
+  <li><b>Add production evaluation to M05.</b> Build the trace-to-test-case loop, not just a benchmark runner.</li>
+  <li><b>Add context engineering to M02 and M04.</b> Compaction and note files, using Anthropic's guide above as the reading.</li>
+  <li><b>Keep framework study light.</b> Frameworks change monthly. Skills that transfer are the loop, schemas, traces and evals.</li>
+  <li><b>Keep the course's serving modules as they are.</b> They are the least commoditized part of the market.</li>
+</ul>
+
+<h2>8. Sources</h2>
+<ul class="src">
+  <li>Primary: <a href="https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recen" target="_blank" rel="noopener">Stanford, Canaries in the Coal Mine</a> · <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">Anthropic, effective context engineering</a> · <a href="https://www.anthropic.com/news/anthropic-economic-index-january-2026-report" target="_blank" rel="noopener">Anthropic Economic Index, January 2026</a> (found by search, not fetched)</li>
+  <li>Security: <a href="https://www.helpnetsecurity.com/2026/06/11/owasp-prompt-injection-ai-security-failures" target="_blank" rel="noopener">Help Net Security on the OWASP agentic report</a> · <a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-agent-lethal-trifecta-capability-securi" target="_blank" rel="noopener">Cloud Security Alliance note on the lethal trifecta</a> (not fetched)</li>
+  <li>Economics and adoption (secondary): <a href="https://www.goldmansachs.com/insights/articles/ai-agents-forecast-to-boost-tech-cash-flow-as-usage-soars" target="_blank" rel="noopener">Goldman Sachs</a> · <a href="https://www.digitalapplied.com/blog/ai-predictions-2026-trends-forecast" target="_blank" rel="noopener">Digital Applied forecast</a></li>
+  <li>Serving (secondary): <a href="https://vllm.ai/blog/2026-04-07-moriio-kv-connector" target="_blank" rel="noopener">vLLM blog on KV connectors</a> · <a href="https://www.lmsys.org/blog/2026-01-12-epd/" target="_blank" rel="noopener">LMSYS on EPD disaggregation</a> · <a href="https://arxiv.org/pdf/2508.01989" target="_blank" rel="noopener">Prefill-decode aggregation or disaggregation (arXiv)</a></li>
+  <li>Skills and workflows (secondary): <a href="https://tripleten.com/blog/posts/ai-skills" target="_blank" rel="noopener">TripleTen</a> · <a href="https://opendatascience.com/12-most-in-demand-ai-jobs-in-2026-and-the-skills-employers-want/" target="_blank" rel="noopener">Open Data Science</a> · <a href="https://nyosegawa.com/en/posts/coding-agent-workflow-2026/" target="_blank" rel="noopener">Survey of coding agent workflows</a> · <a href="https://mlflow.org/articles/tags/2026-llm-performance-tracking/" target="_blank" rel="noopener">MLflow on observability</a> (vendor)</li>
+  <li>Standards (secondary): <a href="https://datalakehousehub.com/blog/state-of-agentic-ai-standards-2026" target="_blank" rel="noopener">State of agentic AI standards 2026</a></li>
+</ul>
+</div>
+
+<script>
+const SH=[
+ {t:"Agents move from demos to scrutinized production",c:"hi",cl:"high",b:"Adoption is high but results are uneven. One report says 70% of enterprises run agents; McKinsey says 40% of firms above $1B revenue are scaling them. Gartner expects over 40% of agentic projects to be cancelled by end of 2027 and warns about vendors relabeling old tools as agents.",w:"Expect questions about ROI and reliability, not novelty."},
+ {t:"Tokens get cheaper, bills get bigger",c:"hi",cl:"high",b:"Goldman expects 60 to 70% yearly decline in cost per token and a 24x rise in monthly tokens from 2026 to 2030. New GPU generations cut cost per token sharply, though vendor claims assume ideal utilization.",w:"Cost per task becomes a first-class metric. This is why A3 carries 20%."},
+ {t:"Agents run longer",c:"mid",cl:"medium",b:"METR's time-horizon work measures the length of task an agent completes at 50% success. Estimates put frontier models around 12 hours in early 2026, with a doubling time somewhere between about 3 and 7 months depending on the fit. METR warns its suite is near its ceiling for the longest tasks.",w:"Longer runs need compaction, notes, checkpoints and cheap verification."},
+ {t:"Value shifts from writing to verifying",c:"hi",cl:"high",b:"Stanford's payroll study finds employment of 22 to 25 year olds in AI-exposed jobs 19% below peers, mainly through less hiring, concentrated where AI substitutes for tasks. Where AI complements workers, employment is flat or rising. The authors call it descriptive, not causal, and find no broad displacement.",w:"Early-career entry paths narrow. Evidence of judgment and measured results matters more."},
+ {t:"Open standards stack forms",c:"mid",cl:"medium",b:"MCP for tools and data, A2A for agent-to-agent delegation, and portable skills are reported to sit under neutral foundation governance. The same ecosystem is a target: OWASP lists malicious MCP servers and a large malicious-skill campaign.",w:"Protocol literacy is cheap to gain. Supply-chain care is the scarce part."},
+ {t:"Security becomes a design discipline",c:"hi",cl:"high",b:"OWASP's 2026 report moves from hypotheticals to catalogued CVEs. Coding agents are the largest group of tracked projects. Prompt injection touches six of ten risk categories, and the fix is architectural.",w:"Permission design and sandbox review become hiring criteria."},
+ {t:"Serving gets disaggregated and quantized",c:"mid",cl:"medium",b:"Prefill/decode disaggregation, FP4 formats, and newer speculative decoding are all described as supported in the main engines. Open models still trail the best closed ones on one aggregate index.",w:"Self-hosting is a real option for narrow tasks, which is what A4 measures."}
+];
+const el=document.getElementById("shifts");
+SH.forEach(s=>{const d=document.createElement("div");d.className="card";
+ d.innerHTML=`<div class="ch"><h3>${s.t}</h3><span class="pill ${s.c}">confidence ${s.cl}</span></div><p>${s.b}</p><p class="why"><b>So what:</b> ${s.w}</p>`;el.appendChild(d)});
+</script>

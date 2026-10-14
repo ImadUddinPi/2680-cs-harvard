@@ -130,7 +130,10 @@ class H(BaseHTTPRequestHandler):
 
     def static(self, p):
         if p in ("/", ""):
-            p = "/hub/index.html"
+            self.send_response(302)
+            self.send_header("Location", "/hub/index.html")
+            self.end_headers()
+            return
         parts = [x for x in p.split("/") if x]
         if not parts or parts[0] not in STATIC_ROOTS or ".." in parts:
             return self.send_json({"error": "not found"}, 404)

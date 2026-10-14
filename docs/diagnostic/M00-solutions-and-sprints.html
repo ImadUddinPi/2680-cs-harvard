@@ -1,0 +1,258 @@
+<title>M00 Answer Key and Gap Sprints</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column. Scoring panel first, then answer key by section, then sprint cards, then the 7-day schedule. */
+:root{
+  --bg:#f5f6f4; --surface:#ffffff; --ink:#1b2321; --muted:#5b6662; --line:#d9dedb;
+  --accent:#0b6b5c; --accent-ink:#ffffff; --soft:#e3efec;
+  --red:#b3261e; --red-bg:#fbe9e7; --amber:#8a5a00; --amber-bg:#fbf0d6; --green:#1b6e3a; --green-bg:#e0f1e5;
+  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#101614; --surface:#18201d; --ink:#e6ece9; --muted:#9aa7a2; --line:#2b3733;
+  --accent:#4fc4ad; --accent-ink:#06211c; --soft:#1b2c28;
+  --red:#ff8a80; --red-bg:#3a1c19; --amber:#f0b84d; --amber-bg:#3a2d10; --green:#7fd49a; --green-bg:#173222; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101614; --surface:#18201d; --ink:#e6ece9; --muted:#9aa7a2; --line:#2b3733;
+  --accent:#4fc4ad; --accent-ink:#06211c; --soft:#1b2c28;
+  --red:#ff8a80; --red-bg:#3a1c19; --amber:#f0b84d; --amber-bg:#3a2d10; --green:#7fd49a; --green-bg:#173222; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;padding-inline:16px;padding-block:0 72px}
+.wrap{max-width:800px;margin:0 auto}
+header{padding-block:32px 8px}
+h1{font-size:clamp(1.7rem,4vw,2.3rem);line-height:1.15;margin:0 0 8px;text-wrap:balance}
+h2{font-size:1.4rem;margin:44px 0 6px;text-wrap:balance}
+h3{font-size:1.05rem;margin:0}
+p{margin:0 0 10px}
+.lede,.muted{color:var(--muted)}
+.lede{max-width:65ch}
+.tag{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px;display:inline-block}
+a{color:var(--accent)}
+code,.mono{font-family:var(--f-mono);font-size:.86em}
+pre{font-family:var(--f-mono);font-size:.82rem;background:var(--soft);padding:12px;border-radius:6px;overflow-x:auto;margin:8px 0}
+.warn{border:1px solid var(--amber);background:var(--amber-bg);color:var(--ink);border-radius:8px;padding:12px 14px;margin:16px 0}
+button{font:inherit;cursor:pointer;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:8px 14px;font-weight:500}
+button:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
+.score{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px}
+.sc{border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--bg);min-width:0}
+.sc label{display:flex;justify-content:space-between;gap:8px;font-weight:500;margin-bottom:6px}
+.sc input{width:80px;font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:.75rem;padding:2px 8px;border-radius:99px;margin-top:6px}
+.pill.red{background:var(--red-bg);color:var(--red)} .pill.amber{background:var(--amber-bg);color:var(--amber)} .pill.green{background:var(--green-bg);color:var(--green)} .pill.none{background:var(--soft);color:var(--muted)}
+.total{margin-top:14px;font-size:1.05rem}
+details.qa{background:var(--surface);border:1px solid var(--line);border-radius:8px;margin-bottom:8px}
+details.qa>summary{cursor:pointer;padding:12px 14px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;list-style:none}
+details.qa>summary::-webkit-details-marker{display:none}
+details.qa>summary .qid{font-family:var(--f-mono);font-weight:500;color:var(--accent)}
+details.qa>summary .ans{margin-left:auto;font-family:var(--f-mono);font-size:.85rem;color:var(--muted)}
+.qbody{padding:0 14px 14px;border-top:1px solid var(--line)}
+.rub{font-size:.9rem;color:var(--muted)}
+.sprint{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:14px;min-width:0}
+.sprint.hot{border-color:var(--red);box-shadow:0 0 0 1px var(--red)}
+.sprint.warm{border-color:var(--amber)}
+.sh{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}
+.steps{display:grid;gap:8px;margin:10px 0}
+.step{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:start;min-width:0}
+.step b{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.step div{min-width:0}
+ul{margin:4px 0 8px;padding-left:20px}
+li{margin-bottom:4px}
+.cards{display:grid;gap:6px;margin:8px 0}
+.card{border:1px dashed var(--line);border-radius:6px;padding:8px 10px;font-size:.9rem}
+.card span{color:var(--muted)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.gate{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin:10px 0}
+.gate div{border:1px solid var(--line);border-radius:6px;padding:10px;background:var(--surface);font-size:.9rem}
+.gate b{display:block;font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+@media (max-width:520px){.step{grid-template-columns:1fr;gap:2px}}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="tag">CS2680 · MODULE M00 · PART 2 OF 2</span>
+  <h1>M00 Answer Key and Gap Sprints</h1>
+  <p class="lede">Open this only after you have submitted the diagnostic and I have scored it. Reading answers first ruins the measurement and the retake. Below: how to score, the full key with rubrics, then six timeboxed sprints that close the gaps in the order the course needs them.</p>
+  <div class="warn"><b>Rule.</b> The retest uses new questions on the same skills, so memorizing this key does not help. Understanding does.</div>
+</header>
+
+<h2>1. Score yourself</h2>
+<p class="muted">Total is 56 points. Enter the points you earned in each section (rubrics are in section 2). Colors decide which sprints you run.</p>
+<div class="panel">
+  <div class="score" id="score"></div>
+  <p class="total" id="total"></p>
+  <p class="muted" style="margin:6px 0 0;font-size:.88rem">Green is 90% or more (mastered). Amber is 70 to 89% (one review pass). Red is below 70% (run the full sprint, then retest).</p>
+</div>
+
+<h2>2. Answer key</h2>
+<p class="muted">Short answers: award the points in the rubric, partial credit allowed. Numbers: full credit within 3% of the key, half credit for the right method with an arithmetic slip.</p>
+<div id="key"></div>
+
+<h2>3. Gap sprints</h2>
+<p class="muted">Each sprint is 60 to 90 minutes and follows the same loop: predict first, learn the minimum, build a small thing, then prove it by explaining it. Sprints marked red or amber by your score float to the top of your plan; green ones become a 10-minute flashcard review.</p>
+<div id="sprints"></div>
+
+<h2>4. Seven-day schedule</h2>
+<p class="muted">Order follows the course dependency chain: memory and hardware arithmetic feed serving (Part II), the agent loop and token cost feed Part I. Adjust days, keep the order.</p>
+<div class="panel tbl"><table>
+<thead><tr><th>Day</th><th>Work</th><th>Exit check</th></tr></thead>
+<tbody id="sched"></tbody></table></div>
+
+<h2>5. How this maps to the mastery gate</h2>
+<p>M00 counts as mastered only when all four checks are at 90% or more, using fresh material each time.</p>
+<div class="gate">
+  <div><b>Quiz</b>Retake with new questions on the same 29 skills. Target 51 of 56.</div>
+  <div><b>Teach-back</b>You explain KV cache, roofline and the agent loop to me as if I were a new hire. I ask naive questions.</div>
+  <div><b>Build</b>Three scripts saved in <code>modules/M00-prereqs/evidence/</code>: tiny attention, roofline calculator, minimal agent loop.</div>
+  <div><b>Transfer</b>One unseen problem, for example a KV budget for a model I choose, solved cold.</div>
+</div>
+<h3 style="margin-top:20px">Techniques used, and why</h3>
+<ul>
+  <li><b>Prediction before reveal.</b> Every sprint starts by writing your number, then running code. Wrong predictions are where the learning is.</li>
+  <li><b>Retrieval over rereading.</b> Flashcards are added to the spaced-repetition deck (<code>tools/learn.py card add</code>), reviewed daily.</li>
+  <li><b>Build to learn.</b> Small scripts you write yourself, saved as evidence and later reused in A3 and A4.</li>
+  <li><b>Socratic AI tutoring.</b> Ask me for a hint, not the answer. Hints escalate from a question to a nudge to a worked example of a different problem.</li>
+  <li><b>Interleaving.</b> From day 3, each session opens with two questions from earlier sprints.</li>
+  <li><b>Numbers as a habit.</b> Course assignments are graded on measured tokens, cost and latency, so every sprint ends with a quantity you computed or measured.</li>
+</ul>
+</div>
+
+<script>
+const SEC=[
+ {id:"A",t:"Systems",max:12,sprint:"S1"},
+ {id:"B",t:"Python and PyTorch",max:9,sprint:"S2"},
+ {id:"C",t:"Transformers and inference",max:13,sprint:"S3"},
+ {id:"D",t:"Performance arithmetic",max:8,sprint:"S4"},
+ {id:"E",t:"Agents and APIs",max:9,sprint:"S5"},
+ {id:"F",t:"Tooling",max:5,sprint:"S6"}
+];
+const KEY=[
+ {id:"A1",s:"A",p:3,a:"No. Separate address spaces.",x:"fork() creates a child with its own virtual address space. Pages start shared and read-only (copy-on-write). The first write by either process triggers a page fault; the kernel copies that page and maps the copy privately to the writer. Each process then sees only its own writes.",r:"1 pt: separate address spaces. 1 pt: copy-on-write mechanism. 1 pt: page fault on first write causes the copy."},
+ {id:"A2",s:"A",p:1,a:"B",x:"Threads share the heap, globals and open files. Each thread has its own stack, registers and program counter."},
+ {id:"A3",s:"A",p:2,a:"65,536",x:"1,048,576 x 4 B = 4,194,304 B. Divide by 64 B per line: 65,536 compulsory misses. The hardware prefetcher usually hides many of them, but the count of lines touched is the key."},
+ {id:"A4",s:"A",p:1,a:"B",x:"The TLB caches translations. A miss triggers a page-table walk (several memory reads). A page fault is different: the page itself is not resident."},
+ {id:"A5",s:"A",p:3,a:"Between about 2 and 2,000,000; usually well below 2,000,000. Fix with a mutex, an atomic increment, or per-thread counters summed at the end.",x:"counter++ is load, add, store. Interleavings lose updates. The classic result is that the lower bound is 2, not 1, and typical runs land far below 2,000,000. Mutex gives correctness at lock cost; atomic fetch-add is cheaper; thread-local counters plus one final sum avoid contention entirely.",r:"1 pt: not guaranteed 2,000,000 because of lost updates. 1 pt: sensible range (accept 'between 1 or 2 and 2,000,000'). 1 pt: two valid fixes."},
+ {id:"A6",s:"A",p:2,a:"5.26x",x:"Speedup = 1 / (0.10 + 0.90/10) = 1 / 0.19 = 5.26. Even with infinite cores the ceiling is 10x."},
+ {id:"B1",s:"B",p:3,a:"backward() runs reverse-mode autodiff and accumulates dLoss/dParam into each parameter's .grad. Gradients add up across calls, so zero_grad() clears them each step.",x:"Without zeroing, step k would use the sum of gradients from steps 1..k, which is wrong unless you want gradient accumulation on purpose.",r:"1 pt: gradients of the loss w.r.t. parameters. 1 pt: stored in .grad. 1 pt: accumulate (+=), hence the reset."},
+ {id:"B2",s:"B",p:1,a:"A: (8, 3, 5)",x:"Align shapes from the right, padding with 1s on the left: (3,1) becomes (1,3,1). Then each dimension broadcasts: 8 vs 1 gives 8, 1 vs 3 gives 3, 5 vs 1 gives 5. Result (8, 3, 5)."},
+ {id:"B3",s:"B",p:3,a:"[0, 3, 1, 4, 2, 5]. x.T.view(-1) raises a RuntimeError.",x:"x.T is a view with swapped strides, not contiguous. .contiguous() copies it into row-major memory [0,3,1,4,2,5]; view(-1) then works. view() requires compatible strides, so on the non-contiguous x.T it fails; reshape() would copy silently.",r:"1 pt: correct list. 1 pt: x.T is a strided view (no copy). 1 pt: contiguous() copies and view() fails on non-contiguous, reshape would work."},
+ {id:"B4",s:"B",p:1,a:"B",x:"Two independent switches. Evaluating a model for inference normally uses both: model.eval() and torch.no_grad() (or inference_mode)."},
+ {id:"B5",s:"B",p:1,a:"B: about the same",x:"The GIL lets one thread run Python bytecode at a time. Use multiprocessing, or release the GIL in native code. Threads still help for I/O waits, which is why async and threads work for API-calling agents."},
+ {id:"C1",s:"C",p:3,a:"Each token vector is projected to q, k, v. q asks what to look for, k advertises what each token offers, v is the content mixed in. Output = softmax(QK^T / sqrt(d_k)) V.",x:"Dot products of q with all k give attention scores; softmax turns them into weights; weights average the v vectors.",r:"1 pt: q, k, v roles. 1 pt: softmax of scaled dot products. 1 pt: weighted sum of v."},
+ {id:"C2",s:"C",p:2,a:"14 GB",x:"7 x 10^9 x 2 B = 14 x 10^9 B. This is the number that sets decode speed in D2."},
+ {id:"C3",s:"C",p:2,a:"524,288 bytes (0.5 MiB)",x:"2 (K and V) x 32 layers x 32 heads x 128 dims x 2 bytes = 524,288. At 4,096 tokens that is 2 GiB per sequence, which is why KV cache dominates serving memory."},
+ {id:"C4",s:"C",p:1,a:"C: O(n squared)",x:"QK^T is n x n. FlashAttention keeps the compute but cuts the memory traffic."},
+ {id:"C5",s:"C",p:1,a:"B",x:"It also makes training parallel over all positions while keeping each position blind to the future."},
+ {id:"C6",s:"C",p:3,a:"Prefill processes the whole prompt in parallel (matrix by matrix), so it is compute-bound. Decode generates one token at a time and must read all weights and the KV cache per token, so it is memory-bandwidth-bound.",x:"Intensity in decode at batch 1 is about 1 FLOP per byte, far below a GPU's ridge point. Batching raises intensity; that is the core of continuous batching.",r:"1 pt: prefill parallel/compute-bound. 1 pt: decode sequential/memory-bound. 1 pt: reason (weights and KV re-read each token, low arithmetic intensity)."},
+ {id:"C7",s:"C",p:1,a:"B",x:"Logits are divided by T before softmax. As T goes to 0 the largest logit dominates."},
+ {id:"D1",s:"D",p:3,a:"(a) 2n^3 = 1.37 x 10^11 FLOPs. (b) 3 x 4096^2 x 2 B = 100.7 MB. (c) about 1,365 FLOP/byte. (d) Compute-bound.",x:"Ridge point = 1000 TFLOP/s / 3 TB/s = about 333 FLOP/byte. 1,365 is above it, so the GPU runs out of compute before bandwidth. Time is about 1.37e11 / 1e15 = 0.14 ms.",r:"1 pt: FLOPs. 1 pt: bytes and intensity. 1 pt: ridge point comparison and conclusion."},
+ {id:"D2",s:"D",p:2,a:"143 tokens/s",x:"2 x 10^12 B/s / 14 x 10^9 B = 142.9 tokens/s. A hard ceiling at batch 1; real systems land lower. Quantization to 4-bit (3.5 GB) raises the ceiling to about 570."},
+ {id:"D3",s:"D",p:1,a:"A",x:"Weights are read once per step for the whole batch, so throughput rises. Each step gets slower as batch and KV traffic grow."},
+ {id:"D4",s:"D",p:2,a:"0.395",x:"1 - 0.99^50 = 1 - 0.605 = 0.395. Tail latency dominates long agent chains; averages hide it."},
+ {id:"E1",s:"E",p:3,a:"Prompt with task and tool list; model emits reasoning plus a tool call; harness validates and executes the tool; result is appended to context as an observation; repeat until the model returns a final answer or a step limit hits.",x:"The model never runs tools. The harness does, and owns permissions, limits, and context management.",r:"1 pt: model produces action. 1 pt: harness executes and feeds back the observation. 1 pt: loop with stop condition."},
+ {id:"E2",s:"E",p:2,a:"$0.045",x:"10,000 x $3/1M = $0.030. 1,000 x $15/1M = $0.015. Total $0.045. Output tokens cost 5x more here."},
+ {id:"E3",s:"E",p:3,a:"About 420,000 input tokens (2,000 x (1+2+...+20) = 2,000 x 210). Cost grows quadratically with turns. Prompt caching lets the stable prefix be read at a fraction of the normal rate, so only the new 2,000 tokens per turn pay full price.",x:"Accept 380,000 to 420,000 depending on counting. With a typical cache-read price of about 10% of normal, the effective cost falls by a large factor, but cache entries expire and any change early in the prompt invalidates everything after it.",r:"1 pt: sum approx 400k+. 1 pt: quadratic growth. 1 pt: caching explanation including prefix stability."},
+ {id:"E4",s:"E",p:1,a:"A",x:"The attacker controls data the agent reads, not the user prompt. Defenses: treat tool output as untrusted data, least privilege, human approval for sensitive actions."},
+ {id:"F1",s:"F",p:1,a:"B",x:"--soft keeps changes staged; --hard discards them; revert makes a new inverse commit."},
+ {id:"F2",s:"F",p:3,a:"Requests one GPU on the gpu partition for one hour and opens an interactive shell on the compute node. Useful for debugging, profiling and short experiments without writing a batch script.",x:"Release it when done. Long jobs belong in sbatch scripts.",r:"1 pt: allocates 1 GPU, 1 hour, partition. 1 pt: --pty bash gives a shell. 1 pt: use case and release."},
+ {id:"F3",s:"F",p:1,a:"B",x:"This is how you reach Jupyter or a model server running on the cluster from your laptop."}
+];
+const SP=[
+ {id:"S1",sec:"A",t:"Memory, caches and concurrency",time:"75 min",
+  why:"Serving engines are systems software: paged KV caches are virtual memory, schedulers are concurrency.",
+  learn:["OSTEP chapters on address spaces, paging and TLBs, and on locks. <a href='https://pages.cs.wisc.edu/~remzi/OSTEP/' target='_blank' rel='noopener'>pages.cs.wisc.edu/~remzi/OSTEP</a>","Skim only the sections your wrong answers touched."],
+  build:["Predict, then measure, the time to sum a large NumPy array row-wise versus column-wise (stride effect). Write the prediction first.","Write a two-thread counter in Python with and without a lock; add a multiprocessing version; time all three."],
+  prove:"Explain copy-on-write and a lost update to me in under 90 seconds each, without notes.",
+  cards:[["What does fork() do to memory?","Copy-on-write: pages shared read-only until first write."],["TLB miss versus page fault?","TLB miss: translation not cached; page fault: page not resident."],["Amdahl speedup formula","1 / (s + (1-s)/N)"]]},
+ {id:"S2",sec:"B",t:"PyTorch fluency",time:"90 min",
+  why:"Assignments 4 and 5 run PyTorch on a GPU cluster. Shape and memory-layout bugs eat the most time.",
+  learn:["PyTorch autograd tutorial and the tensors-and-views notes. <a href='https://pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html' target='_blank' rel='noopener'>autograd tutorial</a>","Read about strides, view versus reshape, and in-place ops."],
+  build:["Write from memory a training loop for a 2-layer MLP on a toy dataset: forward, loss, backward, step, zero_grad, eval with no_grad.","Print .stride() and .is_contiguous() after transpose, permute, slice; predict first."],
+  prove:"Run your loop with zero_grad() removed. Predict the loss curve, then compare. Explain the difference.",
+  cards:[["view versus reshape","view needs compatible strides; reshape copies if it must."],["eval() versus no_grad()","Layer behavior versus autograd recording."],["Broadcasting rule","Align shapes from the right; each dim equal or 1."]]},
+ {id:"S3",sec:"C",t:"Transformer from scratch",time:"90 min",
+  why:"Everything in Part II (KV cache, FlashAttention, quantization, speculative decoding) modifies this block.",
+  learn:["Karpathy, Let's build GPT, and nanoGPT. <a href='https://github.com/karpathy/nanoGPT' target='_blank' rel='noopener'>github.com/karpathy/nanoGPT</a>","The Illustrated Transformer. <a href='https://jalammar.github.io/illustrated-transformer/' target='_blank' rel='noopener'>jalammar.github.io</a>"],
+  build:["Implement single-head causal self-attention in about 20 lines. Check it against torch.nn.functional.scaled_dot_product_attention.","Write a function kv_bytes(layers, kv_heads, head_dim, dtype_bytes, tokens). Compute it for three real model configs from their Hugging Face config.json."],
+  prove:"Teach me prefill versus decode using your kv_bytes numbers. I will ask why decode cannot use the same batching trick as prefill.",
+  cards:[["Attention formula","softmax(QK^T / sqrt(d_k)) V"],["KV cache bytes per token","2 x layers x kv_heads x head_dim x dtype_bytes"],["Why causal mask?","Position i cannot see j > i; training matches generation."]]},
+ {id:"S4",sec:"D",t:"Roofline and bandwidth arithmetic",time:"60 min",
+  why:"This is the core intuition of the whole serving half: most inference tuning is moving fewer bytes.",
+  learn:["Horace He, Making Deep Learning Go Brrrr. <a href='https://horace.io/brrr_intro.html' target='_blank' rel='noopener'>horace.io/brrr_intro</a>","kipply, Transformer Inference Arithmetic. <a href='https://kipp.ly/transformer-inference-arithmetic/' target='_blank' rel='noopener'>kipp.ly</a>"],
+  build:["Write roofline.py: given peak FLOP/s, bandwidth, and an operation's FLOPs and bytes, print intensity, ridge point and bound.","Use it for GEMM sizes 128, 1024, 4096 and for batch-1 decode on 7B at fp16 and int4."],
+  prove:"Predict tokens/s for 70B int4 on a 3 TB/s GPU before computing. Then check yourself and explain any gap.",
+  cards:[["Arithmetic intensity","FLOPs per byte moved."],["Ridge point","Peak FLOP/s divided by bandwidth."],["Decode tokens/s ceiling","Bandwidth divided by model bytes read per token."]]},
+ {id:"S5",sec:"E",t:"Agent loop, tokens and cost",time:"75 min",
+  why:"Part I and assignments 2 and 3 grade you on a working loop and on tokens, cost and accuracy.",
+  learn:["Anthropic, Building effective agents. <a href='https://www.anthropic.com/engineering/building-effective-agents' target='_blank' rel='noopener'>anthropic.com/engineering</a>","ReAct paper, arXiv 2210.03629."],
+  build:["Write a 60-line agent with two tools (calculator, file read) against a model API, no frameworks. Cap steps at 8.","Log input and output tokens and dollar cost per step, and print a table at the end."],
+  prove:"From your log, show me how cost grows per turn and where prompt caching would apply. Add a cache breakpoint and measure the change.",
+  cards:[["Agent loop","Model proposes action; harness executes; observation appended; repeat."],["Why history cost is quadratic","Each turn resends all earlier turns."],["Indirect prompt injection","Malicious instructions inside data the agent reads."]]},
+ {id:"S6",sec:"F",t:"Tooling: git, SSH, Slurm",time:"45 min",
+  why:"The cluster is only reachable through these. Small mistakes cost hours of queue time.",
+  learn:["git switch, reset --soft/--mixed/--hard, rebase versus merge.","SSH keys, config file, port forwarding. Slurm: srun, sbatch, squeue, scancel."],
+  build:["In this repo, make a branch, commit, undo with reset --soft, recommit, open a PR.","Write an ~/.ssh/config entry and a sample sbatch script for 1 GPU for 10 minutes (you will use it when you have cluster access; skip running it for now)."],
+  prove:"Explain to me, without notes, how you would run Jupyter on a compute node and open it in your laptop browser.",
+  cards:[["Undo last commit, keep changes","git reset --soft HEAD~1"],["Forward a port","ssh -L local:localhost:remote host"],["Interactive GPU shell","srun --partition=... --gres=gpu:1 --pty bash"]]}
+];
+const SCH=[
+ ["1","S4 Roofline, then S3 first half (attention build)","Roofline script matches my hand numbers for D1 and D2."],
+ ["2","S3 second half (kv_bytes and prefill vs decode)","Teach-back of prefill vs decode, no notes."],
+ ["3","S2 PyTorch fluency; start of day: 2 flashcards from S3, 2 from S4","MLP loop from memory; zero_grad experiment explained."],
+ ["4","S5 Agent loop and cost log","Agent runs; per-step cost table printed."],
+ ["5","S1 Systems; S6 Tooling","Counter experiments timed; git undo drill clean."],
+ ["6","Retake the diagnostic (new questions from me); review misses","Score at or above 51 of 56."],
+ ["7","Transfer problem and teach-back; then run learn.py master M00","All four checks at 90% or more."]
+];
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const K=document.getElementById("key");
+SEC.forEach(s=>{
+  const h=document.createElement("h3");h.style.margin="22px 0 8px";h.textContent=s.id+". "+s.t+"  ("+s.max+" pts)";K.appendChild(h);
+  KEY.filter(k=>k.s===s.id).forEach(k=>{
+    const d=document.createElement("details");d.className="qa";
+    d.innerHTML=`<summary><span class="qid">${k.id}</span><span class="tag">${k.p} pt</span><span class="ans">${esc(k.a.length>46?k.a.slice(0,44)+"...":k.a)}</span></summary><div class="qbody"><p style="margin-top:12px"><b>Answer.</b> ${esc(k.a)}</p><p>${esc(k.x)}</p>${k.r?`<p class="rub"><b>Rubric.</b> ${esc(k.r)}</p>`:""}</div>`;
+    K.appendChild(d);
+  });
+});
+const SC=document.getElementById("score");
+let got={};
+try{got=JSON.parse(localStorage.getItem("m00-scores")||"{}")}catch(e){}
+SEC.forEach(s=>{
+  const d=document.createElement("div");d.className="sc";
+  d.innerHTML=`<label for="in-${s.id}"><span>${s.id}. ${s.t}</span><span class="muted mono">/ ${s.max}</span></label><input id="in-${s.id}" type="number" min="0" max="${s.max}" inputmode="numeric" value="${got[s.id]??""}"><div><span class="pill none" id="pl-${s.id}">enter score</span></div>`;
+  SC.appendChild(d);
+  d.querySelector("input").addEventListener("input",calc);
+});
+function band(p){return p>=0.9?["green","mastered"]:p>=0.7?["amber","review pass"]:["red","full sprint"]}
+function calc(){
+  let tot=0,max=0,any=false;const st={};
+  SEC.forEach(s=>{
+    const v=document.getElementById("in-"+s.id).value;const pl=document.getElementById("pl-"+s.id);
+    if(v===""){pl.className="pill none";pl.textContent="enter score";got[s.id]="";return}
+    let n=Math.max(0,Math.min(s.max,+v));got[s.id]=n;any=true;tot+=n;max+=s.max;
+    const [c,l]=band(n/s.max);pl.className="pill "+c;pl.textContent=Math.round(n/s.max*100)+"% · "+l;st[s.sprint]=c;
+  });
+  try{localStorage.setItem("m00-scores",JSON.stringify(got))}catch(e){}
+  document.getElementById("total").innerHTML=any?`Total: <b>${tot}</b> of ${max} entered (${Math.round(tot/max*100)}%). Mastery line for the retest is 51 of 56.`:"";
+  document.querySelectorAll(".sprint").forEach(el=>{el.classList.remove("hot","warm");const c=st[el.dataset.id];if(c==="red")el.classList.add("hot");if(c==="amber")el.classList.add("warm")});
+}
+const P=document.getElementById("sprints");
+SP.forEach(s=>{
+  const el=document.createElement("div");el.className="sprint";el.dataset.id=s.id;
+  el.innerHTML=`<div class="sh"><span class="tag">${s.id}</span><h3>${s.t}</h3><span class="tag">${s.time}</span><span class="tag">fixes section ${s.sec}</span></div><p class="muted">${esc(s.why)}</p>
+  <div class="steps">
+   <div class="step"><b>Predict</b><div>Before reading, write down your answer to the questions you missed in section ${s.sec}. Keep it. You will compare later.</div></div>
+   <div class="step"><b>Learn</b><div><ul>${s.learn.map(x=>"<li>"+x+"</li>").join("")}</ul></div></div>
+   <div class="step"><b>Build</b><div><ul>${s.build.map(x=>"<li>"+esc(x)+"</li>").join("")}</ul></div></div>
+   <div class="step"><b>Prove</b><div>${esc(s.prove)}</div></div>
+   <div class="step"><b>Cards</b><div class="cards">${s.cards.map(c=>`<div class="card">${esc(c[0])} <span>→ ${esc(c[1])}</span></div>`).join("")}</div></div>
+  </div>`;
+  P.appendChild(el);
+});
+document.getElementById("sched").innerHTML=SCH.map(r=>`<tr><td class="mono">${r[0]}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("");
+calc();
+</script>

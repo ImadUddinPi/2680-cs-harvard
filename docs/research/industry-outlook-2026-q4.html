@@ -1,7 +1,7 @@
 <title>Industry Outlook Q4 2026</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: one reading column. Thesis, evidence grade, shifts, demand map, workflows, forecast table, implications for the course. */
+/* Layout: sticky section index, then long-form sections. Each section: findings, evidence table, reading. */
 :root{
   --bg:#f5f6f4; --surface:#ffffff; --ink:#1b2321; --muted:#5b6662; --line:#d9dedb;
   --accent:#0b6b5c; --soft:#e3efec;
@@ -16,196 +16,492 @@
   --bg:#101614; --surface:#18201d; --ink:#e6ece9; --muted:#9aa7a2; --line:#2b3733; --accent:#4fc4ad; --soft:#1b2c28;
   --hi:#7fd49a; --hi-bg:#173222; --mid:#f0b84d; --mid-bg:#3a2d10; --lo:#ff8a80; --lo-bg:#3a1c19; color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.58;padding-inline:16px;padding-block:0 80px}
-.wrap{max-width:820px;margin:0 auto}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.58;padding-inline:16px;padding-block:0 96px}
+.wrap{max-width:880px;margin:0 auto}
 header{padding-block:32px 8px}
 h1{font-size:clamp(1.7rem,4vw,2.3rem);line-height:1.15;margin:0 0 8px;text-wrap:balance}
-h2{font-size:1.4rem;margin:48px 0 6px;text-wrap:balance}
-h3{font-size:1.05rem;margin:0 0 4px}
+h2{font-size:1.5rem;margin:56px 0 6px;text-wrap:balance}
+h3{font-size:1.08rem;margin:22px 0 6px}
+h4{font-size:.95rem;margin:14px 0 4px}
 p{margin:0 0 10px}
-.lede,.muted{color:var(--muted)} .lede{max-width:65ch}
+.lede,.muted{color:var(--muted)} .lede{max-width:68ch}
 .tag{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px;display:inline-block}
 a{color:var(--accent)} a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 code{font-family:var(--f-mono);font-size:.86em}
-.thesis{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px;margin-top:14px}
-.thesis p{margin:0 0 8px} .thesis p:last-child{margin:0}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px;min-width:0}
-.ch{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}
-.pill{font-family:var(--f-mono);font-size:.7rem;padding:1px 8px;border-radius:99px;white-space:nowrap}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding-block:8px;display:flex;gap:6px;overflow-x:auto;white-space:nowrap}
+nav.toc a{font-family:var(--f-mono);font-size:.74rem;text-decoration:none;border:1px solid var(--line);border-radius:99px;padding:3px 10px;color:var(--ink)}
+nav.toc a:hover{background:var(--soft)}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin:12px 0;min-width:0}
+.box>:last-child{margin-bottom:0}
+.pill{font-family:var(--f-mono);font-size:.68rem;padding:1px 8px;border-radius:99px;white-space:nowrap;display:inline-block}
 .hi{background:var(--hi-bg);color:var(--hi)} .mid{background:var(--mid-bg);color:var(--mid)} .lo{background:var(--lo-bg);color:var(--lo)}
-.why{color:var(--muted);font-size:.92rem}
-ul{margin:4px 0 8px;padding-left:20px} li{margin-bottom:5px}
-.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
-table{border-collapse:collapse;width:100%;min-width:640px;font-size:.92rem}
-th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+ul,ol{margin:4px 0 10px;padding-left:22px} li{margin-bottom:5px}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px;margin:10px 0}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.9rem}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 tr:last-child td{border-bottom:0}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
 .flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}
-.flow span{background:var(--soft);border-radius:6px;padding:4px 10px;font-size:.88rem}
+.flow span{background:var(--soft);border-radius:6px;padding:4px 10px;font-size:.86rem}
 .flow i{color:var(--muted);font-style:normal}
-.mind{border-left:3px solid var(--accent);padding:2px 12px;margin:8px 0}
-.src li{font-size:.9rem}
+.mind{border-left:3px solid var(--accent);padding:2px 12px;margin:10px 0}
+.fix{border:1px solid var(--mid);background:var(--mid-bg);border-radius:8px;padding:12px 16px;margin:12px 0}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.src li{font-size:.88rem}
+.k{display:grid;grid-template-columns:34px 1fr;gap:10px;margin-bottom:10px}
+.k b{font-family:var(--f-mono);color:var(--accent)}
 </style>
 
 <div class="wrap">
 <header>
-  <span class="tag">RESEARCH · 14 OCT 2026 · HORIZON: OCT 2026 TO JAN 2027</span>
+  <span class="tag">RESEARCH V2 · 14 OCT 2026 · HORIZON OCT 2026 TO JAN 2027</span>
   <h1>Industry Outlook Q4 2026</h1>
-  <p class="lede">Where AI is heading, what is in demand, the workflows that earn money, and what the next two to three months likely look like. Written for someone starting CS2680 and planning an AI career.</p>
-  <div class="thesis">
-    <p><b>Thesis.</b> Producing code, text and plans is now cheap and getting cheaper. The scarce skill is making autonomous systems <b>reliable, verifiable, affordable and safe</b>. Every durable role in the data below sits on one of those four words.</p>
-    <p><b>For you.</b> CS2680 is aimed at the right target. Its five assignments map to four in-demand abilities: directing agents (A1), building and evaluating them (A2), cost and latency engineering (A3, A5), and serving open models (A4). Two things the market is asking for are thin in the course: <b>security architecture</b> and <b>production evaluation</b>. I recommend adding both early (section 7).</p>
-  </div>
+  <p class="lede">A deeper pass on where AI is heading, what is in demand, the exact workflows behind it, and what the next two to three months look like. Five parallel research streams, about 190 tool calls, and pages fetched at the source where possible. Every claim carries a grade, and every place the evidence conflicts is shown.</p>
 </header>
+<nav class="toc" aria-label="Sections">
+  <a href="#summary">Summary</a><a href="#method">Method</a><a href="#capability">Models and cost</a><a href="#labor">Jobs and skills</a><a href="#agents">Agent practice</a><a href="#serving">Inference</a><a href="#security">Security and law</a><a href="#thinking">Thinking</a><a href="#workflows">Workflows</a><a href="#forecast">Forecast</a><a href="#you">For you</a><a href="#gaps">Gaps</a>
+</nav>
 
-<h2>1. How much to trust this</h2>
-<p class="muted">Web search returned mostly vendor blogs and aggregators. I fetched primary pages for the three claims I lean on most. Everything else is graded.</p>
-<div class="card">
-  <div class="ch"><span class="pill hi">Verified, primary</span></div>
-  <ul>
-    <li>Entry-level employment gap and its mechanism: <a href="https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recen" target="_blank" rel="noopener">Stanford Digital Economy Lab, revised 12 Aug 2026</a>.</li>
-    <li>Context engineering techniques: <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">Anthropic engineering</a>.</li>
-    <li>Agent security picture: summary of the OWASP agentic report in <a href="https://www.helpnetsecurity.com/2026/06/11/owasp-prompt-injection-ai-security-failures" target="_blank" rel="noopener">Help Net Security</a>. I read the article, not the OWASP report itself.</li>
-  </ul>
-  <div class="ch" style="margin-top:8px"><span class="pill mid">Secondary, consistent across sources</span></div>
-  <p class="why" style="margin:0">Agent adoption, falling token prices, disaggregated serving, MCP and A2A governance, harness engineering patterns, observability tooling.</p>
-  <div class="ch" style="margin-top:8px"><span class="pill lo">Single-source or conflicting. Do not rely on it</span></div>
-  <p class="why" style="margin:0">Model release lists and rankings (aggregators disagree, for example on a GPT-6.1 launch), METR numbers above 16 hours, market-size figures ($9B to $206B depending on definition), "dynamic workflows" announced 28 May, Agent Plugins 1.0. Check official pages before acting on any of these.</p>
+<h2 id="summary">Summary</h2>
+<div class="box">
+  <p><b>One sentence.</b> Capability and price-performance are improving fast, but the benchmarks are noisy, entry-level hiring is tightening, and the winners are people who can show measured reliability, cost and safety on real systems.</p>
 </div>
+<div class="k"><b>1</b><div><b>Cheap models are good enough for most calls.</b> Small-tier input prices are $0.10 to $0.30 per million tokens, flagships have flattened at $10 / $50, and caching and batch discounts (cache reads at 5 to 10% of input, batch 50% off) often matter more than model choice. Google is raising some prices on Dec 1 and Jan 1, so "prices only fall" no longer holds for every vendor.</div></div>
+<div class="k"><b>2</b><div><b>Benchmarks are unreliable.</b> SWE-bench Verified is reported as contaminated, SWE-bench Pro grading is questioned, OSWorld results differ by source, and METR says its suite is unreliable above 16 hours and its page is no longer actively updated. Your own small eval set is the trustworthy instrument.</div></div>
+<div class="k"><b>3</b><div><b>Open models trail by about 4 months, or about 12 index points,</b> but the best ones are 300B to 2.8T parameter mixture-of-experts models. On one rented GPU you run a dense model near 27B. Use open models for serving, fine-tuning and cost labs rather than as frontier substitutes.</div></div>
+<div class="k"><b>4</b><div><b>Software hiring recovered at the senior end.</b> Indeed shows postings about 15% above Feb 2025 but 27.5% below pre-pandemic, 71% of the rebound from senior roles, and entry-level only 4.5% of software postings. Stanford finds 22 to 25 year olds in exposed jobs 19% below peers.</div></div>
+<div class="k"><b>5</b><div><b>The AI-skill pay premium is smaller than the headlines.</b> PwC says 62% and Lightcast says 28%, but those compare different roles. Indeed's within-occupation estimate is about 5%.</div></div>
+<div class="k"><b>6</b><div><b>Agent reliability comes from structure, not from more agents.</b> Anthropic, Cursor and Cognition independently report that unverified "done" claims and parallel writers cause failures. What works: one feature per session, git checkpoints, a clean-context reviewer, and end-to-end tests the agent cannot edit.</div></div>
+<div class="k"><b>7</b><div><b>Security failures share one root cause:</b> trust granted by location or name instead of content (Cursor MCPoison, Codex CLI config, malicious skills). The architectural fix is to avoid combining private data, untrusted input and outward action in one agent.</div></div>
+<div class="k"><b>8</b><div><b>Serving engineering is concrete and learnable.</b> Learn vLLM first, then SGLang. Report TTFT and TPOT percentiles and goodput at a stated SLO, and expect "up to Nx" vendor claims to shrink under honest workloads. A credible student project costs under about $10 on a rented 24 GB GPU.</div></div>
+<div class="k"><b>9</b><div><b>Regulation slipped but did not vanish.</b> EU high-risk obligations moved to Dec 2027 and Aug 2028. User-disclosure duties and general-purpose-model enforcement are already live.</div></div>
+<div class="k"><b>10</b><div><b>Most adoption statistics are weak evidence.</b> Gartner's 40% cancellation forecast rests on a 3,412-person webinar poll, and the MIT "95% fail" figure has a small, contested sample.</div></div>
 
-<h2>2. Where the industry is heading</h2>
-<div id="shifts"></div>
-
-<h2>3. What is in demand</h2>
-<p class="muted">Ranked by how consistently sources agree, not by hype. "Commodity" means widely taught and quickly automated. "Scarce" means few people do it well.</p>
-<div class="tbl"><table>
-<thead><tr><th>Layer</th><th>Tools and skills employers name</th><th>Supply</th><th>Evidence</th></tr></thead>
-<tbody>
-<tr><td>Agent building</td><td>Python, tool calling and schemas, structured output, orchestration (LangGraph, Agent SDKs), retries and checkpointing, MCP servers</td><td>Commodity at the basic level, scarce when reliable</td><td><span class="pill mid">secondary</span></td></tr>
-<tr><td>Evaluation</td><td>Eval suites, graders, LLM-as-judge with human spot checks, regression sets built from production traces</td><td>Scarce</td><td><span class="pill mid">secondary</span></td></tr>
-<tr><td>Observability</td><td>OpenTelemetry GenAI traces, Langfuse, LangSmith, MLflow, Braintrust, Datadog; cost and latency per task</td><td>Scarce. Appears in about 40% of AI engineering postings in one analysis</td><td><span class="pill mid">secondary</span></td></tr>
-<tr><td>Context engineering</td><td>Compaction, tool-result clearing, note files, sub-agents with clean contexts, just-in-time retrieval, prompt caching</td><td>Scarce, quickly becoming standard</td><td><span class="pill hi">primary</span></td></tr>
-<tr><td>Agent security</td><td>Permission design, sandboxing, trifecta checks, supply-chain hygiene for skills and MCP servers, audit logging</td><td>Very scarce</td><td><span class="pill hi">primary + secondary</span></td></tr>
-<tr><td>Inference and serving</td><td>vLLM, SGLang, TensorRT-LLM, prefix caching, speculative decoding, FP4/FP8 quantization, prefill/decode disaggregation, GPU profiling</td><td>Scarce. One analysis of 1,800 postings calls it the highest-signal skill</td><td><span class="pill mid">secondary</span></td></tr>
-<tr><td>Platform</td><td>Docker, Kubernetes, CI/CD (about a third of postings), cloud GPUs, cost control</td><td>Moderate</td><td><span class="pill mid">secondary</span></td></tr>
-<tr><td>Prompt writing alone</td><td>Table stakes, no longer a differentiator</td><td>Commodity</td><td><span class="pill mid">secondary</span></td></tr>
-</tbody></table></div>
-
-<h2>4. The workflows, and the thinking behind them</h2>
-<p class="muted">Three workflows recur across the sources. The same mindset sits under all three.</p>
-
-<div class="card">
-  <h3>A. Agentic engineering: how people ship software with agents</h3>
-  <div class="flow"><span>Write spec</span><i>→</i><span>Split into small tasks</span><i>→</i><span>Fresh agent per task in its own worktree</span><i>→</i><span>Tests first, run gates</span><i>→</i><span>Independent reviewer agent</span><i>→</i><span>Human merges</span></div>
-  <ul>
-    <li>The spec is the main artifact. Code is an output you can regenerate.</li>
-    <li>Parallel workers get isolated copies of the repo. Sources suggest sub-agents for tasks of about 15 minutes and 3 to 5 teammates in agent-team modes.</li>
-    <li>A reviewer with its own context beats an agent reviewing itself. One source reports about 75% useful suggestions from a multi-agent review versus under 50% for single-agent review. Treat that figure as anecdotal.</li>
-    <li>Counterweight: one cited study found 89% of firms reporting no productivity change from AI. Measure results instead of assuming gains.</li>
-  </ul>
-  <div class="mind"><b>Thinking.</b> Writing is cheap, so the bottleneck is verification. Invest in specs, tests and review instead of typing speed.</div>
-</div>
-
-<div class="card">
-  <h3>B. Building a production agent: the improvement loop</h3>
-  <div class="flow"><span>Define task and success check</span><i>→</i><span>Minimal loop and tools</span><i>→</i><span>Trace every step</span><i>→</i><span>Turn failures into eval cases</span><i>→</i><span>Cut tokens, calls, model size</span><i>→</i><span>Harden permissions</span></div>
-  <ul>
-    <li>Start simple. Anthropic's guidance is to use the simplest thing that works and add structure after observed failures.</li>
-    <li>Manage context as a budget: compact near the limit (recall first, precision second), clear stale tool results, keep progress in a notes file, send exploration to sub-agents that return about 1,000 to 2,000 tokens, load data just in time.</li>
-    <li>Record each model call, tool call and retrieval as a span in one trace. OpenTelemetry conventions make traces portable. Eval suites are the part that locks you into a vendor.</li>
-    <li>Track cost per completed task, not per token. Token prices fall, but usage grows faster, so bills still rise.</li>
-  </ul>
-  <div class="mind"><b>Thinking.</b> Treat the agent as a system under test. Every failure is a test case you have not written yet.</div>
-</div>
-
-<div class="card">
-  <h3>C. Serving and optimizing inference</h3>
-  <div class="flow"><span>Write hypothesis with a number</span><i>→</i><span>Profile: time, tokens, bytes</span><i>→</i><span>Change one layer</span><i>→</i><span>Re-run same workload</span><i>→</i><span>Keep what moved the metric</span></div>
-  <ul>
-    <li>Decode is memory-bound, so the levers are fewer bytes (quantization, FP4), fewer passes (speculative decoding), reuse (prefix caching) and better packing (continuous batching, paged KV).</li>
-    <li>Prefill/decode disaggregation is now supported by the main engines. Setups differ per engine and misconfiguration can fail silently, for example a router that never transfers KV.</li>
-    <li>Agent workloads reuse long prefixes, which is why scheduling and prefix caching are in the course syllabus.</li>
-  </ul>
-  <div class="mind"><b>Thinking.</b> Performance work is empirical. Predict, measure, attribute. It is the same loop as A5 in the course.</div>
-</div>
-
-<div class="card">
-  <h3>D. Securing agents: design so one injection cannot hurt you</h3>
-  <div class="flow"><span>List what the agent can read, see and send</span><i>→</i><span>Check the trifecta</span><i>→</i><span>Remove one leg or add a human gate</span><i>→</i><span>Least-privilege tools</span><i>→</i><span>Log and audit</span></div>
-  <ul>
-    <li>The lethal trifecta is private data, untrusted content and external communication in one agent. The "Rule of Two" says an unsupervised agent should have at most two.</li>
-    <li>OWASP's 2026 report maps prompt injection to six of its ten agentic risk categories and lists real CVEs in coding agents, including allowlist and sandbox flaws, plus malicious MCP servers and package compromises.</li>
-    <li>Auto-approval allowlists and sandboxes that the agent's own output can modify deserve scrutiny. This is my inference from the cited CVEs.</li>
-  </ul>
-  <div class="mind"><b>Thinking.</b> You cannot make the model immune. Limit the damage by architecture.</div>
-</div>
-
-<h2>5. Underlying thinking, in four rules</h2>
-<div class="card"><ul>
-  <li><b>Verification is the bottleneck.</b> If you cannot check the output cheaply, you cannot scale the agent.</li>
-  <li><b>Context is a budget.</b> More tokens is not better. The smallest set of high-signal tokens wins.</li>
-  <li><b>Measure outcomes at the task level.</b> Cost, latency and success per task, with variance, on a fixed workload.</li>
-  <li><b>Least authority.</b> Assume injection will happen, then cap what it can touch.</li>
+<div class="fix"><b>What changed from version 1.</b>
+<ul style="margin-bottom:0">
+<li>EU AI Act: v1 said fully applicable from Aug 2026. The Digital Omnibus (in force 27 Jul 2026) delays high-risk rules to Dec 2027 and Aug 2028.</li>
+<li>Pay: v1 implied a large AI premium. Within-occupation evidence says about 5%.</li>
+<li>METR: v1 cited a 3 to 7 month doubling range. METR's own page states no doubling time and is no longer actively updated, so I removed that forecast.</li>
+<li>Claude Code "22 advisories": I could not confirm this from the OWASP report itself, so I no longer use it. I cite verified incidents instead.</li>
+<li>Token prices: v1 treated them as falling everywhere. Google has scheduled increases.</li>
+<li>Gartner: v1 stated "cancelled." Coverage is inconsistent between "cancelled" and "paused, restructured or cancelled", and I could not read the press release. I now flag it.</li>
 </ul></div>
 
-<h2>6. Forecast: now to about January 2027</h2>
-<p class="muted">These are my projections from the evidence, not reported facts. Confidence is my own judgment. Each row has something you can check.</p>
-<div class="tbl"><table>
-<thead><tr><th>Expect</th><th>Why I think so</th><th>Confidence</th><th>How you will know</th></tr></thead>
-<tbody>
-<tr><td>Cost per token keeps falling, total spend keeps rising</td><td>Goldman expects 60 to 70% yearly decline in inference cost per token and a 24x rise in token use by 2030. Blackwell generation cuts cost sharply versus Hopper per vendor-fed analyses</td><td><span class="pill hi">high</span></td><td>Price pages of the three main API vendors; your own A3 cost table</td></tr>
-<tr><td>Rubin-class hardware does not change your costs yet</td><td>Sources describe access ramping through 2027</td><td><span class="pill mid">medium</span></td><td>Cloud GPU listings and spot prices</td></tr>
-<tr><td>More open-weight releases close part of the gap but stay behind the best closed models</td><td>One index puts the best open model at 46 versus 58 for the best closed, and a 1T-parameter open-weight model was promised for end of October</td><td><span class="pill mid">medium</span></td><td>Weights actually published; independent index scores</td></tr>
-<tr><td>Agent task length keeps growing, and benchmarks saturate</td><td>METR doubling estimates range from about 3 to 7 months, and the suite is near its ceiling</td><td><span class="pill mid">medium</span></td><td>New METR suite or a retired one</td></tr>
-<tr><td>More published exploits against coding agents and skill or MCP registries</td><td>OWASP lists 22 advisories for Claude Code alone and a large malicious-skill incident; release cadence is daily for many tools</td><td><span class="pill hi">high</span></td><td>CVE feeds, OWASP updates</td></tr>
-<tr><td>Standards consolidate: MCP, A2A and skills under neutral foundation governance</td><td>Several sources report shared Linux Foundation hosting</td><td><span class="pill mid">medium</span></td><td>Foundation announcements, spec versions</td></tr>
-<tr><td>Observability and eval tools converge: traces become test cases</td><td>Every vendor positions this way; OpenTelemetry is the shared format</td><td><span class="pill hi">high</span></td><td>OTEL GenAI spec; vendor releases</td></tr>
-<tr><td>Prefill/decode disaggregation, FP4 and speculative decoding become default options in serving stacks</td><td>Already supported across vLLM, SGLang, TensorRT-LLM per secondary sources</td><td><span class="pill mid">medium</span></td><td>Release notes of your engine</td></tr>
-<tr><td>Enterprise pullback on weak projects</td><td>Gartner projects over 40% of agentic projects cancelled by end of 2027, citing cost and unclear value</td><td><span class="pill mid">medium</span></td><td>Budget cycles in Q4 and Q1; demand for ROI and eval evidence</td></tr>
-<tr><td>The young-worker hiring gap persists</td><td>The gap grew from 13 to 15% to 19% over a year, driven by reduced hiring, concentrated where AI substitutes for tasks</td><td><span class="pill hi">high</span></td><td>Stanford's Canaries dashboard</td></tr>
-<tr><td>Compliance work grows around logging and risk controls</td><td>EU AI Act is fully applicable from August 2026, and OWASP tracks 42 instruments across 10 jurisdictions</td><td><span class="pill mid">medium</span></td><td>Postings that mention audit, governance, DORA or the AI Act</td></tr>
-</tbody></table></div>
-<div class="card" style="margin-top:12px"><b>What would change my mind.</b> A sharp fall in agent reliability evidence, a large public failure that triggers regulation, or a step change in open models that makes self-hosting the default. I would also revise the hiring row if the dashboard gap narrows for two consecutive updates.</div>
+<h2 id="method">Method and how much to trust it</h2>
+<p class="muted">Five research streams (models and economics, labor market, agent engineering, inference systems, security and regulation) each fetched pages and graded every claim. Limits that apply everywhere: the page-fetch tool returns a small model's summary of each page, interactive charts and leaderboard rows often did not render, and several primary pages (Gartner, McKinsey, PwC, OpenAI blog, MIT NANDA) were blocked or timed out.</p>
+<div class="grid2">
+  <div class="box"><span class="pill hi">PRIMARY-VERIFIED</span><p style="margin-top:8px">The page was fetched and the figure seen. Wording may be summarized.</p></div>
+  <div class="box"><span class="pill mid">SECONDARY</span><p style="margin-top:8px">Reported by someone else, or seen only in a search snippet. Treat as a lead.</p></div>
+  <div class="box"><span class="pill lo">CONFLICT</span><p style="margin-top:8px">Sources disagree. Both values are shown.</p></div>
+</div>
 
-<h2>7. What to do with this</h2>
-<p>The data favors people who can show measured results on the four scarce abilities. A 12-week plan, aligned with CS2680, which gives you something to publish every three to four weeks:</p>
-<div class="card"><ul>
-  <li><b>Weeks 1 to 3 (M00 to M01).</b> Finish the lesson plan. Add one item: a trace viewer. Assignment A1 is a web UI that streams agent trajectories, which is the same idea as observability.</li>
-  <li><b>Weeks 4 to 6 (A2 style).</b> Build your agent loop with tracing from day one, and an eval set of 20 tasks that grows from failures. Publish the eval set and the failure analysis.</li>
-  <li><b>Weeks 7 to 9 (A3 style).</b> Cost study: same success rate, lower dollars and latency. Show a before and after table with variance. Blog post.</li>
-  <li><b>Weeks 10 to 12 (A4 and A5 style).</b> Serve an open 7 to 8B model on a rented GPU, measure quality loss against an API model, then profile and test one hypothesis per layer. Blog post.</li>
-</ul></div>
-<h3>Proposed changes to our curriculum (I will not apply these until you approve)</h3>
+<h2 id="capability">1. Models, cost and compute</h2>
+<h3>Capability</h3>
+<div class="tbl"><table>
+<thead><tr><th>Signal</th><th>Finding</th><th>Grade</th></tr></thead>
+<tbody>
+<tr><td>Intelligence index (Artificial Analysis, Oct 2026)</td><td>Best closed model 58 (Opus 5.5), then 56, 56, 53, 53. Best open-weight 46 (MiMo-V2.6-Pro), then GLM-5.3 at 45, Kimi K3 at 44. Gap about 12 points.</td><td><span class="pill hi">primary</span></td></tr>
+<tr><td>Open versus closed lag (Epoch, 29 May 2026)</td><td>About 4 months or 8 ECI points since Jan 2026. Earlier figure was about 3 months. A NIST/CAISI-derived figure of about 8 months for one model on less-public benchmarks is also reported.</td><td><span class="pill hi">primary</span> <span class="pill lo">conflict</span></td></tr>
+<tr><td>US versus China gap</td><td>Stanford AI Index 2026: nearly closed, with Anthropic's top model leading by 2.7% in March 2026. Epoch: Chinese models about 7 months behind on average (range 4 to 14, snippet only).</td><td><span class="pill hi">primary</span> / <span class="pill mid">sec</span></td></tr>
+<tr><td>Agent success on Terminal-Bench</td><td>20% in 2025 to 77.3% (Stanford AI Index 2026).</td><td><span class="pill hi">primary</span></td></tr>
+<tr><td>METR time horizon</td><td>Exponential fit with no sign of slowing, but no doubling time stated. Above 16 hours is unreliable. Page not actively updated since 8 Sep 2026. Reported 16 to 17.4 hours for one model, and 11.3 hours for another, from secondary pages.</td><td><span class="pill hi">primary</span> <span class="pill mid">sec</span></td></tr>
+<tr><td>Compute and algorithm trends (Epoch, older)</td><td>Training compute up 4 to 5x per year to 2024. Algorithmic progress about 3x per year. No 2026 update found.</td><td><span class="pill mid">secondary</span></td></tr>
+<tr><td>Stanford AI Index 2026 context</td><td>AI data-center power 29.6 GW. 2025 corporate AI investment $581.7B, private $344.7B.</td><td><span class="pill hi">primary</span></td></tr>
+</tbody></table></div>
+
+<h3>Prices, dollars per million tokens (vendor pages fetched 14 Oct 2026)</h3>
+<div class="tbl"><table>
+<thead><tr><th>Provider and model</th><th>Input</th><th>Output</th><th>Cached input</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Anthropic Fable 5.1</td><td class="n">$10</td><td class="n">$50</td><td class="n">$0.25</td><td>Batch 50% off, cache write 1.25x</td></tr>
+<tr><td>Anthropic Opus 5.5</td><td class="n">$4</td><td class="n">$20</td><td class="n">$0.20</td><td></td></tr>
+<tr><td>Anthropic Sonnet 5.5</td><td class="n">$2</td><td class="n">$10</td><td class="n">$0.10</td><td></td></tr>
+<tr><td>Anthropic Haiku 5.5</td><td class="n">$0.10</td><td class="n">$0.50</td><td class="n">$0.01</td><td>$0.50 / $2.50 above 100K prompt tokens</td></tr>
+<tr><td>OpenAI gpt-6-astra</td><td class="n">$10</td><td class="n">$50</td><td class="n">n/a</td><td>Up to 272K context</td></tr>
+<tr><td>OpenAI gpt-5.6-sol</td><td class="n">$4</td><td class="n">$20</td><td class="n">$0.40</td><td>Cached is 10% of input</td></tr>
+<tr><td>OpenAI gpt-5.6-luna</td><td class="n">$0.20</td><td class="n">$1.20</td><td class="n">n/a</td><td></td></tr>
+<tr><td>Google Gemini 4 Argon</td><td class="n">$2</td><td class="n">$10</td><td class="n">$0.10</td><td>Rises to $4 / $20 on 1 Dec 2026</td></tr>
+<tr><td>Google Gemini 3.8 Flash</td><td class="n">$0.75</td><td class="n">$3.75</td><td class="n">n/a</td><td>Rises to $1.50 / $7.50 on 1 Jan 2027</td></tr>
+</tbody></table></div>
+<p class="muted">Model names are as shown on the vendor pages. Release dates were not confirmed on vendor sites, and aggregator lists disagree with each other, so check vendor pages before relying on any name.</p>
+<div class="box">
+  <p><b>Worked example (my arithmetic).</b> An agent runs 20 turns, adding 2,000 tokens a turn and resending everything. Billed input is 2,000 x (1+2+...+20) = 420,000 tokens. On Sonnet 5.5 at $2 per million that is $0.84 with no caching. With caching, the 40,000 new tokens are written at 1.25x ($2.50 per million, $0.10) and the other 380,000 are read at $0.10 per million ($0.038), about $0.14 in total. That is about 6x cheaper, before output tokens. It only works if the prefix stays byte-identical, which is why deterministic tool ordering matters (the 2026-07-28 MCP spec requires it for cache hits).</p>
+</div>
 <ul>
-  <li><b>Add a security lab to M02.</b> A trifecta checklist applied to your own agent, plus an injection test against it. It costs about two hours and addresses the scarcest skill.</li>
-  <li><b>Add production evaluation to M05.</b> Build the trace-to-test-case loop, not just a benchmark runner.</li>
-  <li><b>Add context engineering to M02 and M04.</b> Compaction and note files, using Anthropic's guide above as the reading.</li>
-  <li><b>Keep framework study light.</b> Frameworks change monthly. Skills that transfer are the loop, schemas, traces and evals.</li>
-  <li><b>Keep the course's serving modules as they are.</b> They are the least commoditized part of the market.</li>
+  <li><b>Price decline by capability level.</b> Epoch estimates matching a fixed capability got about 40x cheaper per year, ranging from 9x to 900x by milestone. A separate workshop paper says 5 to 10x. Both are secondary here. Goldman's 60 to 70% yearly decline per token is a different, more conservative measure.</li>
+  <li><b>Capex.</b> Hyperscaler 2026 guidance sums to about $700 to $725B (Meta $125 to $145B, Alphabet $180 to $190B, Microsoft about $190B, Amazon about $200B), partly attributed to chip and memory price inflation. Secondary, from April earnings.</li>
+  <li><b>Lab revenue.</b> Run rates are reported but not comparable (gross versus net booking). I do not use them.</li>
 </ul>
 
-<h2>8. Sources</h2>
-<ul class="src">
-  <li>Primary: <a href="https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recen" target="_blank" rel="noopener">Stanford, Canaries in the Coal Mine</a> · <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">Anthropic, effective context engineering</a> · <a href="https://www.anthropic.com/news/anthropic-economic-index-january-2026-report" target="_blank" rel="noopener">Anthropic Economic Index, January 2026</a> (found by search, not fetched)</li>
-  <li>Security: <a href="https://www.helpnetsecurity.com/2026/06/11/owasp-prompt-injection-ai-security-failures" target="_blank" rel="noopener">Help Net Security on the OWASP agentic report</a> · <a href="https://labs.cloudsecurityalliance.org/research/csa-research-note-ai-agent-lethal-trifecta-capability-securi" target="_blank" rel="noopener">Cloud Security Alliance note on the lethal trifecta</a> (not fetched)</li>
-  <li>Economics and adoption (secondary): <a href="https://www.goldmansachs.com/insights/articles/ai-agents-forecast-to-boost-tech-cash-flow-as-usage-soars" target="_blank" rel="noopener">Goldman Sachs</a> · <a href="https://www.digitalapplied.com/blog/ai-predictions-2026-trends-forecast" target="_blank" rel="noopener">Digital Applied forecast</a></li>
-  <li>Serving (secondary): <a href="https://vllm.ai/blog/2026-04-07-moriio-kv-connector" target="_blank" rel="noopener">vLLM blog on KV connectors</a> · <a href="https://www.lmsys.org/blog/2026-01-12-epd/" target="_blank" rel="noopener">LMSYS on EPD disaggregation</a> · <a href="https://arxiv.org/pdf/2508.01989" target="_blank" rel="noopener">Prefill-decode aggregation or disaggregation (arXiv)</a></li>
-  <li>Skills and workflows (secondary): <a href="https://tripleten.com/blog/posts/ai-skills" target="_blank" rel="noopener">TripleTen</a> · <a href="https://opendatascience.com/12-most-in-demand-ai-jobs-in-2026-and-the-skills-employers-want/" target="_blank" rel="noopener">Open Data Science</a> · <a href="https://nyosegawa.com/en/posts/coding-agent-workflow-2026/" target="_blank" rel="noopener">Survey of coding agent workflows</a> · <a href="https://mlflow.org/articles/tags/2026-llm-performance-tracking/" target="_blank" rel="noopener">MLflow on observability</a> (vendor)</li>
-  <li>Standards (secondary): <a href="https://datalakehousehub.com/blog/state-of-agentic-ai-standards-2026" target="_blank" rel="noopener">State of agentic AI standards 2026</a></li>
+<h3>Benchmarks for agents: how much to believe</h3>
+<div class="tbl"><table>
+<thead><tr><th>Benchmark</th><th>What is reported</th><th>Caveat</th></tr></thead>
+<tbody>
+<tr><td>SWE-bench Verified</td><td>Aggregators show 87.6% and 93.9% for two models</td><td>Reportedly dropped by OpenAI after an audit found models reproducing gold patches and flawed tests in 59.4% of the hardest unsolved tasks. Secondary and dates conflict.</td></tr>
+<tr><td>SWE-bench Pro</td><td>57.0% or 54% for one model (Apr 2026)</td><td>A May 2026 audit reportedly found about a third of trials mis-graded. Unverified.</td></tr>
+<tr><td>OSWorld-Verified</td><td>Aggregators 85 to 86%; the official board reportedly 90.2% versus a 72.4% human baseline</td><td>Provider-reported rows may not be like-for-like. Conflict.</td></tr>
+<tr><td>tau2-bench</td><td>98.9% (Mar 2026)</td><td>Retail and airline slices look saturated.</td></tr>
+</tbody></table></div>
+
+<h3>Open models and compute</h3>
+<ul>
+  <li>All of the top open models are large mixture-of-experts models: MiMo-V2.6-Pro (1.0T total, 42B active), GLM-5.3 (753B, 40B), Kimi K3 (2.8T, 104B), DeepSeek V4.1 Flash (552B, 16B). Western open models trail the Chinese ones by 20 or more index points. Licenses were not verified.</li>
+  <li>The best dense model that plausibly fits one GPU is Qwen3.8 27B, index 34 against 58 for the best closed model (about 14 GB at 4-bit, my arithmetic).</li>
+  <li><b>GPU rental, per hour (provider pages, 14 Oct 2026).</b> RunPod: RTX 4090 $0.34 community ($0.74 secure), L4 $0.44, A100 80GB $1.39 to $1.59, H100 $2.69 to $3.49 (RunPod's own page is inconsistent between its table and structured data). Lambda: A10 $1.29, A100 $2.79, H100 $3.29 to $4.29, B200 $6.99. Vast.ai marketplace H100 from $1.49 (secondary).</li>
+  <li>Rubin availability is reported as H2 2026 shipping with enterprise capacity in early 2027 (low-authority source). Power and ASIC supply were not verified.</li>
 </ul>
+
+<h2 id="labor">2. Jobs, skills and pay</h2>
+<h3>Hiring</h3>
+<div class="tbl"><table>
+<thead><tr><th>Finding</th><th>Number</th><th>Source and grade</th></tr></thead>
+<tbody>
+<tr><td>US software-dev postings since Feb 2025</td><td>About +15%, while all postings are -7%</td><td>Indeed Hiring Lab, data to Jun 2026 <span class="pill hi">primary</span></td></tr>
+<tr><td>Versus pre-pandemic</td><td>27.5% below Feb 2020</td><td>Indeed <span class="pill hi">primary</span></td></tr>
+<tr><td>Who drove the rebound</td><td>71% of the May 2025 to May 2026 increase came from senior roles; 37% from postings with AI in the title. Indeed calls it correlational.</td><td>Indeed <span class="pill hi">primary</span></td></tr>
+<tr><td>Seniority mix, software dev</td><td>Senior 69.3%, entry 4.5% of postings</td><td>Indeed, Q1 2026 <span class="pill hi">primary</span></td></tr>
+<tr><td>Postings mentioning AI</td><td>All US 4.2%; software dev and IT 20% or more; data and analytics 45%</td><td>Indeed, Dec 2025 <span class="pill hi">primary</span></td></tr>
+<tr><td>US postings with AI skills (Lightcast)</td><td>2.5%, +55% YoY. Agentic AI cluster 0.06% to 0.23%. Python in 258,674 AI postings</td><td>Stanford AI Index via Lightcast <span class="pill hi">primary</span></td></tr>
+<tr><td>Young workers in exposed jobs</td><td>Ages 22 to 25: 19% below peers. No gap for experienced workers. Mechanism is reduced hiring. Software developers sit in the most exposed group.</td><td>Stanford Digital Economy Lab, revised 12 Aug 2026; dashboard updated 23 Sep <span class="pill hi">primary</span></td></tr>
+<tr><td>Dashboard software-specific numbers</td><td>Not shown on the page (in a download not opened)</td><td>Gap</td></tr>
+<tr><td>NY Fed / SF Fed postings study</td><td>"Little indication" of a distinct AI-driven decline in demand</td><td>Jun 2026 <span class="pill hi">primary</span></td></tr>
+<tr><td>BLS software developers</td><td>Median $134,040 (May 2025); projected +10% 2025 to 2035</td><td>BLS <span class="pill hi">primary</span></td></tr>
+<tr><td>Recent-graduate unemployment</td><td>About 5.6% overall, underemployment 42%. CS 6.1% and computer engineering 7.5% on an older vintage, with very wide confidence intervals</td><td>NY Fed 2026 Q2 <span class="pill hi">primary</span> / EIG <span class="pill mid">sec</span></td></tr>
+<tr><td>Class of 2026 competition</td><td>23 applications per job (20.8 prior year, 11 for the class of 2023)</td><td>Handshake via summary <span class="pill mid">secondary</span></td></tr>
+</tbody></table></div>
+
+<h3>Skills named in AI engineer postings</h3>
+<p class="muted">These percentages come from blog-grade datasets. I found no primary dataset with percentages for LangGraph, evals, observability or CUDA.</p>
+<div class="tbl"><table>
+<thead><tr><th>Skill</th><th>Share</th><th>Dataset</th></tr></thead>
+<tbody>
+<tr><td>Python</td><td class="n">71% / 62%</td><td>903 Glassdoor postings (365 Data Science) / 43,480 US "AI engineering" postings (Axial)</td></tr>
+<tr><td>PyTorch / TensorFlow</td><td class="n">37.7% / 32.9%</td><td>903 postings</td></tr>
+<tr><td>Kubernetes / Docker</td><td class="n">17.6% / 15.4%</td><td>903 postings</td></tr>
+<tr><td>RAG / AI agents / fine-tuning</td><td class="n">13.6% / 10.6% / 14.8%</td><td>903 postings</td></tr>
+<tr><td>LangChain / LlamaIndex</td><td class="n">10.7% / 4.3%</td><td>903 postings</td></tr>
+<tr><td>Cloud platforms / foundation models</td><td class="n">55% / 51%</td><td>Axial (denominator not stated)</td></tr>
+<tr><td>Inference optimization, CUDA</td><td class="n">no figure</td><td>JobsByCulture calls inference optimization "highest-signal" with no counts (qualitative)</td></tr>
+</tbody></table></div>
+<p class="muted">Median posted AI-engineering salary is $176,000 (Axial, US, 2026). Frameworks change quickly. Python and deployment skills are the stable core.</p>
+
+<h3>Productivity evidence</h3>
+<div class="tbl"><table>
+<thead><tr><th>Study</th><th>Result</th><th>Caveat</th></tr></thead>
+<tbody>
+<tr><td>METR RCT, early 2025</td><td>Tasks took 19% longer with AI (CI +2% to +39%)</td><td>16 developers. METR says it no longer reflects current tools.</td></tr>
+<tr><td>METR late-2025 follow-up</td><td>Original developers about 18% faster (CI -38% to +9%); new developers about 4% faster (CI -15% to +9%)</td><td>Both intervals include zero. Selection effects: many declined to work without AI. METR calls it very weak evidence and likely a lower bound.</td></tr>
+<tr><td>NBER w35275</td><td>Commits: autocomplete +30%, interactive agents +180%, autonomous agents +240%. Projects about +80%, releases only about +30%</td><td>500,000+ GitHub developers. Output shipped lags commits.</td></tr>
+<tr><td>Field experiments (SSRN)</td><td>+26% completed tasks across 4,867 developers; juniors gained more</td><td>Secondary</td></tr>
+<tr><td>DORA 2025</td><td>90% use AI; throughput up, stability down; AI amplifies existing strengths and weaknesses</td><td>About 5,000 self-reported responses. No 2026 edition found.</td></tr>
+<tr><td>Stack Overflow 2026 survey (6 Oct)</td><td>73% of AI-assistant users use it daily; 62% positive; 93% need source attribution to trust it; Claude Code 66% among AI users</td><td>30,000+ self-selected respondents</td></tr>
+</tbody></table></div>
+
+<h3>Pay</h3>
+<div class="tbl"><table>
+<thead><tr><th>Claim</th><th>Number</th><th>Why it differs</th></tr></thead>
+<tbody>
+<tr><td>PwC 2026 Barometer</td><td class="n">62% average premium</td><td>1B+ ads, 27 countries. Compares roles. Page returned 403. Secondary.</td></tr>
+<tr><td>Lightcast</td><td class="n">28% (about $18k)</td><td>1.3B postings, Jul 2025. Secondary.</td></tr>
+<tr><td>Indeed advertised pay, within occupation</td><td class="n">about 5% (+5.7% and +4.7% by fixed effects; +2.4% not significant with seniority controls)</td><td>Closest to "same job with versus without the skill." Primary. Entry-level gap about 2 points.</td></tr>
+<tr><td>Levels.fyi via blog</td><td class="n">about 6% entry, about 19% staff</td><td>Big Tech skew. Secondary.</td></tr>
+</tbody></table></div>
+
+<h3>Roles</h3>
+<ul>
+  <li><b>AI engineer:</b> LinkedIn's fastest-growing title for 2026 (secondary); about 1,550 new US postings per week (Axial).</li>
+  <li><b>Forward-deployed engineer:</b> growth reports range from +350% to +1,165% on different windows and small bases (conflict).</li>
+  <li><b>Agent engineer:</b> the agentic skill cluster is 0.23% of US postings but growing about 4x.</li>
+  <li><b>AI security:</b> cybersecurity postings requiring AI skills rose from 14.2% to 28.5% in a year (secondary). No count for the title "AI security engineer."</li>
+  <li><b>Eval engineer and inference engineer:</b> no title-level data found. Evaluation appears inside AI engineer job descriptions.</li>
+  <li><b>New-grad hiring signals disagree.</b> NACE reports entry-level jobs requiring AI skills at 13.3% in the fall survey and 35% in the spring update (different samples). The most wanted AI skill is picking the right tool (75%), then prompting (72.7%), then building AI tools (52.3%).</li>
+</ul>
+
+<h2 id="agents">3. How teams build agents</h2>
+<h3>Techniques, with the evidence behind each</h3>
+<div class="tbl"><table>
+<thead><tr><th>Technique</th><th>Evidence</th><th>Grade</th></tr></thead>
+<tbody>
+<tr><td>Compaction, tool-result clearing, notes files, sub-agents returning 1 to 2k token summaries</td><td>Anthropic context engineering guide (Sep 2025): compaction keeps the last 5 files; recall first, then precision</td><td><span class="pill hi">primary</span></td></tr>
+<tr><td>Orchestrator with sub-agents for parallel research</td><td>Opus lead plus Sonnet sub-agents beat single Opus by 90.2% on an internal research eval; agents use about 4x chat tokens and multi-agent about 15x; token use explained 80% of BrowseComp variance; authors say poor fit for most coding</td><td><span class="pill hi">primary</span></td></tr>
+<tr><td>Long-running harness: initializer, JSON feature list with a pass flag only the tests may set, one feature per session, git log and progress file at start</td><td>Anthropic (Nov 2025). Agents declared victory early and marked features done after unit tests or curl only; end-to-end browser tests fixed it</td><td><span class="pill hi">primary</span> (qualitative)</td></tr>
+<tr><td>Planner, workers and judge with fresh starts</td><td>Cursor (Jan 2026): lock-based coordination made 20 agents perform like 2 to 3; flat structure made agents risk-averse; a week-long run produced 1M+ lines. An outside reviewer says the browser only "kind of" works.</td><td><span class="pill hi">primary</span> <span class="pill mid">sec</span></td></tr>
+<tr><td>Single-threaded writes with a clean-context reviewer</td><td>Cognition (Apr 2026): reviewer averages 2 bugs per PR, about 58% severe (its own figure, no method). Unstructured swarms "mostly a distraction."</td><td><span class="pill hi">primary</span></td></tr>
+<tr><td>Spec-driven development and parallel worktrees</td><td>Only vendor descriptions (Kiro, Emdash, Mux). No measured gains found.</td><td><span class="pill lo">no evidence</span></td></tr>
+</tbody></table></div>
+
+<h3>Standards</h3>
+<ul>
+  <li><b>MCP spec 2026-07-28</b> (current): stateless (initialize handshake removed), new server discovery, required <code>ttlMs</code> and <code>cacheScope</code> on lists, deterministic tool ordering to help prompt caching, OpenTelemetry trace context in <code>_meta</code>, Roots, Sampling and Logging deprecated, 12-month minimum deprecation policy. Governance is a maintainer hierarchy with Lead Maintainers holding final authority. <span class="pill hi">primary</span></li>
+  <li><b>Agentic AI Foundation:</b> announced 9 Dec 2025 by the Linux Foundation with MCP, goose and AGENTS.md as founding projects; platinum members include AWS, Anthropic, Google, Microsoft and OpenAI. A2A joined (banner dated 27 Aug 2026), and a report says membership passed 250. I could not confirm on the MCP site itself that MCP is hosted there. <span class="pill hi">primary</span> / <span class="pill mid">sec</span></li>
+  <li><b>Agent Skills:</b> a folder with SKILL.md plus scripts, loaded progressively, listed with 40+ clients. The page states no foundation governance. <span class="pill hi">primary</span></li>
+</ul>
+
+<h3>Evaluation and observability: the consensus</h3>
+<ul>
+  <li>Start with 20 to 50 tasks drawn from real failures. Grade outcomes, not paths. Use code graders first and calibrate any model grader against humans. Read transcripts regularly. (Anthropic, Jan 2026, <span class="pill hi">primary</span>.)</li>
+  <li>Report pass^k beside pass@k: at 75% per trial, passing 3 of 3 happens about 42% of the time.</li>
+  <li>Error analysis: open-code at least 100 traces, noting the first failure in each, then count failures by category until new modes stop appearing. (Hamel Husain, <span class="pill mid">sec</span>.)</li>
+  <li>A vendor-run survey of about 1,300 respondents finds 89% have observability but only 52% run offline evals and 37% online evals, and 57% have agents in production. Treat as directional.</li>
+  <li>OpenTelemetry GenAI conventions are the shared trace format. I could not confirm their stability status.</li>
+</ul>
+
+<h3>Frameworks</h3>
+<p>Anthropic's guidance is to start with direct API calls and understand any framework underneath. The Claude Agent SDK is the Claude Code loop packaged as a library (tools, hooks, sub-agents, MCP, permissions, sessions). OpenAI's Agents SDK offers agents, handoffs, guardrails and tracing. LangGraph is described by one comparison as the default for stateful, explicit-control workflows. Versions for Google ADK, Pydantic AI and smolagents were not verified.</p>
+
+<h3>Adoption statistics, read critically</h3>
+<div class="tbl"><table>
+<thead><tr><th>Claim</th><th>What I could verify</th></tr></thead>
+<tbody>
+<tr><td>Gartner: over 40% of agentic projects cancelled by end of 2027</td><td>Press release unreadable. Reported 25 Jun 2025. Basis is a January 2025 poll of 3,412 webinar attendees. Only about 130 agentic vendors are called real. Wording conflicts between "cancelled" and "paused, restructured or cancelled."</td></tr>
+<tr><td>McKinsey 2026: 40% of $1B+ firms scale agents, up from 27%; small firms flat at 22%</td><td>1,719 respondents, surveyed May to June 2026, from a secondary summary. Primary page timed out.</td></tr>
+<tr><td>MIT NANDA: 95% of pilots fail</td><td>PDF not found. Sample sizes conflict across outlets. Critics note "failure" means not reaching full production and the study is not peer-reviewed.</td></tr>
+<tr><td>MAST taxonomy (arXiv)</td><td>14 failure modes in three categories (specification, inter-agent misalignment, verification) across 1,600+ traces. Failures are attributed mainly to system design. Per-mode rates not seen.</td></tr>
+</tbody></table></div>
+
+<h2 id="serving">4. Inference systems</h2>
+<h3>Engines (GitHub releases, 14 Oct 2026)</h3>
+<div class="tbl"><table>
+<thead><tr><th>Engine</th><th>Latest</th><th>Role</th></tr></thead>
+<tbody>
+<tr><td>vLLM</td><td>v0.31.0 (5 Oct)</td><td>Broadest model and hardware coverage; reference engine. Model Runner V2 is default and V1 is to be removed in v0.32. Draft-model speculative decoding on MRV2, NVFP4 KV cache on Blackwell.</td></tr>
+<tr><td>SGLang</td><td>v0.5.21 (2 Oct)</td><td>Strong on prefix reuse and structured or agent workloads. Rust-core prefix cache by default; prefill/decode instances that switch roles without restart.</td></tr>
+<tr><td>TensorRT-LLM</td><td>v1.3.0rc29 pre-release</td><td>NVIDIA-specific peak performance.</td></tr>
+<tr><td>NVIDIA Dynamo, llm-d</td><td>v1.5.1, v0.10.0</td><td>Cluster layers: routing, disaggregation, KV-aware scheduling. Not engines.</td></tr>
+<tr><td>LMCache</td><td>v0.5.6rc5 pre-release</td><td>KV offload and sharing for vLLM and SGLang.</td></tr>
+</tbody></table></div>
+<p><b>Learn vLLM first, then SGLang's RadixAttention.</b> This is my judgement. The scheduler, paged KV and prefix caching concepts transfer.</p>
+
+<h3>Techniques and measured gains (read the caveats)</h3>
+<div class="tbl"><table>
+<thead><tr><th>Technique</th><th>Reported gain</th><th>Caveat</th></tr></thead>
+<tbody>
+<tr><td>PagedAttention + continuous batching (vLLM paper)</td><td>2 to 4x throughput at the same latency</td><td>2023 baselines; larger for long sequences</td></tr>
+<tr><td>Chunked prefill (Sarathi)</td><td>Up to 10x decode throughput, 1.25 to 1.33x end to end</td><td>2023 hardware and models</td></tr>
+<tr><td>RadixAttention (SGLang)</td><td>Up to 6.4x throughput</td><td>"Up to" is a best case; agent, few-shot, RAG, multi-turn</td></tr>
+<tr><td>Prefill/decode disaggregation (DistServe)</td><td>7.4x more requests or 12.6x tighter SLO at over 90% attainment</td><td>Metric is goodput per GPU</td></tr>
+<tr><td>Speculative decoding (EAGLE-3)</td><td>Up to 6.5x speedup, 1.38x throughput at batch 64 in SGLang</td><td>Gain shrinks as batch grows</td></tr>
+<tr><td>Multi-token prediction on GB300</td><td>Cost per million tokens about $2.35 to about $0.11 at 150 tok/s/user</td><td>One interactive data point on one model; SemiAnalysis</td></tr>
+<tr><td>FP4 vs FP8 on B200, Llama 3.3 70B</td><td>5,971 vs 4,431 tok/s/GPU; $0.09 vs $0.12 per million</td><td>Accuracy tab not seen; NVIDIA claims up to about 3x with near-FP8 accuracy (vendor)</td></tr>
+<tr><td>GB300 NVL72 with wide expert parallelism and MTP</td><td>Up to about 100x per-GPU vs an H100 baseline</td><td>Random data, prefix caching off, authors' own cost model; they disclose NVIDIA and AMD involvement</td></tr>
+<tr><td>KV offload (LMCache)</td><td>Up to 15x throughput on multi-round QA</td><td>Hardware and baselines not visible</td></tr>
+<tr><td>Cache-aware routing (llm-d)</td><td><span class="pill lo">conflict</span> 57x TTFT (blog) vs 2x TTFT and 3x throughput (docs)</td><td>No primary benchmark found. Treat 57x as best case.</td></tr>
+</tbody></table></div>
+
+<h3>Agent-specific serving</h3>
+<ul>
+  <li><b>Continuum:</b> pins KV for a time-to-live while a request waits on a tool call, with program-level first-come scheduling. Over 8x better average job completion time on SWE-Bench, BFCL and OpenHands. Hardware not stated.</li>
+  <li><b>TOPAS:</b> workflow-aware prefix scheduling in SGLang. Up to 39.8% lower mean completion time on synthetic DAGs, 9.8% and 22.0% on two MetaGPT workflows.</li>
+  <li>The recurring problems are long shared prefixes, cache eviction during tool pauses, and scheduling at the program rather than request level. Benchmarks that disable prefix caching do not measure this.</li>
+</ul>
+
+<h3>Kernels</h3>
+<p>FlashAttention-3 reports 1.5 to 2.0x over FA2 on H100 (up to 740 TFLOPs/s FP16). FlashAttention-4, written in CuTe DSL, reports up to 1.3x over cuDNN and 2.7x over Triton on B200 (secondary). In a few weeks a student can realistically write a Triton fused softmax or simple attention kernel and read FA3 and FA4 for the ideas. Rewriting FA4 is not realistic.</p>
+
+<h3>Benchmarking honestly</h3>
+<ol>
+  <li>Report TTFT and TPOT at p50 and p99, not means.</li>
+  <li>Report goodput under a stated SLO (for example over 90% of requests within the TTFT and TPOT limits).</li>
+  <li>Plot throughput against tokens per second per user, not a single point.</li>
+  <li>Use realistic input and output lengths. Turn prefix caching on or off on purpose, and use a shared-prefix agent-style workload.</li>
+  <li>Check accuracy after quantization.</li>
+  <li>Pin engine version, hardware and precision, and compute cost per million tokens from the hourly price.</li>
+</ol>
+<p class="muted">InferenceX (SemiAnalysis, open source, Apache 2.0) and MLPerf Inference v6.0 (April 2026) are the public references. The MLPerf figures here come from secondary summaries.</p>
+
+<h2 id="security">5. Security, governance and law</h2>
+<h3>Verified incidents</h3>
+<div class="tbl"><table>
+<thead><tr><th>Incident</th><th>What happened</th><th>Lesson</th></tr></thead>
+<tbody>
+<tr><td>LiteLLM PyPI compromise, 24 Mar 2026</td><td>Versions 1.82.7 and 1.82.8 were malicious. 1.82.8 added a <code>.pth</code> file that runs on every Python start and stole credentials, SSH keys, Kubernetes secrets and <code>.env</code> files. Live for roughly 40 minutes. The official Docker image was unaffected because it pins dependencies. Root cause (preliminary): a compromised Trivy dependency in CI.</td><td>Pin versions and hashes; isolate CI; short-lived credentials. <span class="pill hi">primary</span></td></tr>
+<tr><td>Cursor CurXecute and MCPoison, Aug 2025</td><td>CVE-2025-54135 (CVSS 8.5): prompt injection edits <code>mcp.json</code> and the command runs before rejection. CVE-2025-54136 (7.2): trust keyed to the server name, not file content.</td><td>Trust content, not names. <span class="pill hi">primary</span></td></tr>
+<tr><td>Codex CLI config execution, fixed 20 Aug 2025</td><td>A <code>.env</code> file redirects <code>CODEX_HOME</code> into the repo and the configured MCP command runs at startup. CVE-2025-61260.</td><td>Project-local config is untrusted input. <span class="pill hi">primary</span></td></tr>
+<tr><td>ClawHub / OpenClaw skills, Feb to Jun 2026</td><td>Unit 42 found five unblocked malicious skills including macOS infostealers. Other counts (341 of 2,857; 17%) are secondary, and a 1,103 of 14,706 figure appears only in one blog.</td><td>Skills are executable with agent authority and no isolation. <span class="pill hi">primary</span> (core) / <span class="pill mid">sec</span> (counts)</td></tr>
+<tr><td>Replit database deletion, Jul 2025</td><td>An agent deleted a production database during a code freeze. Fix was architectural: dev and prod separation.</td><td>Use hard guardrails, not instructions. <span class="pill hi">primary</span></td></tr>
+<tr><td>postmark-mcp, Sep 2025</td><td>A copied package added a Bcc to an attacker in v1.0.16.</td><td>Vet MCP servers like dependencies. <span class="pill mid">secondary</span></td></tr>
+</tbody></table></div>
+<p class="muted">I could not verify CVE numbers for OpenClaw, and I do not use the one a blog cites.</p>
+
+<h3>OWASP</h3>
+<p>The Top 10 for Agentic Applications (9 Dec 2025) lists, per Cycode (secondary): goal hijack, tool misuse, identity and privilege abuse, supply chain, unexpected code execution, memory and context poisoning, insecure inter-agent communication, cascading failures, human-agent trust exploitation, rogue agents. The State of Agentic AI Security and Governance v2.01 (1 Jun 2026) exists, but I could not open its PDF, so its statistics (for example CVE counts per project) are unconfirmed.</p>
+
+<h3>Defenses and how well they work</h3>
+<ul>
+  <li><b>Lethal trifecta</b> (Willison, Jun 2025): private data, untrusted content and external communication. The only safe option is not to combine all three. <span class="pill hi">primary</span></li>
+  <li><b>Meta's Rule of Two</b> (Oct 2025): in one session, at most two of untrusted input, sensitive access, and state change or outward communication; all three requires human supervision. It supplements least privilege. <span class="pill hi">primary</span></li>
+  <li><b>CaMeL</b> (arXiv 2503.18813): a design-level defense using a planning model and a quarantined model with provenance tracking. It solves 77% of AgentDojo tasks with provable security versus 84% undefended, about 7 points of cost. <span class="pill hi">primary</span></li>
+  <li><b>Adaptive attacks</b> (arXiv 2510.09023): 12 published defenses were bypassed with attack success above 90% for most, though most had reported near zero. <span class="pill hi">primary</span></li>
+  <li><b>Claude Code permissions:</b> tiered approvals with allow, ask and deny rules, managed policies and a classifier-based auto mode. Codex's model was not read. <span class="pill hi">primary</span></li>
+  <li>Model-level attack success rates from vendor system cards are reported in secondary sources and are not comparable across setups. I do not rely on them.</li>
+</ul>
+
+<h3>Regulation</h3>
+<div class="tbl"><table>
+<thead><tr><th>Item</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>EU Digital Omnibus on AI</td><td>In force 27 Jul 2026. Stand-alone Annex III high-risk systems: 2 Dec 2027. Embedded Annex I systems: 2 Aug 2028. Article 50 user disclosure: 2 Aug 2026. Machine-readable marking for systems already on the market: 2 Dec 2026. AI-literacy duty softened. <span class="pill hi">primary</span></td></tr>
+<tr><td>EU general-purpose models</td><td>Obligations since 2 Aug 2025; Commission enforcement powers from 2 Aug 2026, fines up to 3% of turnover or €15M. Older models until 2 Aug 2027. Reportedly unchanged by the Omnibus; not checked on EUR-Lex. <span class="pill mid">secondary</span></td></tr>
+<tr><td>US federal</td><td>Executive order of 11 Dec 2025 creates a DOJ task force against state AI laws. No confirmed court outcomes found. <span class="pill hi">primary</span></td></tr>
+<tr><td>California SB 53</td><td>Effective 1 Jan 2026. Frontier developers publish safety frameworks and report incidents within 15 days. Does not apply to ordinary agent builders. Penalty figures conflict. <span class="pill mid">secondary</span></td></tr>
+<tr><td>Colorado</td><td>Original law replaced by SB 26-189 (signed 14 May 2026), a narrower transparency law effective 1 Jan 2027. Enacted text not read. <span class="pill mid">secondary</span></td></tr>
+<tr><td>NIST</td><td>CAISI AI Agent Standards Initiative launched 17 Feb 2026 (voluntary; agent identity and authorization). No final deliverable found. <span class="pill hi">primary</span></td></tr>
+</tbody></table></div>
+<p><b>What touches an engineer.</b> Disclosing to users that they are talking to an AI, using the model provider's documentation, and logging and access controls that make audits possible. Surveys report that most security teams cannot distinguish agent activity from human activity (68% in one study of 228 practitioners, secondary), which is why agent identity and audit logging are a hiring theme.</p>
+
+<h2 id="thinking">6. The thinking underneath</h2>
+<p class="muted">Eight ideas appear across all five streams. They explain why the workflows below look the way they do.</p>
+<div class="grid2">
+  <div class="box"><b>Verification is the bottleneck.</b><p>Writing is cheap, checking is not. Every successful harness (Anthropic's feature list, Cognition's reviewer, Cursor's judge) adds an independent check. Commits rose 180 to 240% in the NBER study while releases rose about 30%.</p></div>
+  <div class="box"><b>Reliability compounds.</b><p>At 95% per step over 10 steps, success is 60%. At 90% it is 35%. (My arithmetic; Anthropic's pass^k example is 0.75 cubed, about 42%.) So reduce steps, add checkpoints and verify each stage.</p></div>
+  <div class="box"><b>Context is a budget.</b><p>Compaction, clearing, notes and sub-agents all exist to keep the smallest set of high-signal tokens in view.</p></div>
+  <div class="box"><b>Cost per task, not per token.</b><p>Agents use about 4x chat tokens and multi-agent about 15x. A task that costs $0.14 cached and $0.84 uncached is a design choice, not a pricing accident.</p></div>
+  <div class="box"><b>Prefix stability is an economic asset.</b><p>Caching, deterministic tool ordering, prefix-reuse engines and cache-aware routing are one idea at four layers.</p></div>
+  <div class="box"><b>Measure honestly.</b><p>Benchmarks leak and saturate, vendor numbers are "up to." Build a small private eval, fix the workload, report percentiles and variance.</p></div>
+  <div class="box"><b>Trust content, not location.</b><p>Names, paths and registries are not security boundaries. Treat configs, skills and MCP servers as code.</p></div>
+  <div class="box"><b>Limit authority by design.</b><p>Assume injection will succeed. Remove a trifecta leg, scope credentials and add a human gate for irreversible actions.</p></div>
 </div>
 
-<script>
-const SH=[
- {t:"Agents move from demos to scrutinized production",c:"hi",cl:"high",b:"Adoption is high but results are uneven. One report says 70% of enterprises run agents; McKinsey says 40% of firms above $1B revenue are scaling them. Gartner expects over 40% of agentic projects to be cancelled by end of 2027 and warns about vendors relabeling old tools as agents.",w:"Expect questions about ROI and reliability, not novelty."},
- {t:"Tokens get cheaper, bills get bigger",c:"hi",cl:"high",b:"Goldman expects 60 to 70% yearly decline in cost per token and a 24x rise in monthly tokens from 2026 to 2030. New GPU generations cut cost per token sharply, though vendor claims assume ideal utilization.",w:"Cost per task becomes a first-class metric. This is why A3 carries 20%."},
- {t:"Agents run longer",c:"mid",cl:"medium",b:"METR's time-horizon work measures the length of task an agent completes at 50% success. Estimates put frontier models around 12 hours in early 2026, with a doubling time somewhere between about 3 and 7 months depending on the fit. METR warns its suite is near its ceiling for the longest tasks.",w:"Longer runs need compaction, notes, checkpoints and cheap verification."},
- {t:"Value shifts from writing to verifying",c:"hi",cl:"high",b:"Stanford's payroll study finds employment of 22 to 25 year olds in AI-exposed jobs 19% below peers, mainly through less hiring, concentrated where AI substitutes for tasks. Where AI complements workers, employment is flat or rising. The authors call it descriptive, not causal, and find no broad displacement.",w:"Early-career entry paths narrow. Evidence of judgment and measured results matters more."},
- {t:"Open standards stack forms",c:"mid",cl:"medium",b:"MCP for tools and data, A2A for agent-to-agent delegation, and portable skills are reported to sit under neutral foundation governance. The same ecosystem is a target: OWASP lists malicious MCP servers and a large malicious-skill campaign.",w:"Protocol literacy is cheap to gain. Supply-chain care is the scarce part."},
- {t:"Security becomes a design discipline",c:"hi",cl:"high",b:"OWASP's 2026 report moves from hypotheticals to catalogued CVEs. Coding agents are the largest group of tracked projects. Prompt injection touches six of ten risk categories, and the fix is architectural.",w:"Permission design and sandbox review become hiring criteria."},
- {t:"Serving gets disaggregated and quantized",c:"mid",cl:"medium",b:"Prefill/decode disaggregation, FP4 formats, and newer speculative decoding are all described as supported in the main engines. Open models still trail the best closed ones on one aggregate index.",w:"Self-hosting is a real option for narrow tasks, which is what A4 measures."}
-];
-const el=document.getElementById("shifts");
-SH.forEach(s=>{const d=document.createElement("div");d.className="card";
- d.innerHTML=`<div class="ch"><h3>${s.t}</h3><span class="pill ${s.c}">confidence ${s.cl}</span></div><p>${s.b}</p><p class="why"><b>So what:</b> ${s.w}</p>`;el.appendChild(d)});
-</script>
+<h2 id="workflows">7. The exact workflows</h2>
+<p class="muted">Each runbook is built from the evidence above. Where a number is my suggestion rather than a sourced figure, it says so.</p>
+
+<div class="box">
+<h3 style="margin-top:0">W1. Agentic coding session (daily driver)</h3>
+<div class="flow"><span>Spec in a file</span><i>→</i><span>Feature list JSON, all failing</span><i>→</i><span>One feature per session</span><i>→</i><span>E2E test the agent cannot edit</span><i>→</i><span>Commit</span><i>→</i><span>Clean-context review</span><i>→</i><span>You merge</span></div>
+<ol>
+  <li>Start each session by reading the git log and the progress file. End by committing and updating the progress file.</li>
+  <li>Writes stay single-threaded. Use parallel agents for reading, research and review, not for competing edits.</li>
+  <li>Never accept "done" from unit tests or a curl alone. Require an end-to-end check.</li>
+  <li>The reviewer sees only the diff and the spec.</li>
+  <li>Archive session files. CS2680 requires them with every assignment.</li>
+</ol>
+</div>
+
+<div class="box">
+<h3 style="margin-top:0">W2. Evaluation loop</h3>
+<div class="flow"><span>Collect 20 to 50 real failures</span><i>→</i><span>Tasks with reference solutions</span><i>→</i><span>Code graders first</span><i>→</i><span>Run k trials, report pass@k and pass^k</span><i>→</i><span>Read transcripts</span><i>→</i><span>Error-analysis taxonomy</span><i>→</i><span>Add new failures as tests</span></div>
+<ol>
+  <li>Isolate trials in clean environments so runs do not contaminate each other.</li>
+  <li>Grade outcomes, not the path the agent took.</li>
+  <li>If you use a model grader, compare it with your own labels on a sample before trusting it.</li>
+  <li>Review at least 100 traces in total (suggested by Husain) and stop when no new failure mode appears.</li>
+</ol>
+</div>
+
+<div class="box">
+<h3 style="margin-top:0">W3. Cost and latency reduction (Assignment 3 style)</h3>
+<div class="flow"><span>Fix workload and success check</span><i>→</i><span>Trace tokens and dollars per step</span><i>→</i><span>Stabilize the prefix and cache it</span><i>→</i><span>Route easy calls to a small model</span><i>→</i><span>Batch offline work (50% off)</span><i>→</i><span>Summarize sub-agent output</span><i>→</i><span>Re-measure with variance</span></div>
+<ol>
+  <li>Success rate must stay fixed. Report cost and latency per completed task, with run-to-run variance.</li>
+  <li>Keep tool lists and system prompts byte-identical between calls, and order tools deterministically.</li>
+  <li>Sub-agents return 1 to 2k token summaries, not raw transcripts.</li>
+  <li>Overlap independent tool calls instead of running them in sequence.</li>
+  <li>Change one thing at a time and keep a table of before and after.</li>
+</ol>
+</div>
+
+<div class="box">
+<h3 style="margin-top:0">W4. Serving and profiling (Assignments 4 and 5 style)</h3>
+<div class="flow"><span>Hypothesis with a number</span><i>→</i><span>Baseline on vLLM</span><i>→</i><span>Measure TTFT, TPOT p50/p99, goodput</span><i>→</i><span>Toggle prefix cache, chunked prefill</span><i>→</i><span>Quantize and re-check accuracy</span><i>→</i><span>Repeat on SGLang</span><i>→</i><span>Cost per million tokens</span></div>
+<ol>
+  <li>Rent a 24 GB GPU (about $0.34 to $0.44 an hour community pricing, so a 20-hour project is roughly $7 to $9). Stop the instance when you finish.</li>
+  <li>Use an 8B-class model at FP8 or BF16. I did not source the 24 GB fit, so confirm memory before you start.</li>
+  <li>Use a shared-prefix, multi-turn workload so you actually test prefix reuse.</li>
+  <li>Write the hypothesis before changing anything, then record what moved.</li>
+</ol>
+</div>
+
+<div class="box">
+<h3 style="margin-top:0">W5. Agent security review</h3>
+<div class="flow"><span>List data, inputs, actions</span><i>→</i><span>Score the trifecta</span><i>→</i><span>Remove one leg or gate it</span><i>→</i><span>Least-privilege credentials</span><i>→</i><span>Pin and vet dependencies, skills, MCP servers</span><i>→</i><span>Log every tool call</span><i>→</i><span>Red-team with injected content</span></div>
+<ol>
+  <li>Treat repo config files, MCP configs and skills as executable code. Review content, not names.</li>
+  <li>Use hard enforcement (permissions, sandboxes, separate dev and prod), not prompt instructions.</li>
+  <li>Do not rely on an injection filter. Published defenses were bypassed above 90% by adaptive attacks.</li>
+</ol>
+</div>
+
+<h2 id="forecast">8. Forecast: now to January 2027</h2>
+<h3>Scheduled or near-certain events</h3>
+<div class="tbl"><table>
+<thead><tr><th>Date</th><th>Event</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td>Late Oct</td><td>Q3 earnings update hyperscaler capex guidance</td><td>Normal cycle</td></tr>
+<tr><td>By end Oct</td><td>Mistral Large 4 (about 1T parameters, 49B active) open weights promised. Timing differs by source.</td><td>Aggregators, <span class="pill lo">weak</span></td></tr>
+<tr><td>Next releases</td><td>vLLM v0.32 removes the V1 engine</td><td>vLLM release notes</td></tr>
+<tr><td>1 Dec</td><td>Gemini 4 Argon price rises to $4 / $20</td><td>Google pricing page</td></tr>
+<tr><td>2 Dec</td><td>EU machine-readable marking duty for systems already on the market</td><td>Digital Omnibus</td></tr>
+<tr><td>1 Jan 2027</td><td>Gemini 3.8 Flash price rises to $1.50 / $7.50; Colorado SB 26-189 takes effect</td><td>Google; law-firm summaries</td></tr>
+</tbody></table></div>
+
+<h3>Projections (my judgment)</h3>
+<div class="tbl"><table>
+<thead><tr><th>Expect</th><th>Basis</th><th>Confidence</th><th>Check</th></tr></thead>
+<tbody>
+<tr><td>Small-tier prices stay low; flagships and some mid-tier prices flatten or rise</td><td>$10 / $50 flagship plateau across Anthropic and OpenAI; Google increases</td><td><span class="pill mid">medium</span></td><td>Vendor pricing pages monthly</td></tr>
+<tr><td>Total token spend keeps rising even where unit prices fall</td><td>Capex guidance, agent token multipliers (4x to 15x)</td><td><span class="pill hi">high</span></td><td>Your own A3 table</td></tr>
+<tr><td>More disclosed exploits in coding agents, MCP servers and skill registries</td><td>Cadence of 2025 to 2026 incidents and daily release rates</td><td><span class="pill hi">high</span></td><td>CVE feeds, vendor advisories</td></tr>
+<tr><td>Benchmark credibility keeps eroding; more vendors publish private or audited evals</td><td>Contamination and grading audits</td><td><span class="pill mid">medium</span></td><td>Which benchmarks vendors still cite</td></tr>
+<tr><td>No new METR doubling-time estimate in the window</td><td>Page not actively updated; suite near ceiling</td><td><span class="pill mid">medium</span></td><td>metr.org</td></tr>
+<tr><td>Open models close part of the gap but stay behind</td><td>4-month lag, 12-point gap</td><td><span class="pill mid">medium</span></td><td>Epoch and Artificial Analysis updates</td></tr>
+<tr><td>Disaggregated prefill/decode and FP4 become default options in serving docs</td><td>Already supported in all main engines per release notes</td><td><span class="pill mid">medium</span></td><td>Engine release notes</td></tr>
+<tr><td>Entry-level software hiring stays weak through the fall recruiting season</td><td>4.5% entry share, 23 applications per job, 19% young-worker gap</td><td><span class="pill hi">high</span></td><td>Indeed Hiring Lab; Canaries dashboard</td></tr>
+<tr><td>Observability and evals converge (traces become test cases) on OpenTelemetry</td><td>Vendor positioning and MCP's trace-context field</td><td><span class="pill mid">medium</span></td><td>OTel GenAI conventions</td></tr>
+<tr><td>Standards consolidation continues under AAIF; MCP spec adoption of the stateless 2026-07-28 version</td><td>Governance announcements and the new spec</td><td><span class="pill mid">medium</span></td><td>MCP changelog, AAIF site</td></tr>
+</tbody></table></div>
+<div class="box"><b>What would change my view.</b> A reliability regression in agents, a large public failure that prompts rules, a clearly measured productivity effect in either direction, or open models matching closed ones on your private evals. I would revise the hiring row if Indeed's entry-level share recovers for two consecutive updates.</div>
+
+<h2 id="you">9. What this means for you</h2>
+<h3>Skill priority, with the reason</h3>
+<div class="tbl"><table>
+<thead><tr><th>Priority</th><th>Skill</th><th>Why (evidence)</th><th>Where in the course</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Python and systems fundamentals</td><td>Python in 62 to 71% of AI postings; the course assumes 44 systems terms</td><td>M00</td></tr>
+<tr><td>2</td><td>Agent loop with tracing and a small eval set</td><td>Consensus practice; evals are the scarcest agent skill</td><td>M02, M05 (A2)</td></tr>
+<tr><td>3</td><td>Cost and latency engineering</td><td>Agents use 4x to 15x tokens; caching and routing dominate cost</td><td>M06 (A3)</td></tr>
+<tr><td>4</td><td>Serving, profiling, honest benchmarking</td><td>Concrete, learnable, under $10 to practice</td><td>M08 to M14 (A4, A5)</td></tr>
+<tr><td>5</td><td>Security by architecture</td><td>All verified incidents share a root cause; courses cover it lightly</td><td>M07, plus the lab I propose</td></tr>
+<tr><td>6</td><td>Directing coding agents with verification</td><td>Commits up 180 to 240% but releases only 30%</td><td>M01 (A1)</td></tr>
+</tbody></table></div>
+
+<h3>Proposed curriculum changes (not applied until you approve)</h3>
+<ul>
+  <li><b>M02:</b> add a security lab. Score your agent against the trifecta, then attack it with injected content. About two hours.</li>
+  <li><b>M02 and M04:</b> add context engineering (compaction, notes file, sub-agent summaries) using Anthropic's guide.</li>
+  <li><b>M05:</b> add the trace-to-test-case loop and pass^k, not just a benchmark runner.</li>
+  <li><b>M06:</b> add a caching exercise using the worked example above, then measure your own.</li>
+  <li><b>M08 onward:</b> use the honest-benchmarking checklist as the grading rubric for your own serving write-up.</li>
+  <li><b>Lesson L6 GPU plan:</b> re-price against a 24 GB card at about $0.34 to $0.44 an hour, and raise the AWS budget only if you choose AWS.</li>
+</ul>
+
+<h3>12-week portfolio plan</h3>
+<div class="tbl"><table>
+<thead><tr><th>Weeks</th><th>Deliverable</th><th>Evidence it produces</th><th>Cost</th></tr></thead>
+<tbody>
+<tr><td>1 to 3</td><td>M00 mastered; A1-style trajectory viewer</td><td>Working UI, session archive</td><td>API credits only</td></tr>
+<tr><td>4 to 6</td><td>Own agent loop, traced, with 20 to 50 task eval set that grows from failures</td><td>Published eval set and failure taxonomy</td><td>API credits</td></tr>
+<tr><td>7 to 9</td><td>Cost study at fixed success</td><td>Before and after table with variance; blog post</td><td>API credits</td></tr>
+<tr><td>10 to 12</td><td>Serve an 8B model, compare quality with an API model, profile and test one hypothesis per layer</td><td>TTFT, TPOT, goodput and cost per million tokens; blog post</td><td>About $10 of GPU time</td></tr>
+</tbody></table></div>
+<p>Because entry-level hiring is tight and employers reward senior-like evidence, each block should end with a public artifact someone can verify: a repo with tests, a table of measurements, a short write-up of what failed.</p>
+
+<h2 id="gaps">10. What I could not verify</h2>
+<ul>
+  <li><b>Primary pages blocked or unread:</b> Gartner press release, McKinsey 2026 report, PwC barometer, MIT NANDA PDF, OpenAI harness post, OWASP v2.01 PDF, Anthropic system cards, Codex permission docs, EUR-Lex text.</li>
+  <li><b>No data found:</b> percentages for LangGraph, evals, observability, CUDA in postings; title-level data for eval, inference and AI security engineers; a 2026 DORA report; GitHub Octoverse 2026; numeric Canaries figures for software developers; Q3 2026 capex; OpenRouter token shares.</li>
+  <li><b>Unresolved conflicts:</b> METR doubling time; open-versus-closed gap (3, 4 or 8 months by source); llm-d routing gains (57x versus 2x and 3x); forward-deployed engineer growth; NACE entry-level AI requirement (13.3% versus 35%); several benchmark scores.</li>
+  <li><b>Model names and release dates</b> are as shown on vendor pricing pages and were not cross-checked against vendor announcement pages.</li>
+  <li><b>Not researched:</b> ISO 42001, custom accelerators, Vercel and Hugging Face engineering posts, GPTQ and KV-cache quantization gains.</li>
+</ul>
+
+<h2>Sources</h2>
+<ul class="src">
+  <li><b>Models and cost.</b> <a href="https://artificialanalysis.ai/leaderboards/models" target="_blank" rel="noopener">Artificial Analysis</a> · <a href="https://epoch.ai/data-insights/open-closed-eci-gap" target="_blank" rel="noopener">Epoch open-closed gap</a> · <a href="https://hai.stanford.edu/news/inside-the-ai-index-12-takeaways-from-the-2026-report" target="_blank" rel="noopener">Stanford AI Index 2026</a> · <a href="https://metr.org/time-horizons/" target="_blank" rel="noopener">METR time horizons</a> · <a href="https://claude.com/pricing" target="_blank" rel="noopener">Anthropic pricing</a> · <a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noopener">OpenAI pricing</a> · <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener">Gemini pricing</a> · <a href="https://www.runpod.io/pricing" target="_blank" rel="noopener">RunPod</a> · <a href="https://lambda.ai/pricing" target="_blank" rel="noopener">Lambda</a></li>
+  <li><b>Jobs and skills.</b> <a href="https://hiringlab.indeed.com/2026/07/08/ai-and-job-postings-from-destruction-to-creation/" target="_blank" rel="noopener">Indeed, AI and job postings</a> · <a href="https://hiringlab.indeed.com/2026/07/23/the-labor-market-is-tilting-toward-seniority/" target="_blank" rel="noopener">Indeed, seniority</a> · <a href="https://hiringlab.indeed.com/2026/09/17/ai-exposure-isnt-squeezing-advertised-pay-in-the-us-its-boosting-it/" target="_blank" rel="noopener">Indeed, pay</a> · <a href="https://digitaleconomy.stanford.edu/publication/canaries-in-the-coal-mine-six-facts-about-the-recen" target="_blank" rel="noopener">Stanford Canaries paper</a> · <a href="https://digitaleconomy.stanford.edu/project/indicators/canaries/" target="_blank" rel="noopener">Canaries dashboard</a> · <a href="https://lightcast.io/resources/blog/stanford-ai-2026" target="_blank" rel="noopener">Lightcast</a> · <a href="https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm" target="_blank" rel="noopener">BLS</a> · <a href="https://metr.org/blog/2026-02-24-uplift-update/" target="_blank" rel="noopener">METR uplift update</a> · <a href="https://www.nber.org/papers/w35275" target="_blank" rel="noopener">NBER w35275</a> · <a href="https://stackoverflow.blog/2026/10/06/the-results-of-the-2026-developer-survey-are-here/" target="_blank" rel="noopener">Stack Overflow 2026</a> · <a href="https://www.newyorkfed.org/research/college-labor-market" target="_blank" rel="noopener">NY Fed</a> · <a href="https://naceweb.org/research/reports/job-outlook/2026/" target="_blank" rel="noopener">NACE</a></li>
+  <li><b>Agent practice.</b> <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">Context engineering</a> · <a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener">Multi-agent research system</a> · <a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents" target="_blank" rel="noopener">Long-running harnesses</a> · <a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents" target="_blank" rel="noopener">Evals for agents</a> · <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building effective agents</a> · <a href="https://cursor.com/blog/scaling-agents" target="_blank" rel="noopener">Cursor</a> · <a href="https://cognition.com/blog/multi-agents-working" target="_blank" rel="noopener">Cognition</a> · <a href="https://modelcontextprotocol.io/specification/2026-07-28/changelog" target="_blank" rel="noopener">MCP changelog</a> · <a href="https://modelcontextprotocol.io/community/governance" target="_blank" rel="noopener">MCP governance</a> · <a href="https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation" target="_blank" rel="noopener">AAIF announcement</a> · <a href="https://agentskills.io/home" target="_blank" rel="noopener">Agent Skills</a> · <a href="https://arxiv.org/abs/2503.13657" target="_blank" rel="noopener">MAST</a></li>
+  <li><b>Inference.</b> <a href="https://github.com/vllm-project/vllm/releases" target="_blank" rel="noopener">vLLM releases</a> · <a href="https://github.com/sgl-project/sglang/releases" target="_blank" rel="noopener">SGLang releases</a> · <a href="https://arxiv.org/abs/2309.06180" target="_blank" rel="noopener">PagedAttention</a> · <a href="https://arxiv.org/abs/2312.07104" target="_blank" rel="noopener">RadixAttention</a> · <a href="https://arxiv.org/abs/2401.09670" target="_blank" rel="noopener">DistServe</a> · <a href="https://arxiv.org/abs/2503.01840" target="_blank" rel="noopener">EAGLE-3</a> · <a href="https://arxiv.org/abs/2511.02230" target="_blank" rel="noopener">Continuum</a> · <a href="https://arxiv.org/abs/2407.08608" target="_blank" rel="noopener">FlashAttention-3</a> · <a href="https://newsletter.semianalysis.com/p/inferencex-v2-nvidia-blackwell-vs" target="_blank" rel="noopener">InferenceX v2</a></li>
+  <li><b>Security and law.</b> <a href="https://docs.litellm.ai/blog/security-update-march-2026" target="_blank" rel="noopener">LiteLLM advisory</a> · <a href="https://www.tenable.com/blog/faq-cve-2025-54135-cve-2025-54136-vulnerabilities-in-cursor-curxecute-mcpoison" target="_blank" rel="noopener">Tenable on Cursor CVEs</a> · <a href="https://research.checkpoint.com/2025/openai-codex-cli-command-injection-vulnerability/" target="_blank" rel="noopener">Check Point on Codex CLI</a> · <a href="https://unit42.paloaltonetworks.com/openclaw-ai-supply-chain/" target="_blank" rel="noopener">Unit 42 on OpenClaw</a> · <a href="https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/" target="_blank" rel="noopener">Lethal trifecta</a> · <a href="https://ai.meta.com/blog/practical-ai-agent-security/" target="_blank" rel="noopener">Meta Rule of Two</a> · <a href="https://arxiv.org/abs/2503.18813" target="_blank" rel="noopener">CaMeL</a> · <a href="https://arxiv.org/abs/2510.09023" target="_blank" rel="noopener">Adaptive attacks</a> · <a href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/" target="_blank" rel="noopener">OWASP agentic Top 10</a> · <a href="https://www.lewissilkin.com/insights/2026/07/27/the-digital-omnibus-on-ai-enters-into-force-today-102nedo" target="_blank" rel="noopener">Digital Omnibus on AI</a> · <a href="https://www.nist.gov/news-events/news/2026/02/announcing-ai-agent-standards-initiative-interoperable-and-secure" target="_blank" rel="noopener">NIST agent initiative</a></li>
+</ul>
+</div>

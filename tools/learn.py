@@ -14,6 +14,9 @@
 import argparse, json, subprocess, sys, datetime as dt
 from pathlib import Path
 
+for _s in (sys.stdout, sys.stderr):
+    try: _s.reconfigure(encoding="utf-8")
+    except Exception: pass
 ROOT = Path(__file__).resolve().parent.parent
 CUR = json.loads((ROOT / "curriculum.json").read_text(encoding="utf-8"))
 MODS = {m["id"]: m for m in CUR["modules"]}
@@ -27,7 +30,10 @@ today = lambda: dt.date.today().isoformat()
 
 
 def load_state():
-    return json.loads(STATE.read_text()) if STATE.exists() else {m: {"status": "locked"} for m in ORDER}
+    s = json.loads(STATE.read_text()) if STATE.exists() else {}
+    for m in ORDER:
+        s.setdefault(m, {"status": "locked"})
+    return s
 
 
 def save_state(s):
@@ -100,8 +106,10 @@ def render():
 def cmd_start(mid):
     s = load_state()
     i = ORDER.index(mid)
-    if i > 0 and s[ORDER[i - 1]]["status"] != "mastered" and mid != "M15":
-        sys.exit(f"GATE: {ORDER[i-1]} not mastered. No skipping ahead.")
+    reqs = MODS[mid].get("requires", [ORDER[i - 1]] if i > 0 else [])
+    missing = [r for r in reqs if s[r]["status"] != "mastered"]
+    if missing:
+        sys.exit(f"GATE: {', '.join(missing)} not mastered. No skipping ahead.")
     s[mid]["status"] = "in_progress"
     save_state(s)
     log({"type": "start", "module": mid})
@@ -126,9 +134,6 @@ def cmd_master(mid):
         sys.exit(f"NOT MASTERED. Below {THRESH}: " + ", ".join(f"{k}={sc.get(k,'none')}" for k in miss))
     s = load_state()
     s[mid].update(status="mastered", mastered_on=today())
-    nxt = ORDER.index(mid) + 1
-    if nxt < len(ORDER) and s[ORDER[nxt]]["status"] == "locked":
-        s[ORDER[nxt]]["status"] = "unlocked"
     save_state(s)
     log({"type": "master", "module": mid})
     git("tag", "-f", f"mastered/{mid}")
@@ -198,8 +203,6 @@ def main():
     elif x.c == "status":
         s = load_state(); save_state(s); print(render())
     elif x.c == "start":
-        s = load_state()
-        if s["M00"]["status"] == "locked": s["M00"]["status"] = "unlocked"; save_state(s)
         cmd_start(x.module)
     elif x.c == "master": cmd_master(x.module)
     elif x.c == "lab": cmd_lab(x.lab)

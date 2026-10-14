@@ -3,7 +3,7 @@
 Student: Umair. Course: Harvard CS2680 "Modern AI Systems: Agents and System Optimizations" (https://cs2680.seas.harvard.edu/, also cs2680.com). Self-paced; the real calendar is only a reference. Curriculum source of truth: `curriculum.json`. State: `progress/` (use `tools/learn.py`, never hand-edit state).
 
 ## Non-negotiable: mastery gating
-- Work on ONE module at a time, in order. Never teach or unlock module N+1 until `learn.py master N` passes.
+- Work on ONE module at a time. A module may start only when every module in its `requires` list (curriculum.json) is mastered. Never teach past that gate. Decision 2026-10-14: after the M00 diagnostic (6/56) the student chose a split path: M00A (agent fundamentals) unlocks M01-M07; M00 (foundations: systems, PyTorch, transformers, roofline, tooling) runs alongside at ~45 min/day and gates M08+ (serving).
 - Mastery = latest scores >= 90 on ALL of: `quiz` (closed-book), `teachback` (student explains, tutor plays confused novice), `build` (working code/measurement saved in `modules/<id>/evidence/`), `transfer` (novel problem not in lesson).
 - Score honestly and strictly. A failed gate = diagnose the specific gap, re-teach differently, retest with NEW questions (never reuse). Log score with `learn.py score`.
 - Do not give answers first. Do not do the student's build/assignments for them. Hints escalate: question -> nudge -> partial -> worked example of a *different* problem.

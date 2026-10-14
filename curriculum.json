@@ -1,46 +1,346 @@
 {
   "mastery_threshold": 90,
   "modules": [
-    {"id": "M00", "slug": "prereqs", "title": "Prerequisites & environment", "part": 0, "weeks": "-", "assignment": null,
-     "objectives": ["Reproducible Python 3.12 + PyTorch env via uv", "Explain process/thread/virtual memory/caches/syscalls (CS61 level)", "Write a PyTorch training loop and tiny transformer block from memory", "Explain latency vs throughput, roofline, memory-bound vs compute-bound", "Read an arXiv systems paper with a structured method"],
-     "readings": ["OSTEP (selected chapters: virtualization, concurrency)", "mlsysbook.ai ch. on training & HW", "arXiv 2501.09223 Foundations of LLMs ch.1-2", "Little Book of Deep Learning"]},
-    {"id": "M01", "slug": "coding-agents", "title": "Agents use I-II: Claude Code & multi-agent", "part": 1, "weeks": "2-3", "assignment": "A1 Mads-Lens (10%)",
-     "objectives": ["Explain the Claude Code loop, tools, context, permissions", "Run parallel agents/teams on a real task", "Trace and annotate an agent session (A1)"],
-     "readings": ["Claude Code best practices", "Agentic Engineering Patterns", "Claude Code agent teams", "Research acceleration at OpenAI", "cs2680 readings/sep-09, sep-14"]},
-    {"id": "M02", "slug": "agent-loop-context-tools", "title": "Agents design I: loop, context management, tool design", "part": 1, "weeks": "3", "assignment": "A2 Mads-Loop (10%) starts",
-     "objectives": ["Implement ReAct loop against a model API from scratch", "Design tools with good schemas/errors", "Manage context window: truncation, summarization, compaction"],
-     "readings": ["ReAct", "A practical guide to building agents", "readings/sep-16"]},
-    {"id": "M03", "slug": "multi-agent-architecture", "title": "Agents design II: multi-agent architecture & coordination", "part": 1, "weeks": "4",
-     "assignment": "A2 Mads-Loop", "objectives": ["Compare orchestrator-worker, debate, pipeline topologies", "Quantify when multi-agent helps vs hurts"],
-     "readings": ["Multi-agent research system (Anthropic)", "Scaling agent systems", "readings/sep-23"]},
-    {"id": "M04", "slug": "memory-reliability", "title": "Agents design III: memory & reliability", "part": 1, "weeks": "5", "assignment": "A2 Mads-Loop",
-     "objectives": ["Classify agent failure modes", "Implement tiered memory (MemGPT-style)", "Add retries/verification/guardrails"],
-     "readings": ["Where agents fail", "MemGPT", "readings/sep-28"]},
-    {"id": "M05", "slug": "agent-evaluation", "title": "Agents design IV: evaluation", "part": 1, "weeks": "5", "assignment": "A2 Mads-Loop due",
-     "objectives": ["Build an eval harness with graders", "Measure pass@k, cost, latency, variance", "Spot eval contamination/leakage"],
-     "readings": ["notes/agent-evaluation.html"]},
-    {"id": "M06", "slug": "cost-performance", "title": "Advanced agent design I: cost & performance (token efficiency)", "part": 1, "weeks": "6", "assignment": "A3 Mads-Opt (20%)",
-     "objectives": ["Profile token spend per step", "Apply caching, routing, cascades, compaction", "Show Pareto improvement on cost vs accuracy"],
-     "readings": ["notes/cost-effective-agents.html"]},
-    {"id": "M07", "slug": "safety-self-evolving", "title": "Advanced agent design II: safety & self-evolving harness", "part": 1, "weeks": "7", "assignment": null,
-     "objectives": ["Threat-model an agent (prompt injection, tool abuse)", "Explain self-improving harness loops"], "readings": ["course discussion papers"]},
-    {"id": "M08", "slug": "serving-basics", "title": "Efficient LLM serving: basics (batching, scheduling)", "part": 2, "weeks": "8", "assignment": "A4 Mads-Serve (20%)",
-     "objectives": ["Derive prefill vs decode costs", "Explain continuous batching, PagedAttention", "Run vLLM/SGLang and measure TTFT/TPOT/throughput"],
-     "readings": ["Orca", "vLLM/PagedAttention", "slides 1-8"]},
-    {"id": "M09", "slug": "speculative-decoding", "title": "Efficient LLM serving: speculative decoding", "part": 2, "weeks": "9", "assignment": "A4",
-     "objectives": ["Prove acceptance-rejection preserves distribution", "Implement draft-verify loop", "Model speedup vs acceptance rate"],
-     "readings": ["Leviathan et al. speculative decoding", "Medusa/EAGLE"]},
-    {"id": "M10", "slug": "agentic-scheduling-prefix-cache", "title": "Efficient agentic systems: scheduling & prefix caching", "part": 2, "weeks": "10", "assignment": "A4",
-     "objectives": ["Explain RadixAttention/prefix reuse", "Design schedulers for agent workflows (program-level)"], "readings": ["SGLang", "Continuum/Parrot-style papers"]},
-    {"id": "M11", "slug": "quantization-pruning", "title": "Efficient LLM serving: pruning & quantization", "part": 2, "weeks": "10", "assignment": "A4/A5",
-     "objectives": ["Implement int8/int4 weight quant by hand", "Explain GPTQ/AWQ/FP8 tradeoffs"], "readings": ["LLM.int8()", "GPTQ", "AWQ"]},
-    {"id": "M12", "slug": "gpu-kernels", "title": "Efficient LLM serving: GPU & kernels", "part": 2, "weeks": "11", "assignment": "A5 Mads-Stack (10%)",
-     "objectives": ["Roofline analysis of attention/GEMM", "Explain FlashAttention tiling", "Write a Triton kernel"], "readings": ["FlashAttention 1-3", "GPU MODE lectures"]},
-    {"id": "M13", "slug": "kv-cache-architectures", "title": "KV-cache optimization & model architectures", "part": 2, "weeks": "12", "assignment": "A5",
-     "objectives": ["Compute KV memory per token for MHA/GQA/MLA", "Explain eviction/offload/compression"], "readings": ["GQA", "DeepSeek MLA", "KV cache compression papers"]},
-    {"id": "M14", "slug": "routing-load-balancing", "title": "Efficient agentic systems: routing, load balancing, others", "part": 2, "weeks": "13-14", "assignment": "A5 Mads-Stack",
-     "objectives": ["Design cache-aware routing", "Explain disaggregated prefill/decode"], "readings": ["DistServe", "Mooncake", "llm-d"]},
-    {"id": "M15", "slug": "final-project", "title": "Final project", "part": 3, "weeks": "9-14", "assignment": "Final (20%)",
-     "objectives": ["Proposal, implementation, poster, demo"], "readings": ["project.html"]}
+    {
+      "id": "M00A",
+      "slug": "agent-fundamentals",
+      "title": "Agent fundamentals: the loop, tokens and cost",
+      "part": 0,
+      "weeks": "-",
+      "assignment": null,
+      "objectives": [
+        "Explain the agent loop and who does what (model vs harness)",
+        "Compute billed tokens and dollars for a multi-turn agent, with and without caching",
+        "Implement a tested agent loop with tool errors, step caps and usage accounting",
+        "Read one agent trace and say where cost and failures come from"
+      ],
+      "readings": [
+        "Anthropic: Building effective agents",
+        "Anthropic docs: Prompt caching",
+        "ReAct (abstract and trajectory examples)"
+      ],
+      "requires": []
+    },
+    {
+      "id": "M00",
+      "slug": "prereqs",
+      "title": "Foundations: systems, PyTorch, transformers, roofline, tooling",
+      "part": 0,
+      "weeks": "-",
+      "assignment": null,
+      "objectives": [
+        "Reproducible Python 3.12 + PyTorch env via uv",
+        "Explain process/thread/virtual memory/caches/syscalls (CS61 level)",
+        "Write a PyTorch training loop and tiny transformer block from memory",
+        "Explain latency vs throughput, roofline, memory-bound vs compute-bound",
+        "Read an arXiv systems paper with a structured method"
+      ],
+      "readings": [
+        "OSTEP (selected chapters: virtualization, concurrency)",
+        "mlsysbook.ai ch. on training & HW",
+        "arXiv 2501.09223 Foundations of LLMs ch.1-2",
+        "Little Book of Deep Learning"
+      ],
+      "requires": []
+    },
+    {
+      "id": "M01",
+      "slug": "coding-agents",
+      "title": "Agents use I-II: Claude Code & multi-agent",
+      "part": 1,
+      "weeks": "2-3",
+      "assignment": "A1 Mads-Lens (10%)",
+      "objectives": [
+        "Explain the Claude Code loop, tools, context, permissions",
+        "Run parallel agents/teams on a real task",
+        "Trace and annotate an agent session (A1)"
+      ],
+      "readings": [
+        "Claude Code best practices",
+        "Agentic Engineering Patterns",
+        "Claude Code agent teams",
+        "Research acceleration at OpenAI",
+        "cs2680 readings/sep-09, sep-14"
+      ],
+      "requires": [
+        "M00A"
+      ]
+    },
+    {
+      "id": "M02",
+      "slug": "agent-loop-context-tools",
+      "title": "Agents design I: loop, context management, tool design",
+      "part": 1,
+      "weeks": "3",
+      "assignment": "A2 Mads-Loop (10%) starts",
+      "objectives": [
+        "Implement ReAct loop against a model API from scratch",
+        "Design tools with good schemas/errors",
+        "Manage context window: truncation, summarization, compaction"
+      ],
+      "readings": [
+        "ReAct",
+        "A practical guide to building agents",
+        "readings/sep-16"
+      ],
+      "requires": [
+        "M01"
+      ]
+    },
+    {
+      "id": "M03",
+      "slug": "multi-agent-architecture",
+      "title": "Agents design II: multi-agent architecture & coordination",
+      "part": 1,
+      "weeks": "4",
+      "assignment": "A2 Mads-Loop",
+      "objectives": [
+        "Compare orchestrator-worker, debate, pipeline topologies",
+        "Quantify when multi-agent helps vs hurts"
+      ],
+      "readings": [
+        "Multi-agent research system (Anthropic)",
+        "Scaling agent systems",
+        "readings/sep-23"
+      ],
+      "requires": [
+        "M02"
+      ]
+    },
+    {
+      "id": "M04",
+      "slug": "memory-reliability",
+      "title": "Agents design III: memory & reliability",
+      "part": 1,
+      "weeks": "5",
+      "assignment": "A2 Mads-Loop",
+      "objectives": [
+        "Classify agent failure modes",
+        "Implement tiered memory (MemGPT-style)",
+        "Add retries/verification/guardrails"
+      ],
+      "readings": [
+        "Where agents fail",
+        "MemGPT",
+        "readings/sep-28"
+      ],
+      "requires": [
+        "M03"
+      ]
+    },
+    {
+      "id": "M05",
+      "slug": "agent-evaluation",
+      "title": "Agents design IV: evaluation",
+      "part": 1,
+      "weeks": "5",
+      "assignment": "A2 Mads-Loop due",
+      "objectives": [
+        "Build an eval harness with graders",
+        "Measure pass@k, cost, latency, variance",
+        "Spot eval contamination/leakage"
+      ],
+      "readings": [
+        "notes/agent-evaluation.html"
+      ],
+      "requires": [
+        "M04"
+      ]
+    },
+    {
+      "id": "M06",
+      "slug": "cost-performance",
+      "title": "Advanced agent design I: cost & performance (token efficiency)",
+      "part": 1,
+      "weeks": "6",
+      "assignment": "A3 Mads-Opt (20%)",
+      "objectives": [
+        "Profile token spend per step",
+        "Apply caching, routing, cascades, compaction",
+        "Show Pareto improvement on cost vs accuracy"
+      ],
+      "readings": [
+        "notes/cost-effective-agents.html"
+      ],
+      "requires": [
+        "M05"
+      ]
+    },
+    {
+      "id": "M07",
+      "slug": "safety-self-evolving",
+      "title": "Advanced agent design II: safety & self-evolving harness",
+      "part": 1,
+      "weeks": "7",
+      "assignment": null,
+      "objectives": [
+        "Threat-model an agent (prompt injection, tool abuse)",
+        "Explain self-improving harness loops"
+      ],
+      "readings": [
+        "course discussion papers"
+      ],
+      "requires": [
+        "M06"
+      ]
+    },
+    {
+      "id": "M08",
+      "slug": "serving-basics",
+      "title": "Efficient LLM serving: basics (batching, scheduling)",
+      "part": 2,
+      "weeks": "8",
+      "assignment": "A4 Mads-Serve (20%)",
+      "objectives": [
+        "Derive prefill vs decode costs",
+        "Explain continuous batching, PagedAttention",
+        "Run vLLM/SGLang and measure TTFT/TPOT/throughput"
+      ],
+      "readings": [
+        "Orca",
+        "vLLM/PagedAttention",
+        "slides 1-8"
+      ],
+      "requires": [
+        "M07",
+        "M00"
+      ]
+    },
+    {
+      "id": "M09",
+      "slug": "speculative-decoding",
+      "title": "Efficient LLM serving: speculative decoding",
+      "part": 2,
+      "weeks": "9",
+      "assignment": "A4",
+      "objectives": [
+        "Prove acceptance-rejection preserves distribution",
+        "Implement draft-verify loop",
+        "Model speedup vs acceptance rate"
+      ],
+      "readings": [
+        "Leviathan et al. speculative decoding",
+        "Medusa/EAGLE"
+      ],
+      "requires": [
+        "M08"
+      ]
+    },
+    {
+      "id": "M10",
+      "slug": "agentic-scheduling-prefix-cache",
+      "title": "Efficient agentic systems: scheduling & prefix caching",
+      "part": 2,
+      "weeks": "10",
+      "assignment": "A4",
+      "objectives": [
+        "Explain RadixAttention/prefix reuse",
+        "Design schedulers for agent workflows (program-level)"
+      ],
+      "readings": [
+        "SGLang",
+        "Continuum/Parrot-style papers"
+      ],
+      "requires": [
+        "M09"
+      ]
+    },
+    {
+      "id": "M11",
+      "slug": "quantization-pruning",
+      "title": "Efficient LLM serving: pruning & quantization",
+      "part": 2,
+      "weeks": "10",
+      "assignment": "A4/A5",
+      "objectives": [
+        "Implement int8/int4 weight quant by hand",
+        "Explain GPTQ/AWQ/FP8 tradeoffs"
+      ],
+      "readings": [
+        "LLM.int8()",
+        "GPTQ",
+        "AWQ"
+      ],
+      "requires": [
+        "M10"
+      ]
+    },
+    {
+      "id": "M12",
+      "slug": "gpu-kernels",
+      "title": "Efficient LLM serving: GPU & kernels",
+      "part": 2,
+      "weeks": "11",
+      "assignment": "A5 Mads-Stack (10%)",
+      "objectives": [
+        "Roofline analysis of attention/GEMM",
+        "Explain FlashAttention tiling",
+        "Write a Triton kernel"
+      ],
+      "readings": [
+        "FlashAttention 1-3",
+        "GPU MODE lectures"
+      ],
+      "requires": [
+        "M11"
+      ]
+    },
+    {
+      "id": "M13",
+      "slug": "kv-cache-architectures",
+      "title": "KV-cache optimization & model architectures",
+      "part": 2,
+      "weeks": "12",
+      "assignment": "A5",
+      "objectives": [
+        "Compute KV memory per token for MHA/GQA/MLA",
+        "Explain eviction/offload/compression"
+      ],
+      "readings": [
+        "GQA",
+        "DeepSeek MLA",
+        "KV cache compression papers"
+      ],
+      "requires": [
+        "M12"
+      ]
+    },
+    {
+      "id": "M14",
+      "slug": "routing-load-balancing",
+      "title": "Efficient agentic systems: routing, load balancing, others",
+      "part": 2,
+      "weeks": "13-14",
+      "assignment": "A5 Mads-Stack",
+      "objectives": [
+        "Design cache-aware routing",
+        "Explain disaggregated prefill/decode"
+      ],
+      "readings": [
+        "DistServe",
+        "Mooncake",
+        "llm-d"
+      ],
+      "requires": [
+        "M13"
+      ]
+    },
+    {
+      "id": "M15",
+      "slug": "final-project",
+      "title": "Final project",
+      "part": 3,
+      "weeks": "9-14",
+      "assignment": "Final (20%)",
+      "objectives": [
+        "Proposal, implementation, poster, demo"
+      ],
+      "readings": [
+        "project.html"
+      ],
+      "requires": [
+        "M14"
+      ]
+    }
   ]
 }

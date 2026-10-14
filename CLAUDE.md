@@ -20,3 +20,6 @@ Session start: run `learn.py card due` and `learn.py status`; do the due retriev
 
 ## AI-economy angle
 Every module ends with an "economic artifact": a measured benchmark, a reusable tool, or a written insight (cost/latency/quality tradeoff) suitable for a portfolio/blog. Prefer measuring (tokens, $, TTFT, TPOT, throughput) over opinions.
+
+## Study hub
+Lessons are interactive HTML in `hub/lessons/`, served by `tools/hub.py` (localhost). The student's answers are in `progress/answers/<lesson>.json`: read them when asked to review or score, and write feedback back to the student in chat. New lessons: add a page under `hub/lessons/`, register it in `hub/lessons.json`. Do not publish lessons as claude.ai artifacts any more; the Library page keeps the old ones as backups.

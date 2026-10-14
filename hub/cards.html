@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Flashcards</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="hub.css">
+</head><body>
+<div class="wrap">
+<nav class="top"></nav>
+<h1>Flashcards</h1>
+<p class="lede">Answer out loud or in your head before you flip. Then grade honestly. Easy cards return rarely, hard ones tomorrow.</p>
+<div class="step" id="card">
+  <div class="sh"><span class="tag" id="meta"></span><span class="t" id="left"></span></div>
+  <h2 id="q">Loading...</h2>
+  <textarea id="mine" placeholder="Optional: type your answer first" aria-label="Your answer"></textarea>
+  <div style="margin-top:10px"><button type="button" id="flip">Show answer</button></div>
+  <div id="ans" hidden>
+    <div class="big" id="a"></div>
+    <p class="hint">How well did you recall it?</p>
+    <div id="grades" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+  </div>
+</div>
+<div class="step">
+  <h2>Add a card</h2>
+  <label class="q" for="nq">Question</label><input type="text" id="nq">
+  <label class="q" for="na">Answer</label><input type="text" id="na">
+  <div style="margin-top:10px"><button type="button" class="ghost" id="add">Add card</button> <span id="addmsg" class="hint"></span></div>
+</div>
+</div>
+<script src="hub.js"></script>
+<script>
+Hub.nav("cards.html");
+let deck=[],i=0;
+const G=[[0,"0 blank"],[1,"1 wrong"],[2,"2 close"],[3,"3 hard"],[4,"4 good"],[5,"5 easy"]];
+const g=document.getElementById("grades");
+G.forEach(([v,l])=>{const b=document.createElement("button");b.type="button";b.className=v>=3?"":"ghost";b.textContent=l;b.onclick=()=>grade(v);g.append(b)});
+function show(){
+  const c=deck[i];
+  document.getElementById("ans").hidden=true;document.getElementById("flip").hidden=false;document.getElementById("mine").value="";
+  if(!c){document.getElementById("q").textContent="No cards due. Come back tomorrow.";document.getElementById("meta").textContent="";document.getElementById("left").textContent="";document.getElementById("flip").hidden=true;document.getElementById("mine").hidden=true;return}
+  document.getElementById("q").textContent=c.q;
+  document.getElementById("meta").textContent="card "+c.id+(c.module?" · "+c.module:"");
+  document.getElementById("left").textContent=(deck.length-i)+" left";
+}
+async function load(){deck=await Hub.api("/api/cards/due");i=0;show()}
+document.getElementById("flip").onclick=()=>{document.getElementById("a").textContent=deck[i].a;document.getElementById("ans").hidden=false;document.getElementById("flip").hidden=true};
+async function grade(v){await Hub.api("/api/cards/"+deck[i].id+"/review","POST",{grade:v});i++;show()}
+document.getElementById("add").onclick=async()=>{
+  const q=document.getElementById("nq").value.trim(),a=document.getElementById("na").value.trim();
+  if(!q||!a){document.getElementById("addmsg").textContent="Both fields are required.";return}
+  await Hub.api("/api/cards","POST",{q,a,module:""});document.getElementById("nq").value="";document.getElementById("na").value="";
+  document.getElementById("addmsg").textContent="Added. It is due today.";
+};
+load().catch(()=>{document.getElementById("q").textContent="Cannot reach the hub server."});
+</script>
+</body></html>

@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L5 The agent loop, tokens and dollars</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../hub.css">
+</head><body data-lesson="L5">
+<div class="wrap">
+<nav class="top"></nav>
+<span class="tag" style="margin-top:20px;display:inline-block">M00A · AGENT FUNDAMENTALS · LESSON L5 · ABOUT 2.5 H</span>
+<h1>The agent loop, tokens and dollars</h1>
+<p class="lede">By the end you can explain who does what in an agent, compute what a multi-turn agent costs with and without caching, and you have written a tested agent loop. Type in every box. Your answers save automatically into the repo.</p>
+
+<!-- STEP 1 -->
+<section class="step" id="s1">
+  <div class="sh"><span class="tag">STEP 1</span><h2>Mental model</h2><span class="t">5 min</span></div>
+  <div class="big">An agent is an intern on a phone. The model is the intern. The program around it, the harness, is you.</div>
+<pre>harness  -> model : task + notebook so far
+model    -> harness: "please run calculator(2+3)"      (it only ASKS)
+harness runs the tool, writes "5" in the notebook
+harness  -> model : task + ALL the notebook again
+model    -> harness: "The answer is 5"                 (final answer, loop ends)</pre>
+  <ol>
+    <li><b>The model never runs anything.</b> It outputs a request. The harness executes it, which is why permissions, errors and step limits live in your code.</li>
+    <li><b>The model remembers nothing between calls.</b> Every call sends the whole notebook, and every call is billed on all of it.</li>
+  </ol>
+  <label class="q" for="m1">In your own words: if the harness crashed halfway through a tool call, what would the model know about it?</label>
+  <textarea id="m1" data-q="m1"></textarea>
+  <label class="fin"><input type="checkbox" class="fin" data-q="done1"> Step 1 done</label>
+</section>
+
+<!-- STEP 2 -->
+<section class="step" id="s2">
+  <div class="sh"><span class="tag">STEP 2</span><h2>Predict before you look</h2><span class="t">5 min</span></div>
+  <p>An agent runs <b>10 turns</b>. Each turn the model sees everything so far, and each turn adds <b>2,000 new tokens</b>, so turn 1 sends 2,000 tokens. Guess first. "Unsure" is fine, put your best number anyway.</p>
+  <div class="row2">
+    <div><label class="q" for="p1">Input tokens billed, turn 1</label><input type="text" id="p1" data-q="p1" inputmode="numeric"></div>
+    <div><label class="q" for="p2">Turn 2</label><input type="text" id="p2" data-q="p2" inputmode="numeric"></div>
+    <div><label class="q" for="p3">Turn 3</label><input type="text" id="p3" data-q="p3" inputmode="numeric"></div>
+    <div><label class="q" for="p10">Turn 10</label><input type="text" id="p10" data-q="p10" inputmode="numeric"></div>
+    <div><label class="q" for="ptot">Total over all 10 turns</label><input type="text" id="ptot" data-q="ptot" inputmode="numeric"></div>
+    <div><label class="q" for="pcost">Cost at $3 per million, in dollars</label><input type="text" id="pcost" data-q="pcost" inputmode="decimal"></div>
+  </div>
+  <label class="q" for="pcache">With caching, which tokens are the "new" ones each turn, and what fraction of turn 10's input is a repeat?</label>
+  <textarea id="pcache" data-q="pcache"></textarea>
+  <label class="fin"><input type="checkbox" class="fin" data-q="pred_locked"> I have committed my predictions. Unlock the calculator.</label>
+</section>
+
+<!-- STEP 3 -->
+<section class="step" id="s3" data-needs="pred_locked" hidden>
+  <div class="sh"><span class="tag">STEP 3</span><h2>Calculator and comparison</h2><span class="t">10 min</span></div>
+  <p>Change the numbers and watch how the bill grows. Then compare with your predictions.</p>
+  <div class="row2">
+    <div><label class="q" for="cn">Turns</label><input type="number" id="cn" value="10" min="1" max="60"></div>
+    <div><label class="q" for="ct">New tokens per turn</label><input type="number" id="ct" value="2000" min="1"></div>
+    <div><label class="q" for="cp">Input price, $ per million</label><input type="number" id="cp" value="3" step="0.1" min="0"></div>
+    <div><label class="q" for="cr">Cache read price, % of input</label><input type="number" id="cr" value="10" min="0" max="100"></div>
+    <div><label class="q" for="cw">Cache write price, % of input</label><input type="number" id="cw" value="125" min="0" max="300"></div>
+  </div>
+  <div class="tbl out"><table><thead><tr><th>Turn</th><th class="n">Input tokens</th><th class="n">New (written)</th><th class="n">Repeated (read)</th><th class="n">Repeat %</th><th class="n">Cost, no cache</th><th class="n">Cost, cached</th></tr></thead><tbody id="ctab"></tbody></table></div>
+  <p id="csum" class="hint"></p>
+  <h3>Your predictions against the 10-turn, 2,000-token case</h3>
+  <div class="tbl"><table><thead><tr><th>Item</th><th class="n">You</th><th class="n">Actual</th><th>Result</th></tr></thead><tbody id="cmp"></tbody></table></div>
+  <label class="q" for="reflect">What surprised you, and what does the total tell you about how cost grows with the number of turns?</label>
+  <textarea id="reflect" data-q="reflect"></textarea>
+  <label class="fin"><input type="checkbox" class="fin" data-q="done3"> Step 3 done</label>
+</section>
+
+<!-- STEP 4 -->
+<section class="step" id="s4">
+  <div class="sh"><span class="tag">STEP 4</span><h2>Read, with a purpose</h2><span class="t">15 min</span></div>
+  <ul>
+    <li><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Anthropic, Building effective agents</a>. Find: the difference between a workflow and an agent, and the advice on starting simple.</li>
+    <li><a href="https://docs.claude.com/en/docs/build-with-claude/prompt-caching" target="_blank" rel="noopener">Anthropic docs, Prompt caching</a>. Find: what must stay identical for a cache hit, and what the read and write prices are relative to normal input.</li>
+    <li><a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener">ReAct</a>. Read the abstract and the example trajectory only.</li>
+  </ul>
+  <label class="q" for="r1">One sentence: workflow versus agent.</label><textarea id="r1" data-q="r1" style="min-height:60px"></textarea>
+  <label class="q" for="r2">What invalidates a cache, in your words?</label><textarea id="r2" data-q="r2" style="min-height:60px"></textarea>
+  <label class="fin"><input type="checkbox" class="fin" data-q="done4"> Step 4 done</label>
+</section>
+
+<!-- STEP 5 -->
+<section class="step" id="s5">
+  <div class="sh"><span class="tag">STEP 5</span><h2>Build: the agent loop</h2><span class="t">30 to 45 min</span></div>
+  <p>Open <code>labs/L5_agent/agent.py</code> in your editor. Implement <code>run_agent</code> and <code>cost_usd</code>. The tests in <code>test_agent.py</code> are your spec, and they use a scripted fake model, so nothing here costs money.</p>
+  <p class="hint">Write down your plan in plain words in the box below before you code. A plan of 4 lines is enough.</p>
+  <textarea id="plan" data-q="plan"></textarea>
+  <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <button type="button" id="run">Run the L5 tests</button>
+    <button type="button" class="ghost" id="hint">Need a hint</button>
+    <span class="hint" id="hintct"></span>
+  </div>
+  <div id="hints" class="hint" style="margin-top:8px"></div>
+  <pre class="out" id="out">Tests have not run yet.</pre>
+  <label class="q" for="stuck">Stuck on something? Write it here and tell me in the chat. I read this box.</label>
+  <textarea id="stuck" data-q="stuck" style="min-height:60px"></textarea>
+  <label class="fin"><input type="checkbox" class="fin" data-q="done5"> All L5 tests pass</label>
+</section>
+
+<!-- STEP 6 -->
+<section class="step" id="s6">
+  <div class="sh"><span class="tag">STEP 6</span><h2>Check yourself</h2><span class="t">15 min</span></div>
+  <p class="hint">New questions, not the exam ones. This check is for learning. The graded quiz comes later with different questions.</p>
+
+  <label class="q" for="z1">1. An agent runs 8 turns. Each turn adds 1,500 tokens and the whole history is resent. Total input tokens billed?</label>
+  <input type="text" id="z1" data-q="z1" inputmode="numeric"><div class="fb" id="f1"></div>
+  <label class="q" for="z2">2. Cost of those input tokens at $2 per million, in dollars (no caching)?</label>
+  <input type="text" id="z2" data-q="z2" inputmode="decimal"><div class="fb" id="f2"></div>
+  <label class="q" for="z3">3. Same run with caching: writes cost 125% of input, reads 10%. Total input cost in dollars?</label>
+  <input type="text" id="z3" data-q="z3" inputmode="decimal"><div class="fb" id="f3"></div>
+  <div style="margin-top:8px"><button type="button" class="ghost" id="chk">Check numbers</button></div>
+
+  <fieldset style="border:0;padding:0;margin:16px 0 0"><legend class="q" style="padding:0">4. Who actually executes a tool call?</legend>
+    <label class="opt"><input type="radio" name="z4" data-q="z4" value="a"><span>The model</span></label>
+    <label class="opt"><input type="radio" name="z4" data-q="z4" value="b"><span>The harness (your program)</span></label>
+    <label class="opt"><input type="radio" name="z4" data-q="z4" value="c"><span>The API provider's servers, automatically</span></label>
+    <label class="opt"><input type="radio" name="z4" data-q="z4" value="d"><span>The user</span></label></fieldset>
+  <fieldset style="border:0;padding:0;margin:12px 0 0"><legend class="q" style="padding:0">5. Which change most likely causes a cache miss?</legend>
+    <label class="opt"><input type="radio" name="z5" data-q="z5" value="a"><span>Appending a new tool result at the end</span></label>
+    <label class="opt"><input type="radio" name="z5" data-q="z5" value="b"><span>Editing a sentence near the start of the system prompt</span></label>
+    <label class="opt"><input type="radio" name="z5" data-q="z5" value="c"><span>Asking a different question in the last message</span></label>
+    <label class="opt"><input type="radio" name="z5" data-q="z5" value="d"><span>Waiting 10 seconds between calls</span></label></fieldset>
+  <fieldset style="border:0;padding:0;margin:12px 0 0"><legend class="q" style="padding:0">6. A tool raises an exception. What should the harness do?</legend>
+    <label class="opt"><input type="radio" name="z6" data-q="z6" value="a"><span>Crash, so the bug is noticed</span></label>
+    <label class="opt"><input type="radio" name="z6" data-q="z6" value="b"><span>Retry the same call forever</span></label>
+    <label class="opt"><input type="radio" name="z6" data-q="z6" value="c"><span>Send an "ERROR: ..." observation back to the model and continue</span></label>
+    <label class="opt"><input type="radio" name="z6" data-q="z6" value="d"><span>Silently skip it and pretend it worked</span></label></fieldset>
+  <div style="margin-top:8px"><button type="button" class="ghost" id="chk2">Check choices</button> <span id="f456" class="hint"></span></div>
+
+  <label class="q" for="z7">7. Why does a harness need a step limit, and what should it return when the limit hits?</label>
+  <textarea id="z7" data-q="z7" style="min-height:70px"></textarea>
+  <label class="q" for="z8">8. The model asks for a tool that does not exist. What do you do and why?</label>
+  <textarea id="z8" data-q="z8" style="min-height:70px"></textarea>
+  <label class="fin"><input type="checkbox" class="fin" data-q="done6"> Step 6 done</label>
+</section>
+
+<!-- STEP 7 -->
+<section class="step" id="s7">
+  <div class="sh"><span class="tag">STEP 7</span><h2>Teach it back</h2><span class="t">10 min</span></div>
+  <p>Explain to a new colleague who has never seen an agent: what is the loop, who does what, why is the bill quadratic, and how does caching change it? Use your own words, and one concrete number.</p>
+  <textarea id="tb" data-q="tb" style="min-height:160px"></textarea>
+  <label class="q" for="err">Error log: one thing you got wrong today, why, and the fix.</label>
+  <textarea id="err" data-q="err" style="min-height:70px"></textarea>
+  <label class="fin"><input type="checkbox" class="fin" data-q="done7"> Step 7 done. Ready for me to review and score.</label>
+</section>
+
+<!-- STEP 8 -->
+<section class="step" id="s8">
+  <div class="sh"><span class="tag">STEP 8</span><h2>Make flashcards</h2><span class="t">5 min</span></div>
+  <p>Add these to your spaced-repetition deck with one click. Reword them if you like on the Cards page.</p>
+  <div id="cardbtns" style="display:grid;gap:8px"></div>
+  <p class="hint" id="cardmsg"></p>
+</section>
+</div>
+
+<script src="../hub.js"></script>
+<script>
+Hub.nav("");
+Hub.init().then(()=>{refreshCalc();updateCmp();});
+
+/* ---- calculator ---- */
+const $=id=>document.getElementById(id);
+const fmt=n=>Math.round(n).toLocaleString("en-US");
+const usd=n=>"$"+n.toFixed(n<1?4:2);
+function calc(N,T,P,R,W){
+  const rows=[];let tot=0,costNo=0,costC=0;
+  for(let t=1;t<=N;t++){
+    const input=T*t,written=T,read=T*(t-1);
+    const no=input*P/1e6,c=(written*P*W/100+read*P*R/100)/1e6;
+    tot+=input;costNo+=no;costC+=c;rows.push({t,input,written,read,pct:read/input*100,no,c});
+  }
+  return {rows,tot,costNo,costC};
+}
+function refreshCalc(){
+  const N=+$("cn").value||1,T=+$("ct").value||0,P=+$("cp").value||0,R=+$("cr").value||0,W=+$("cw").value||0;
+  const r=calc(N,T,P,R,W),b=$("ctab");b.textContent="";
+  r.rows.forEach(x=>{
+    const tr=document.createElement("tr");
+    [x.t,fmt(x.input),fmt(x.written),fmt(x.read),x.pct.toFixed(0)+"%",usd(x.no),usd(x.c)].forEach((v,i)=>{const d=document.createElement("td");d.textContent=v;if(i)d.className="n";tr.append(d)});
+    b.append(tr);
+  });
+  $("csum").textContent="Total input tokens "+fmt(r.tot)+". No cache "+usd(r.costNo)+". Cached "+usd(r.costC)+" ("+(r.costNo/Math.max(r.costC,1e-12)).toFixed(1)+"x cheaper). Output tokens are extra.";
+}
+["cn","ct","cp","cr","cw"].forEach(i=>$(i).addEventListener("input",refreshCalc));
+function num(id){const v=parseFloat(String($(id).value).replace(/[, $]/g,""));return isNaN(v)?null:v}
+function updateCmp(){
+  const act=calc(10,2000,3,10,125),tb=$("cmp");tb.textContent="";
+  const items=[["Turn 1","p1",act.rows[0].input],["Turn 2","p2",act.rows[1].input],["Turn 3","p3",act.rows[2].input],["Turn 10","p10",act.rows[9].input],["Total input","ptot",act.tot],["Cost, no cache","pcost",act.costNo]];
+  items.forEach(([n,id,a])=>{
+    const y=num(id),tr=document.createElement("tr");
+    const ok=y!==null&&Math.abs(y-a)<=Math.abs(a)*0.02;
+    const res=y===null?"blank":ok?"match":(y>a?"too high":"too low")+(a?(" by "+(Math.abs(y-a)/a*100).toFixed(0)+"%"):"");
+    [n,y===null?"-":(id==="pcost"?usd(y):fmt(y)),id==="pcost"?usd(a):fmt(a),res].forEach((v,i)=>{const d=document.createElement("td");d.textContent=v;if(i===1||i===2)d.className="n";tr.append(d)});
+    tb.append(tr);
+  });
+}
+["p1","p2","p3","p10","ptot","pcost"].forEach(i=>$(i).addEventListener("input",updateCmp));
+
+/* ---- lab runner and hints ---- */
+const HINTS=[
+ "What structure holds the conversation? The tests expect these message shapes: the first is {role:'user', content:task}; a tool observation is {role:'tool', name:..., content:...}. Sketch the loop on paper first: call the model, look at its type, then either return or run a tool.",
+ "Outline: set up messages, usage counters and a step counter. While steps < max_steps: call the model, add its usage to the totals, increment steps. If the type is 'final', return. Otherwise append the call, try to run the tool, and append the result or an error observation. After the loop, return the max_steps result.",
+ "For the tool step, think of one try/except that covers three failures: name not in tools, bad arguments (a TypeError from the call), and any exception the tool raises. In each case the observation content starts with 'ERROR:'. cost_usd is two multiplications divided by one million."
+];
+let used=0;
+$("hint").addEventListener("click",()=>{
+  if(used<HINTS.length){const p=document.createElement("p");p.textContent="Hint "+(used+1)+": "+HINTS[used];$("hints").append(p);used++;$("hintct").textContent=used+" of 3 used";Hub.api("/api/answers/L5","PUT",{hints_used:used});}
+  else $("hintct").textContent="No more hints. Tell me where you are stuck.";
+});
+$("run").addEventListener("click",async()=>{
+  $("run").disabled=true;const ok=await Hub.runLab("L5","#out");$("run").disabled=false;
+  Hub.api("/api/answers/L5","PUT",{last_test_ok:ok,last_test_output:$("out").textContent.slice(-1500)});
+  if(ok){document.querySelector('[data-q="done5"]').checked=true;document.querySelector('[data-q="done5"]').dispatchEvent(new Event("change"));}
+});
+
+/* ---- self check ---- */
+Hub.check($("chk"),[
+ {q:"z1",target:54000,fb:"#f1",hint:"Turn t sends 1,500 x t tokens. Add turns 1 to 8, or use 1,500 x (8 x 9 / 2)."},
+ {q:"z2",target:0.108,fb:"#f2",hint:"Total tokens divided by 1,000,000, times $2."},
+ {q:"z3",target:0.0384,fb:"#f3",tol:0.03,hint:"Writes are the new tokens only (12,000 in total). The rest are reads. Price each group, then add."}
+]);
+$("chk2").addEventListener("click",()=>{
+  const key={z4:"b",z5:"b",z6:"c"};let s=[];
+  for(const k in key){const c=document.querySelector('input[name="'+k+'"]:checked');s.push(k.replace("z","Q")+(c?(c.value===key[k]?" right":" not yet"):" blank"));}
+  $("f456").textContent=s.join(" · ");
+});
+
+/* ---- flashcards ---- */
+const CARDS=[
+ ["Who executes a tool call in an agent?","The harness. The model only outputs a request."],
+ ["Why does an agent's input-token bill grow quadratically with turns?","Each turn resends the whole history, so turn t bills t x (tokens per turn). The total is the sum 1..n."],
+ ["What makes a prompt-cache hit, and what breaks it?","A byte-identical prefix. Changing anything early in the prompt invalidates everything after it."],
+ ["What should a harness do when a tool throws?","Return an ERROR observation to the model and continue. Do not crash."]
+];
+CARDS.forEach(([q,a])=>{
+  const b=document.createElement("button");b.type="button";b.className="ghost";b.style.textAlign="left";b.textContent="Add: "+q;
+  b.onclick=async()=>{await Hub.api("/api/cards","POST",{q,a,module:"M00A"});b.disabled=true;b.textContent="Added: "+q;$("cardmsg").textContent="Cards are due today on the Cards page."};
+  $("cardbtns").append(b);
+});
+</script>
+</body></html>

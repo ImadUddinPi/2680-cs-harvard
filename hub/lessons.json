@@ -1,0 +1,7 @@
+[
+  {"id": "L5", "module": "M00A", "title": "The agent loop, tokens and dollars", "path": "lessons/L5.html", "time": "2.5 h", "track": "agents", "status": "ready"},
+  {"id": "L4", "module": "M00", "title": "Roofline: why inference is about moving bytes", "path": "", "time": "2.5 h", "track": "foundations", "status": "planned"},
+  {"id": "L3", "module": "M00", "title": "Attention and the KV cache", "path": "", "time": "2.5 h", "track": "foundations", "status": "planned"},
+  {"id": "L2", "module": "M00", "title": "PyTorch fluency: shapes, views, autograd", "path": "", "time": "2 h", "track": "foundations", "status": "planned"},
+  {"id": "L1", "module": "M00", "title": "Systems: memory, caches, races", "path": "", "time": "2.5 h", "track": "foundations", "status": "planned"}
+]

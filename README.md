@@ -7,6 +7,9 @@ Self-paced, mastery-gated study of [Harvard CS2680](https://cs2680.seas.harvard.
 - **Curriculum:** [curriculum.json](curriculum.json) → [modules/](modules/)
 - **Course map:** Part I agents (M01–M07, A1–A3) → Part II serving & systems (M08–M14, A4–A5) → final project (M15)
 
+## Study hub (start here)
+Double-click `start-hub.cmd` (or `uv run python tools/hub.py`) and open http://127.0.0.1:8765. Lessons are interactive pages; every answer saves to `progress/answers/` in this repo.
+
 ## Quick start
 ```
 uv sync                      # Python 3.12 + PyTorch env

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CS2680 Study Hub</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="hub.css">
+</head><body>
+<div class="wrap">
+<nav class="top"></nav>
+<h1>CS2680 Study Hub</h1>
+<p class="lede">One place for lessons, answers, labs, flashcards and progress. Everything you type is saved into this repo, so I can read it and git keeps the history.</p>
+
+<div class="grid" style="margin-top:16px">
+  <div class="card"><h2>Today</h2><div id="today"></div></div>
+  <div class="card"><h2>Flashcards</h2><p id="cards" class="muted">Loading...</p><a href="cards.html"><button type="button">Review cards</button></a></div>
+  <div class="card"><h2>Progress</h2><p id="prog" class="muted">Loading...</p></div>
+</div>
+
+<h2 style="margin-top:32px">Lessons</h2>
+<div class="tbl"><table><thead><tr><th>Lesson</th><th>Module</th><th>Track</th><th>State</th></tr></thead><tbody id="lessons"></tbody></table></div>
+
+<h2 style="margin-top:32px">Modules</h2>
+<p class="hint">A module starts only when everything it requires is mastered (all four checks at 90% or more).</p>
+<div class="tbl"><table><thead><tr><th>Module</th><th>Title</th><th>Needs</th><th>Status</th><th>Quiz</th><th>Teach</th><th>Build</th><th>Transfer</th></tr></thead><tbody id="mods"></tbody></table></div>
+</div>
+<script src="hub.js"></script>
+<script>
+Hub.nav("index.html");
+const txt=(t,c)=>{const s=document.createElement("span");if(c)s.className=c;s.textContent=t;return s};
+function td(...kids){const d=document.createElement("td");kids.forEach(k=>d.append(k));return d}
+(async()=>{
+  let st,ls;
+  try{[st,ls]=await Promise.all([Hub.api("/api/state"),fetch("lessons.json").then(r=>r.json())])}
+  catch(e){document.getElementById("prog").textContent="Cannot reach the hub server.";return}
+  const mastered=st.modules.filter(m=>m.status==="mastered").length;
+  document.getElementById("prog").textContent=mastered+" of "+st.modules.length+" modules mastered. Threshold "+st.threshold+"%.";
+  document.getElementById("cards").textContent=st.cards_due+" due now, "+st.cards_total+" in the deck.";
+  const lb=document.getElementById("lessons");
+  ls.forEach(l=>{
+    const tr=document.createElement("tr");
+    const saved=st.lessons[l.id];
+    const name=l.status==="ready"?Object.assign(document.createElement("a"),{href:l.path,textContent:l.id+"  "+l.title}):txt(l.id+"  "+l.title);
+    tr.append(td(name),td(l.module),td(l.track),td(txt(l.status==="ready"?(saved?"in progress, "+saved.fields+" answers saved":"ready"):"planned",
+      "pill "+(l.status==="ready"?(saved?"warn":"ok"):"none"))));
+    lb.append(tr);
+  });
+  const mb=document.getElementById("mods");
+  st.modules.forEach(m=>{
+    const tr=document.createElement("tr");
+    const cls={mastered:"ok",in_progress:"warn",locked:"none",unlocked:"ok"}[m.status];
+    const sc=k=>td(String(m.scores[k]??"·"));
+    tr.append(td(m.id),td(m.title),td(m.requires.join(", ")||"none"),td(txt(m.status,"pill "+cls)),sc("quiz"),sc("teachback"),sc("build"),sc("transfer"));
+    mb.append(tr);
+  });
+  const next=ls.find(l=>l.status==="ready"&&!(st.lessons[l.id]&&st.lessons[l.id].fields>12));
+  const t=document.getElementById("today");
+  const p=(a,b)=>{const e=document.createElement("p");e.append(a);if(b)e.append(b);t.append(e)};
+  if(next)p("Agents track: ",Object.assign(document.createElement("a"),{href:next.path,textContent:next.id+" "+next.title}));
+  p("Foundations track: 45 minutes, starting with L4 (planned).");
+  p("Cards: "+st.cards_due+" due.");
+})();
+</script>
+</body></html>

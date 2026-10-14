@@ -4,7 +4,7 @@
 
 | Module | Title | Status | Quiz | Teach | Build | Transfer | Mastered |
 |---|---|---|---|---|---|---|---|
-| M00 | Prerequisites & environment | 🔒 locked | · | · | · | · |  |
+| M00 | Prerequisites & environment | 🟡 in_progress | · | · | · | · |  |
 | M01 | Agents use I-II: Claude Code & multi-agent | 🔒 locked | · | · | · | · |  |
 | M02 | Agents design I: loop, context management, tool design | 🔒 locked | · | · | · | · |  |
 | M03 | Agents design II: multi-agent architecture & coordination | 🔒 locked | · | · | · | · |  |

@@ -6,6 +6,7 @@
   learn.py start M00                gate check, create branch module/M00-slug
   learn.py score M00 quiz 85 [-n]   log an assessment (kinds: diagnostic quiz teachback build transfer)
   learn.py master M00               enforce mastery gate, record, tag mastered/M00
+  learn.py lab L3                   run the tests for one lab (labs/L3_*) and log pass/fail
   learn.py card add "Q" "A" [-m M00]   add flashcard
   learn.py card due                 list due cards
   learn.py card review ID 0-5       SM-2 grade a card
@@ -171,10 +172,19 @@ def card_review(cid, g):
     print(f"card {cid} next in {c['interval']}d")
 
 
+def cmd_lab(prefix):
+    dirs = sorted((ROOT / "labs").glob(f"{prefix}_*"))
+    if not dirs:
+        sys.exit(f"no lab matching {prefix}_* in labs/")
+    r = subprocess.run([sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "."], cwd=dirs[0])
+    log({"type": "lab", "lab": dirs[0].name, "passed": r.returncode == 0})
+    sys.exit(r.returncode)
+
+
 def main():
     p = argparse.ArgumentParser()
     sub = p.add_subparsers(dest="c", required=True)
-    sub.add_parser("scaffold"); sub.add_parser("status")
+    sub.add_parser("scaffold"); sub.add_parser("status"); sub.add_parser("lab").add_argument("lab")
     for n in ("start", "master"):
         sub.add_parser(n).add_argument("module")
     sc = sub.add_parser("score")
@@ -192,6 +202,7 @@ def main():
         if s["M00"]["status"] == "locked": s["M00"]["status"] = "unlocked"; save_state(s)
         cmd_start(x.module)
     elif x.c == "master": cmd_master(x.module)
+    elif x.c == "lab": cmd_lab(x.lab)
     elif x.c == "score": cmd_score(x.module, x.kind, x.score, x.note)
     elif x.c == "card":
         if x.cc == "add": card_add(x.q, x.a, x.module)

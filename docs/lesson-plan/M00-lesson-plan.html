@@ -1,0 +1,228 @@
+<title>M00 Lesson Plan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one column. Findings first, then the loop, then one card per lesson with command chips, then the week. */
+:root{
+  --bg:#f5f6f4; --surface:#ffffff; --ink:#1b2321; --muted:#5b6662; --line:#d9dedb;
+  --accent:#0b6b5c; --accent-ink:#ffffff; --soft:#e3efec; --warn:#8a5a00; --warn-bg:#fbf0d6;
+  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#101614; --surface:#18201d; --ink:#e6ece9; --muted:#9aa7a2; --line:#2b3733;
+  --accent:#4fc4ad; --accent-ink:#06211c; --soft:#1b2c28; --warn:#f0b84d; --warn-bg:#3a2d10; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101614; --surface:#18201d; --ink:#e6ece9; --muted:#9aa7a2; --line:#2b3733;
+  --accent:#4fc4ad; --accent-ink:#06211c; --soft:#1b2c28; --warn:#f0b84d; --warn-bg:#3a2d10; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;padding-inline:16px;padding-block:0 72px}
+.wrap{max-width:820px;margin:0 auto}
+header{padding-block:32px 8px}
+h1{font-size:clamp(1.7rem,4vw,2.3rem);line-height:1.15;margin:0 0 8px;text-wrap:balance}
+h2{font-size:1.4rem;margin:44px 0 6px;text-wrap:balance}
+h3{font-size:1.1rem;margin:0}
+p{margin:0 0 10px}
+.lede,.muted{color:var(--muted)}
+.lede{max-width:65ch}
+.tag{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 6px;display:inline-block}
+a{color:var(--accent)}
+code{font-family:var(--f-mono);font-size:.86em}
+button{font:inherit;cursor:pointer;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:6px 12px;font-weight:500}
+button.ghost{background:transparent;color:var(--accent)}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px}
+.warn{border:1px solid var(--warn);background:var(--warn-bg);border-radius:8px;padding:12px 14px;margin:12px 0}
+ul{margin:4px 0 8px;padding-left:20px} li{margin-bottom:5px}
+.find{display:grid;gap:10px}
+.find div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-width:0}
+.find b{display:block;margin-bottom:2px}
+.loop{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:10px}
+.loop div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:.9rem;min-width:0}
+.loop b{display:block;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.chip{display:flex;gap:8px;align-items:center;background:var(--soft);border-radius:6px;padding:6px 6px 6px 10px;margin:6px 0;min-width:0}
+.chip code{flex:1;overflow-x:auto;white-space:nowrap}
+.lesson{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px;margin-bottom:16px;min-width:0}
+.lh{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}
+.big{font-style:italic;border-left:3px solid var(--accent);padding:2px 12px;margin:10px 0;color:var(--ink)}
+.rows{display:grid;gap:10px;margin-top:12px}
+.row{display:grid;grid-template-columns:92px 1fr;gap:12px;min-width:0}
+.row>b{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);padding-top:3px}
+.row>div{min-width:0}
+.done{display:flex;gap:8px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-weight:500}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:.92rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.check li{list-style:none;margin-left:-20px}
+@media (max-width:520px){.row{grid-template-columns:1fr;gap:2px}}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="tag">CS2680 · MODULE M00 · LESSON PLAN</span>
+  <h1>M00 Lesson Plan</h1>
+  <p class="lede">Seven lessons, each capped at 15 minutes of theory before you touch code. All practice runs from one repo with one command per lab. Every lab ships with tests that tell you when you are right, so you never wait for me to grade your code.</p>
+</header>
+
+<h2>What the research changed</h2>
+<p class="muted">Sources: the course's policy and assignments pages, the JAX Scaling Book inference chapter, PyTorch docs, and the primary resources linked below. Search results for blog posts were thin, so I leaned on primary sources only.</p>
+<div class="find">
+  <div><b>The course assumes 44 terms, and my exam covered about half.</b>It names deadlock, false sharing, NUMA, DMA, RDMA, write-ahead logs, ACID, B-trees, RPC and congestion control, which I did not test. I added all 44 as flashcards (62 cards in the deck with the key numbers). Review them daily; they take 10 minutes.</div>
+  <div><b>Every assignment requires Claude Code and an archive of your session files.</b>The AI policy encourages AI use but requires a disclosure note and ownership of every line. Using Claude Code well is a graded skill, so it is part of every lab here.</div>
+  <div><b>What the five assignments actually ask for.</b>A1: a web UI that streams an agent's tool calls live. A2: your own agent runtime with retries, schema-checked tools and graceful failures. A3: cut tokens and latency at fixed accuracy, published as a blog post. A4: run a 7 to 8B open model on an inference engine you operate. A5: profile the whole stack and test a written hypothesis. Lab L5 is the skeleton of A2; L4 is the thinking behind A3 to A5.</div>
+  <div><b>Verified against a primary source.</b>The Scaling Book gives KV size = 2 x bytes x head_dim x kv_heads x layers x tokens, and tokens/s = batch x bandwidth / (batch x KV + params). My answer key uses the same formulas. It also puts the H100 compute-bound batch at about 280 tokens, which is why batch-1 decode is always memory-bound.</div>
+  <div><b>Compute gap for A4 and A5.</b>You are not enrolled, so there is no course GPU cluster. Everything through L5 runs on this laptop (CPU). For A4-style work you will need a rented GPU: AWS G-family instances (new accounts often start with a quota of zero, so request an increase early), or Modal, RunPod or Lambda. I have not checked your AWS quota. Also, the $10 budget alarm is sized for CPU experiments; raise it before any GPU hour.</div>
+  <div><b>Windows limits.</b>Windows has no <code>fork()</code> and vLLM does not run natively on it. The copy-on-write demo and later serving work use WSL (Ubuntu is installed). Labs L1 to L5 run natively.</div>
+</div>
+
+<h2>The loop (every lesson)</h2>
+<div class="loop">
+  <div><b>1 Predict · 3 min</b>Write your guess in <code>notes.md</code>. A wrong guess teaches more than a right one.</div>
+  <div><b>2 Intuition · 15 min</b>One resource, one section, one picture. Stop at 15.</div>
+  <div><b>3 Lab · 30 to 45 min</b>Make the tests pass. Ask me for hints, not answers.</div>
+  <div><b>4 Prove · 10 min</b>Explain it to me, no notes. I play a confused new hire.</div>
+  <div><b>5 Cards · 5 min</b>Review due cards, add two of your own.</div>
+</div>
+
+<h2>Tool map: three surfaces only</h2>
+<div class="panel">
+  <ul>
+    <li><b>Terminal in the repo.</b> Claude Code (me), pytest, and every lab command. No Jupyter, no extra apps.</li>
+    <li><b>Editor.</b> Open one <code>lab.py</code> at a time. The test file next to it is your spec.</li>
+    <li><b>Browser: two tabs.</b> This plan, and the single resource for the current lesson.</li>
+  </ul>
+  <p class="muted" style="margin-bottom:6px">Commands you will use all week (click to copy):</p>
+  <div id="cmds"></div>
+</div>
+
+<h2>Lessons</h2>
+<div id="lessons"></div>
+
+<h2>The week</h2>
+<p class="muted">About 2.5 hours a day. The order follows dependencies: numbers first (they motivate everything), then the model, then the code you will reuse in A2.</p>
+<div class="panel tbl"><table>
+<thead><tr><th>Day</th><th>Lessons</th><th>You leave with</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Setup, L4 Roofline</td><td>A script that prints tokens/s ceilings for real models</td></tr>
+<tr><td>2</td><td>L3 Transformer and KV cache</td><td>Attention matching PyTorch's, and a KV calculator</td></tr>
+<tr><td>3</td><td>L2 PyTorch fluency</td><td>The zero_grad bug reproduced and explained</td></tr>
+<tr><td>4</td><td>L5 Agent loop and cost</td><td>A tested agent loop, ready to wire to a real API</td></tr>
+<tr><td>5</td><td>L1 Systems, L6 Tooling and compute plan</td><td>Cache and race experiments timed; git, SSH and Slurm drills clean</td></tr>
+<tr><td>6</td><td>Retake exam (new questions from me)</td><td>Target 51 of 56</td></tr>
+<tr><td>7</td><td>Transfer problem and teach-back, then <code>learn.py master M00</code></td><td>M00 mastered; M01 unlocked</td></tr>
+</tbody></table></div>
+
+<h2>Day-0 checklist</h2>
+<div class="panel"><ul class="check" id="setup"></ul></div>
+</div>
+
+<script>
+const CMDS=[
+ ["Check this machine","uv run python labs/L0_env/check_env.py"],
+ ["Run a lab's tests","uv run python tools/learn.py lab L3"],
+ ["Today's flashcards","uv run python tools/learn.py card due"],
+ ["Grade a card 0 to 5","uv run python tools/learn.py card review ID 4"],
+ ["See progress","uv run python tools/learn.py status"],
+ ["Log a score I give you","uv run python tools/learn.py score M00 quiz 88"]
+];
+const LESSONS=[
+ {id:"L4",day:"Day 1",t:"Roofline: why inference is about moving bytes",time:"2.5 h",lab:"L4",cmd:"uv run python tools/learn.py lab L4",
+  analogy:"A kitchen has a fast chef (compute) and a delivery truck (memory bandwidth). Cooking one dish per truck trip means the chef sits idle. Cooking 300 dishes per trip keeps the chef busy. Decode is one dish per trip.",
+  predict:"Before reading: how many tokens per second can an H100 (3.35 TB/s) decode for a 7B fp16 model at batch 1? Write a number. Then for 70B in 4-bit.",
+  read:[["Horace He, Making Deep Learning Go Brrrr","https://horace.io/brrr_intro.html","Read the sections on compute-bound versus memory-bound and bandwidth. Skip overhead."],["JAX Scaling Book, Inference chapter","https://jax-ml.github.io/scaling-book/inference/","Read only 'Arithmetic intensity' and 'Step time'. Those two formulas are the lab."]],
+  lab_do:"Implement <code>matmul_cost</code>, <code>intensity</code>, <code>ridge</code>, <code>bound</code>, <code>decode_tps_ceiling</code> in <code>labs/L4_roofline/roofline.py</code>. Then run <code>measure_decode.py</code> (tiny model on your CPU) and compare measured time per token with your bandwidth prediction.",
+  pass:"All 3 tests pass. You can explain why measured numbers differ from the ceiling.",
+  prove:"Why does batching make decode cheaper per token, and what stops you from batching forever? (Answer must mention weights read once per step and KV cache growing per sequence.)",
+  trap:"Forgetting that writing C counts as bytes moved, and mixing GB with GiB."},
+ {id:"L3",day:"Day 2",t:"Attention and the KV cache",time:"2.5 h",lab:"L3",cmd:"uv run python tools/learn.py lab L3",
+  analogy:"Generating a word without a cache is rereading the whole book to write the next word. The KV cache is keeping sticky notes of each earlier page, so you only read the new page and glance at the notes.",
+  predict:"Before reading: how many bytes of cache does each generated token add for a 32-layer, 32-head, 128-dim model in fp16? How big is a 4,096-token conversation?",
+  read:[["3Blue1Brown, Deep Learning chapters on transformers and attention","https://www.3blue1brown.com/topics/neural-networks","Watch the attention chapter only (about 25 min). Pause and predict the shape of each matrix."],["Karpathy, Let's build GPT (Zero to Hero)","https://karpathy.ai/zero-to-hero.html","Watch the self-attention section, then close it. You will write the code yourself."],["The Illustrated Transformer","https://jalammar.github.io/illustrated-transformer/","Reference for shapes if you get stuck."]],
+  lab_do:"In <code>labs/L3_transformer/lab.py</code> write <code>causal_attention</code> without calling PyTorch's version, then <code>kv_bytes_per_token</code> and <code>kv_cache_gib</code>. The tests compare you against <code>F.scaled_dot_product_attention</code> and check that changing the last token cannot alter earlier outputs.",
+  pass:"3 tests pass. Compute KV size for three real configs from their Hugging Face <code>config.json</code> (for example a 7B, a 13B, and a model using grouped-query attention) and save the table in <code>evidence/</code>.",
+  prove:"Explain prefill versus decode with your own numbers, then tell me why grouped-query attention helps serving.",
+  trap:"Applying the mask after softmax instead of before it, and counting only keys, not values."},
+ {id:"L2",day:"Day 3",t:"PyTorch fluency: shapes, views, autograd",time:"2 h",lab:"L2",cmd:"uv run python tools/learn.py lab L2",
+  analogy:"A tensor is a flat strip of numbers plus a set of reading instructions (shape and strides). Transposing only changes the instructions. contiguous() rewrites the strip so the instructions are simple again.",
+  predict:"Before coding: what does torch.ones(8,1,5) + torch.ones(3,1) give, and what happens to training if you forget zero_grad?",
+  read:[["PyTorch docs, Tensor Views","https://docs.pytorch.org/docs/stable/tensor_view.html","Read the first screen and the list of view ops."],["PyTorch autograd tutorial","https://docs.pytorch.org/tutorials/beginner/blitz/autograd_tutorial.html","Read how .grad accumulates."]],
+  lab_do:"Implement <code>broadcast_shape</code> (no torch), <code>shares_memory</code>, <code>flatten_transposed</code>, <code>sgd_losses</code> and <code>grad_after_two_backwards</code>. Plot or print both loss curves and note what the bug does.",
+  pass:"4 tests pass and you can say what each of the two loss curves looks like and why.",
+  prove:"Why does view fail on x.T while reshape works? What does it cost?",
+  trap:"Using <code>data_ptr()</code> on the tensor instead of its storage; two views of one storage have different data pointers when offsets differ."},
+ {id:"L5",day:"Day 4",t:"The agent loop, tokens and dollars",time:"2.5 h",lab:"L5",cmd:"uv run python tools/learn.py lab L5",
+  analogy:"An agent is an intern on the phone. They ask you to do something (tool call), you report back (observation), and they decide what to ask next. You own the phone line, the rules, and the notebook they carry.",
+  predict:"Before reading: an agent takes 20 turns, adding about 2,000 tokens a turn and resending everything. How many input tokens in total? What would a cache save?",
+  read:[["Anthropic, Building effective agents","https://www.anthropic.com/engineering/building-effective-agents","Read the sections on workflows versus agents and on tools. Skip the case studies."],["Anthropic docs, Prompt caching","https://docs.claude.com/en/docs/build-with-claude/prompt-caching","Read how prefixes are matched and what invalidates a cache."],["ReAct paper","https://arxiv.org/abs/2210.03629","Read the abstract and the trajectory examples only."]],
+  lab_do:"In <code>labs/L5_agent/agent.py</code> implement <code>run_agent</code> and <code>cost_usd</code>. The tests use a scripted fake model, so there is no API cost. Cover unknown tools, tool exceptions, bad arguments, step limits and token accounting. Afterwards add a 40-line <code>live_run.py</code> that wires a real model, prints a per-step token and cost table, and compare turn 1 with turn 10.",
+  pass:"5 tests pass. Your live table shows input tokens growing each turn.",
+  prove:"Show me where the quadratic growth appears in your table and where a cache breakpoint would go.",
+  trap:"Letting a tool exception crash the loop, and counting only the last call's usage."},
+ {id:"L1",day:"Day 5",t:"Systems: memory, caches, races",time:"2.5 h",lab:"L1",cmd:"uv run python tools/learn.py lab L1",
+  analogy:"Caches are a desk next to a warehouse. Reading pages in order keeps a stack on the desk. Reading one line from each shelf makes a warehouse trip per line. A race is two people editing the same sentence from a photocopy; copy-on-write means photocopying only the page you scribble on.",
+  predict:"Run nothing yet. Summing an 8192 x 8192 float32 array by rows versus by columns: what is the time ratio? And two threads each add 1 to a shared counter 1,000 times: what final values are possible?",
+  read:[["OSTEP (free online)","https://pages.cs.wisc.edu/~remzi/OSTEP/","Chapters 5 (Process API, fork), 13 (Address Spaces), 18 to 19 (Paging, TLBs), 26 to 28 (Concurrency, Threads, Locks). Read only the first half of each."]],
+  lab_do:"Run <code>stride_bench.py</code> and compare with your prediction. In WSL run <code>cow_demo.py</code>. Then implement <code>cold_misses</code>, <code>amdahl</code>, <code>racy_total</code>, <code>locked_total</code>, <code>sharded_total</code>.",
+  pass:"4 tests pass. Write two sentences on which fix you would choose under contention and why.",
+  prove:"Teach copy-on-write and a lost update in 90 seconds each. Then define five terms from the deck at random (deadlock, false sharing, NUMA, working set, page fault).",
+  trap:"Believing the GIL makes counter += 1 safe. It does not."},
+ {id:"L6",day:"Day 5",t:"Tooling and compute plan",time:"1.5 h",lab:"",cmd:"uv run python labs/L0_env/check_env.py",
+  analogy:"Git is save points in a game, SSH is a locked tunnel to someone else's computer, Slurm is a queue at a rental counter: you ask for a GPU for an hour and wait your turn.",
+  predict:"Which git command undoes your last commit but keeps the work? How would you open a remote Jupyter in your local browser?",
+  read:[["MIT Missing Semester","https://missing.csail.mit.edu/","Watch or skim the shell, version control (git) and remote-machines parts."],["Harvard FASRC documentation","https://docs.rc.fas.harvard.edu/","Read one page on interactive Slurm jobs, as an example of how clusters work. You do not have an account."]],
+  lab_do:"In this repo: branch, commit, undo with <code>git reset --soft HEAD~1</code>, recommit. Install uv inside WSL and run one lab there. Write a one-page GPU plan: provider, instance, hourly price, quota request, and a spending cap, for A4 later.",
+  pass:"You complete the git drill without notes and have a written GPU plan with real prices.",
+  prove:"Walk me through running a model server on a rented GPU and querying it from your laptop.",
+  trap:"Leaving a GPU instance running. Set the cap before you launch."},
+ {id:"L7",day:"Daily",t:"Vocabulary deck: the 44 assumed terms",time:"10 min a day",lab:"",cmd:"uv run python tools/learn.py card due",
+  analogy:"Flashcards are a gym for recall. Easy cards come back rarely, hard ones daily. Reading a definition again does almost nothing; retrieving it does a lot.",
+  predict:"For each card, answer out loud before flipping.",
+  read:[["Course background list","https://cs2680.seas.harvard.edu/policy.html","The 44 terms the course assumes. Skim once."]],
+  lab_do:"Review due cards, grade 0 to 5 honestly. Add two cards a day from your error log.",
+  pass:"After day 7 fewer than 10 cards are overdue and you can define any term cold.",
+  prove:"I pick five random terms and you give a definition plus an example.",
+  trap:"Grading 5 on cards you merely recognized."}
+];
+const SETUP=[
+ [true,"GitHub repo created, main pushed, module branch pushed"],
+ [true,"Python 3.12 environment with torch, transformers, anthropic, openai (uv sync)"],
+ [true,"AWS account signed in; $10/month budget created"],
+ [false,"Click the AWS budget email verification link (alerts do not fire until you do)"],
+ [true,"Hugging Face account"],
+ [false,"Create an API key for your chosen model provider and put it in .env as ANTHROPIC_API_KEY (never commit it)"],
+ [false,"Install uv in WSL and confirm one lab runs there"],
+ [false,"Pick a GPU provider and write the one-page plan (see L6)"]
+];
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const KEY="m00-plan-v1";let st={};try{st=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+function chip(label,cmd){
+  const d=document.createElement("div");d.className="chip";
+  d.innerHTML=`<code title="${esc(label)}">${esc(cmd)}</code>`;
+  const b=document.createElement("button");b.className="ghost";b.textContent="Copy";
+  b.onclick=async()=>{try{await navigator.clipboard.writeText(cmd);b.textContent="Copied"}catch(e){const r=document.createRange();r.selectNodeContents(d.firstChild);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Press Ctrl+C"}setTimeout(()=>b.textContent="Copy",1800)};
+  d.appendChild(b);return d;
+}
+const C=document.getElementById("cmds");
+CMDS.forEach(([l,c])=>{const w=document.createElement("div");const p=document.createElement("div");p.className="muted";p.style.fontSize=".85rem";p.textContent=l;w.appendChild(p);w.appendChild(chip(l,c));C.appendChild(w)});
+const L=document.getElementById("lessons");
+LESSONS.forEach(x=>{
+  const el=document.createElement("div");el.className="lesson";
+  el.innerHTML=`<div class="lh"><span class="tag">${x.id}</span><span class="tag">${x.day}</span><h3>${esc(x.t)}</h3><span class="tag">${x.time}</span></div>
+  <div class="big">${esc(x.analogy)}</div>
+  <div class="rows">
+    <div class="row"><b>Predict</b><div>${esc(x.predict)}</div></div>
+    <div class="row"><b>Intuition</b><div><ul>${x.read.map(r=>`<li><a href="${r[1]}" target="_blank" rel="noopener">${esc(r[0])}</a>. ${esc(r[2])}</li>`).join("")}</ul></div></div>
+    <div class="row"><b>Lab</b><div>${x.lab_do}<div class="chipslot"></div></div></div>
+    <div class="row"><b>Pass when</b><div>${x.pass}</div></div>
+    <div class="row"><b>Prove</b><div>${esc(x.prove)}</div></div>
+    <div class="row"><b>Watch for</b><div>${x.trap}</div></div>
+  </div>
+  <label class="done"><input type="checkbox" id="done-${x.id}"> Finished: tests pass and I proved it out loud</label>`;
+  el.querySelector(".chipslot").appendChild(chip(x.id,x.cmd));
+  L.appendChild(el);
+  const cb=el.querySelector("input");cb.checked=!!st["l"+x.id];cb.onchange=()=>{st["l"+x.id]=cb.checked;save()};
+});
+const S=document.getElementById("setup");
+SETUP.forEach(([d,t],i)=>{const li=document.createElement("li");const id="s"+i;li.innerHTML=`<label><input type="checkbox" id="${id}"> ${esc(t)}</label>`;S.appendChild(li);const cb=li.querySelector("input");cb.checked=(id in st)?st[id]:d;cb.onchange=()=>{st[id]=cb.checked;save()}});
+</script>

@@ -12,4 +12,5 @@ dependencies = [
   "python-dotenv",
   "tiktoken",
   "jupyter",
+  "transformers",
 ]

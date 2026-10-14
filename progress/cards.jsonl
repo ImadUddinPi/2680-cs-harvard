@@ -1,0 +1,62 @@
+{"id": 1, "q": "Define: latency", "a": "Time for one request to complete.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 2, "q": "Define: throughput", "a": "Work completed per unit time (requests/s, tokens/s).", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 3, "q": "Define: tail latency", "a": "The slow end of the latency distribution (p99, p99.9); dominates long request chains.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 4, "q": "Define: scalability", "a": "How performance changes as you add resources or load.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 5, "q": "Define: Amdahl's law", "a": "Speedup = 1 / (s + (1-s)/N); the serial fraction s caps speedup at 1/s.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 6, "q": "Define: IOPS", "a": "I/O operations per second a device can sustain.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 7, "q": "Define: batching", "a": "Grouping requests so fixed costs (e.g. reading weights) are shared; raises throughput, can raise latency.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 8, "q": "Define: pipelining", "a": "Overlapping stages of work so different items are in different stages at once.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 9, "q": "Define: load balancing", "a": "Spreading requests across servers to avoid hot spots.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 10, "q": "Define: process", "a": "A running program with its own virtual address space and resources.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 11, "q": "Define: thread", "a": "A unit of execution inside a process; threads share memory, have separate stacks and registers.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 12, "q": "Define: coroutine", "a": "A function that can pause and resume cooperatively (async/await) on one thread.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 13, "q": "Define: concurrency", "a": "Structuring work as overlapping tasks; not necessarily simultaneous execution.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 14, "q": "Define: asynchronous execution", "a": "Start an operation and continue; get the result later via callback, future or await.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 15, "q": "Define: mutex", "a": "A lock allowing one thread at a time into a critical section.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 16, "q": "Define: atomic operation", "a": "An operation that appears indivisible to other threads (e.g. atomic fetch-add).", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 17, "q": "Define: race condition", "a": "Result depends on unlucky timing of unsynchronized accesses to shared state.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 18, "q": "Define: deadlock", "a": "Tasks wait on each other's locks forever; none can proceed.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 19, "q": "Define: starvation", "a": "A task is perpetually denied a resource while others proceed.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 20, "q": "Define: context switch", "a": "Saving one thread's CPU state and loading another's; costs time and cache warmth.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 21, "q": "Define: cache coherence", "a": "Hardware protocol keeping each core's cached copies of a memory location consistent.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 22, "q": "Define: false sharing", "a": "Independent variables on the same cache line cause cores to invalidate each other's cache needlessly.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 23, "q": "Define: virtual memory", "a": "Per-process address space mapped to physical memory via page tables.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 24, "q": "Define: page fault", "a": "Access to a page not currently mapped/resident; the OS must handle it (e.g. load or allocate).", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 25, "q": "Define: copy-on-write", "a": "Share pages read-only after fork; copy a page only when someone writes to it.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 26, "q": "Define: NUMA", "a": "Non-uniform memory access: memory attached to a different CPU socket is slower to reach.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 27, "q": "Define: DMA", "a": "Direct memory access: a device moves data to/from RAM without the CPU copying each byte.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 28, "q": "Define: interrupt", "a": "A hardware signal that makes the CPU pause and run a handler.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 29, "q": "Define: NIC", "a": "Network interface card.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 30, "q": "Define: RDMA", "a": "Remote DMA: read/write a remote machine's memory over the network, bypassing its CPU and kernel on the data path.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 31, "q": "Define: locality", "a": "Tendency to reuse nearby (spatial) or recently used (temporal) data; what caches exploit.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 32, "q": "Define: working set", "a": "The data a program actively needs over a window of time; should fit in the cache level you care about.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 33, "q": "Define: LRU", "a": "Evict the least recently used item.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 34, "q": "Define: system call", "a": "A request from a user program to the kernel (read, write, mmap, fork).", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 35, "q": "Define: write-ahead log", "a": "Append the intended change to a durable log before applying it, so crashes can be recovered.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 36, "q": "Define: durability", "a": "Once committed, data survives crashes.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 37, "q": "Define: transaction", "a": "A group of operations treated as one unit: all happen or none.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 38, "q": "Define: ACID", "a": "Atomicity, Consistency, Isolation, Durability.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 39, "q": "Define: serializability", "a": "Concurrent transactions behave as if run one at a time in some order.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 40, "q": "Define: B-tree", "a": "Balanced, high-fanout search tree designed for block storage; few disk reads per lookup.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 41, "q": "Define: partitioning", "a": "Splitting data across machines or files by key or range (sharding).", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 42, "q": "Define: RPC", "a": "Remote procedure call: invoking a function on another machine as if local.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 43, "q": "Define: fault tolerance", "a": "Continuing to work correctly despite component failures.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 44, "q": "Define: congestion control", "a": "Sender-side logic that slows down when the network is overloaded (e.g. TCP).", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 45, "q": "KV cache bytes per token?", "a": "2 x layers x kv_heads x head_dim x dtype_bytes. 32L/32H/128d/fp16 = 524,288 B.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 46, "q": "Decode tokens/s ceiling at batch 1?", "a": "bandwidth / bytes of weights. 2 TB/s over 14 GB = ~143 tok/s.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 47, "q": "Arithmetic intensity of an n x n x n matmul (fp16)?", "a": "~ n/3 FLOP/byte. 4096 -> ~1365. Compute-bound on a GPU with ridge ~300.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 48, "q": "Ridge point?", "a": "Peak FLOP/s divided by memory bandwidth. Above it: compute-bound; below: memory-bound.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 49, "q": "Why is decode memory-bound?", "a": "One token per step re-reads all weights and the KV cache; attention intensity is ~1 FLOP/byte.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 50, "q": "Why is prefill compute-bound?", "a": "Whole prompt processed in parallel: matrix x matrix, high reuse of each weight byte.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 51, "q": "Self-attention formula?", "a": "softmax(Q K^T / sqrt(d_k)) V, with a causal mask in decoders.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 52, "q": "Agent loop in one line?", "a": "Model proposes an action; harness executes; observation goes back into context; repeat to a stop condition.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 53, "q": "Why does an agent's input-token bill grow quadratically?", "a": "Each turn resends the whole history; sum of 1..n turns.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 54, "q": "Cost of 10k in / 1k out at $3 / $15 per M?", "a": "$0.030 + $0.015 = $0.045.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 55, "q": "P(at least one of 50 calls hits p99 tail)?", "a": "1 - 0.99^50 = 0.395.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 56, "q": "Prompt caching works when...?", "a": "A long, stable prefix is identical across calls; any early change invalidates everything after it.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 57, "q": "view vs reshape?", "a": "view needs compatible strides and never copies; reshape copies only if it must.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 58, "q": "Why zero_grad each step?", "a": "backward() accumulates into .grad; without clearing you sum stale gradients.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 59, "q": "eval() vs no_grad()?", "a": "eval switches dropout/batchnorm behavior; no_grad stops autograd recording.", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 60, "q": "Undo last commit, keep changes staged?", "a": "git reset --soft HEAD~1", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 61, "q": "Interactive GPU shell on Slurm?", "a": "srun --partition=P --gres=gpu:1 --time=HH:MM:SS --pty bash", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}
+{"id": 62, "q": "Reach a remote server's port from your laptop?", "a": "ssh -L local:localhost:remote user@host", "module": "M00", "ease": 2.5, "interval": 0, "reps": 0, "due": "2026-10-14"}

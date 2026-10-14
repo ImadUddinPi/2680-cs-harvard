@@ -23,3 +23,6 @@ Every module ends with an "economic artifact": a measured benchmark, a reusable 
 
 ## Study hub
 Lessons are interactive HTML in `hub/lessons/`, served by `tools/hub.py` (localhost). The student's answers are in `progress/answers/<lesson>.json`: read them when asked to review or score, and write feedback back to the student in chat. New lessons: add a page under `hub/lessons/`, register it in `hub/lessons.json`. Do not publish lessons as claude.ai artifacts any more; the Library page keeps the old ones as backups.
+
+## Teaching style (student's explicit rule)
+No analogies, metaphors, personas or motivational filler. State the mechanism precisely, with code, numbers and formulas. Short sentences. If a sentence would not survive being deleted, delete it. Questions to the student are technical, not rhetorical.

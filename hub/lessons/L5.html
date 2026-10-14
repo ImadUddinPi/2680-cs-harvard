@@ -12,18 +12,23 @@
 
 <!-- STEP 1 -->
 <section class="step" id="s1">
-  <div class="sh"><span class="tag">STEP 1</span><h2>Mental model</h2><span class="t">5 min</span></div>
-  <div class="big">An agent is an intern on a phone. The model is the intern. The program around it, the harness, is you.</div>
-<pre>harness  -> model : task + notebook so far
-model    -> harness: "please run calculator(2+3)"      (it only ASKS)
-harness runs the tool, writes "5" in the notebook
-harness  -> model : task + ALL the notebook again
-model    -> harness: "The answer is 5"                 (final answer, loop ends)</pre>
+  <div class="sh"><span class="tag">STEP 1</span><h2>How the loop works</h2><span class="t">5 min</span></div>
+  <p>A model API call is a stateless function: <code>messages + tool definitions -> one assistant message</code>. That message is either text, or a tool call (<code>name</code> plus JSON <code>input</code>). The API does not execute tools. Your code does.</p>
+<pre>messages = [{"role": "user", "content": task}]
+while steps &lt; max_steps:
+    resp = call_model(messages, tools)       # one API call
+    messages.append(resp.message)
+    if resp.stop_reason != "tool_use":       # text answer: done
+        return resp.text
+    for call in resp.tool_calls:
+        result = run_tool(call.name, call.input)   # your code runs here
+        messages.append(tool_result(call.id, result))</pre>
   <ol>
-    <li><b>The model never runs anything.</b> It outputs a request. The harness executes it, which is why permissions, errors and step limits live in your code.</li>
-    <li><b>The model remembers nothing between calls.</b> Every call sends the whole notebook, and every call is billed on all of it.</li>
+    <li><b>Stateless.</b> Every request carries the full <code>messages</code> list. The provider keeps nothing between calls.</li>
+    <li><b>Billing follows from that.</b> Call k is billed for every token in <code>messages</code> at that moment: input tokens on call k = sum of everything added in calls 1 to k-1, plus the initial task. Output tokens are billed separately, at a higher rate.</li>
+    <li><b>Tool execution, errors, permissions and step limits are all your code.</b> The model only emits JSON that names a tool.</li>
   </ol>
-  <label class="q" for="m1">In your own words: if the harness crashed halfway through a tool call, what would the model know about it?</label>
+  <label class="q" for="m1">Your process crashes after the model returned a tool call but before you sent the tool result. What state exists on the provider's side, and what do you have to do to recover?</label>
   <textarea id="m1" data-q="m1"></textarea>
   <label class="fin"><input type="checkbox" class="fin" data-q="done1"> Step 1 done</label>
 </section>
@@ -31,7 +36,7 @@ model    -> harness: "The answer is 5"                 (final answer, loop ends)
 <!-- STEP 2 -->
 <section class="step" id="s2">
   <div class="sh"><span class="tag">STEP 2</span><h2>Predict before you look</h2><span class="t">5 min</span></div>
-  <p>An agent runs <b>10 turns</b>. Each turn the model sees everything so far, and each turn adds <b>2,000 new tokens</b>, so turn 1 sends 2,000 tokens. Guess first. "Unsure" is fine, put your best number anyway.</p>
+  <p>An agent runs <b>10 turns</b>. Each call sends the full <code>messages</code> list, and each turn adds <b>2,000 tokens</b> to it, so call 1 sends 2,000 tokens. Write your numbers before unlocking the calculator.</p>
   <div class="row2">
     <div><label class="q" for="p1">Input tokens billed, turn 1</label><input type="text" id="p1" data-q="p1" inputmode="numeric"></div>
     <div><label class="q" for="p2">Turn 2</label><input type="text" id="p2" data-q="p2" inputmode="numeric"></div>
@@ -136,7 +141,7 @@ model    -> harness: "The answer is 5"                 (final answer, loop ends)
 <!-- STEP 7 -->
 <section class="step" id="s7">
   <div class="sh"><span class="tag">STEP 7</span><h2>Teach it back</h2><span class="t">10 min</span></div>
-  <p>Explain to a new colleague who has never seen an agent: what is the loop, who does what, why is the bill quadratic, and how does caching change it? Use your own words, and one concrete number.</p>
+  <p>Write a short technical explanation: the loop, what your code does versus what the model does, why billed input grows quadratically with turns, and how prompt caching changes the cost. Include one worked number.</p>
   <textarea id="tb" data-q="tb" style="min-height:160px"></textarea>
   <label class="q" for="err">Error log: one thing you got wrong today, why, and the fix.</label>
   <textarea id="err" data-q="err" style="min-height:70px"></textarea>
